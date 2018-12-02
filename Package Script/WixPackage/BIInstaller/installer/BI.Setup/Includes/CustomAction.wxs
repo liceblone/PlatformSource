@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  
+	<Fragment>
+
+    <CustomAction Id="CA_DataBaseTestConnection" BinaryKey="BIN_CustomAction" DllEntry="TestSqlConnection" Execute="immediate" Impersonate="yes" Return="ignore" />
+    <CustomAction Id="CA_DataBaseSwhowPathInstall" BinaryKey="BIN_CustomAction" DllEntry="SwhowPathInstall" Execute="immediate" Impersonate="yes" Return="check" />
+    <CustomAction Id="CA_DataBaseExecuteScripts" BinaryKey="BIN_CustomAction" DllEntry="ExecuteSQLScripts" Execute="deferred" Impersonate="yes" Return="check" />
+
+    <CustomAction Id="CA_SetProperty_DATABASE_SERVERNAME" Property="DATABASE_SERVERNAME" Value="[ComputerName]"/>
+    <CustomAction Id="CA_SetProperty_DATABASE_NAME" Property="DATABASE_NAME" Value="HRCM_BI"/>
+    <UI>
+      <ProgressText Action="CA_DataBaseExecuteScripts" Template="!(loc.UIProgressDlg_ExecutingTask)" />
+    </UI>
+  </Fragment>
+
+  
+  <Fragment>  
+    <CustomAction Id="CA_RememberInstallDir" Property="ARPINSTALLLOCATION" Value="[INSTALLLOCATION]" />
+    <CustomAction Id='CA_SaveCmdLineValue' Property='CMDLINE_INSTALLLOCATION' Value='[INSTALLLOCATION]' Execute='firstSequence' />
+    <CustomAction Id='CA_SetFromCmdLineValue' Property='INSTALLLOCATION' Value='[CMDLINE_INSTALLLOCATION]' Execute='firstSequence' />
+    <CustomAction Id="CA_NoDowngrade" Error="!(loc.ValidationVersionNew)" />
+    <CustomAction Id='CA_AlreadyUpdated' Error='!(loc.ValidationVersionAlreadyUpdated)' />
+  </Fragment>
+
+  
+  <Fragment>
+    <CustomAction Id="CA_CheckingPID" BinaryKey="BIN_CustomAction" DllEntry="CheckPID" HideTarget="yes" />
+  </Fragment>
+
+  
+</Wix>

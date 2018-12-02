@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?include $(var.ProjectDir)\Includes\Variables.wxi ?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+   <Product Id="$(var.ProductId)"
+	    	   Name="$(var.ProductDescription)"
+		       Language="1033"
+           Version="$(var.ProductVersion)"
+		       Manufacturer="$(var.ManufacturerName)"
+		       UpgradeCode="$(var.ProductUpgradeCode)" >
+     
+    
+		<Package InstallerVersion="200" 
+             Compressed="yes" 
+             InstallScope="perMachine"   
+             Description ="$(var.ProductDescription)"
+             Keywords ="$(var.KeyWords)"
+             Manufacturer="$(var.ManufacturerName)" />
+
+     
+    <!--Medios -->
+    <Property Id="DiskPrompt" Value="$(var.ProductDescription) - [1]" />
+    <Media Id="1" Cabinet="Media1.cab" EmbedCab="yes" DiskPrompt="Disk 1" VolumeLabel="Disk1"/>
+
+    <!-- Icon in Program and Features
+    <Property Id="ARPPRODUCTICON" Value="MainIcon.ico" />
+    <Icon Id="MainIcon.ico"  SourceFile="MySourceFiles\$(var.PackageTypeFolder)\HRM.ico" />
+    -->
+     
+    
+
+    <!--Componentes-->
+    <FeatureGroupRef Id="FG_Main"/>
+     
+     
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLLOCATION" />
+    <!--<UIRef Id="WixUI_InstallDir" />-->
+    <!--<UIRef Id="WixUI_ErrorProgressText" />-->
+
+    <WixVariable Id="WixUILicenseRtf" Value="../../Source/LUNAINFOR.rtf" />
+  
+	</Product>
+</Wix>

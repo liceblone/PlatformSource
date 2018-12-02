@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?include $(var.ProjectDir)\Includes\Variables.wxi ?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment Id="ComponentesFragment">
+
+    <!--Directory tree-->
+    <Directory Id='TARGETDIR' Name='SourceDir'>
+      <Directory Id='ProgramFilesFolder' Name='PFiles'>
+        <Directory Id='INSTALLLOCATION' Name="$(var.ProgramFileFolderName)">
+
+          <Directory Id='HRCMDIR' Name="$(var.LongProductName)">
+            <Directory Id='INSTALLDIR' Name="$(var.PackageTypeFolder)">
+              <Directory Id="CLIENT" Name="Client">
+                <Directory Id="DBBACKUP" Name="DBBackup" />
+                <Directory Id="PACKAGE" Name="Package" />
+                <Directory Id="UPGRADELOG" Name="UpgradeLog" />
+              </Directory>
+              <Directory Id="DATABASE" Name="DataBase">
+                <Directory Id="SYSDATA" Name="SysData">
+                </Directory>
+                <Directory Id="USERDATA" Name="UserData">
+                </Directory>
+              </Directory>
+              <Directory Id="IISFOLDER" Name="IISPackage">
+              </Directory>
+              <Directory Id="UPDATEWEB" Name="UpdateWeb">
+              </Directory>
+
+              <!--<Component Id="ComponentRemmoveFiles" Guid="0DAA0CBCF31A4D4A87F54F9DF134251B">
+                <RemoveFile Id="RemoveFiles"  Name="DebugLog.*" On="uninstall"/>
+                <RemoveFolder Id="Resources" Directory="Resources" On="uninstall"/>
+              </Component>-->
+
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="ProgramMenuDir" Name="$(var.ProgramFileFolderName)">
+        </Directory>
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
+
+
+    <!--IISFOLDER-->
+    <DirectoryRef Id="IISFOLDER" >
+      <Component Id="IIS6.ZIP" DiskId="1" Guid="52C440FA-DF9F-44DF-AC4E-5580148632E5">
+        <File Id="IIS6.ZIP" Name="IIS6.zip" Source="MySourceFiles\$(var.PackageType)\IISPackage\IIS6.zip" />
+      </Component>
+    </DirectoryRef>
+
+    <!--UPDATEWEB-->
+    <DirectoryRef Id="IISFOLDER" >
+      <Component Id="UPDATE.INF" DiskId="1" Guid="4D61AB23-AB88-4070-8CA9-5594C86D1A61">
+        <File Id="UPDATE.INF" Name="Update.inf" Source="MySourceFiles\$(var.PackageType)\UpdateWeb\Update.inf" />
+      </Component>
+    </DirectoryRef>
+
+    <!--SYSDATA-->
+    <DirectoryRef Id="IISFOLDER" >
+      <Component Id="SALESBASICINFO.MDF" DiskId="1" Guid="132BD63A-D415-4F86-9BEB-B405FB3D15B7">
+        <File Id="SALESBASICINFO.MDF" Name="SalesBasicinfo.MDF" Source="MySourceFiles\$(var.PackageType)\DataBase\SysData\SalesBasicinfo.MDF" />
+      </Component>
+      <Component Id="SALESBASICINFO_LOG.LDF" DiskId="1" Guid="5655879F-437A-4E0D-B35A-EAA3C7FD7389">
+        <File Id="SALESBASICINFO_LOG.LDF" Name="SalesBasicinfo_LOG.LDF" Source="MySourceFiles\$(var.PackageType)\DataBase\SysData\SalesBasicinfo_LOG.LDF" />
+      </Component>
+      <Component Id="SALESSYS.MDF" DiskId="1" Guid="BFD57784-1979-445A-8B9D-E1370C93CD07">
+        <File Id="SALESSYS.MDF" Name="SalesSys.MDF" Source="MySourceFiles\$(var.PackageType)\DataBase\SysData\SalesSys.MDF" />
+      </Component>
+      <Component Id="SALESSYS_LOG.LDF" DiskId="1" Guid="E284348E-4881-4E26-A400-80B27AE46629">
+        <File Id="SALESSYS_LOG.LDF" Name="SalesSys_LOG.LDF" Source="MySourceFiles\$(var.PackageType)\DataBase\SysData\SalesSys_LOG.LDF" />
+      </Component>
+    </DirectoryRef>
+
+    <!--USERDATA-->
+    <DirectoryRef Id="IISFOLDER" >
+      <Component Id="SALESUSERDATA.MDF" DiskId="1" Guid="B89D819F-4B3D-4EB6-89C5-534E821B5A09">
+        <File Id="SALESUSERDATA.MDF" Name="SalesUserData.MDF" Source="MySourceFiles\$(var.PackageType)\DataBase\UserData\SalesUserData.MDF" />
+      </Component>
+      <Component Id="SALESUSERDATALOG.MDF" DiskId="1" Guid="C72E3B30-F92B-4675-807E-7B2366591013">
+        <File Id="SALESUSERDATALOG.MDF" Name="SalesUserDataLog.MDF" Source="MySourceFiles\$(var.PackageType)\DataBase\UserData\SalesUserDataLog.MDF" />
+      </Component>
+      <Component Id="SALESUSERDATALOG_LOG.LDF" DiskId="1" Guid="D04C61E9-1577-49DE-9728-6027EFD05EF9">
+        <File Id="SALESUSERDATALOG_LOG.LDF" Name="SalesUserDataLog_LOG.LDF" Source="MySourceFiles\$(var.PackageType)\DataBase\UserData\SalesUserDataLog_LOG.LDF" />
+      </Component>
+      <Component Id="SALESUSERDATA_LOG.LDF" DiskId="1" Guid="D31CE840-A3E0-44AE-9772-902A1427D83C">
+        <File Id="SALESUSERDATA_LOG.LDF" Name="SalesUserData_LOG.LDF" Source="MySourceFiles\$(var.PackageType)\DataBase\UserData\SalesUserData_LOG.LDF" />
+      </Component>
+    </DirectoryRef>
+
+
+    <!--CLIENT-->
+    <DirectoryRef Id="CLIENT">
+
+      <Component Id="BSGMANAGEMENT.EXE" DiskId="1" Guid="65B69C3F-B218-4841-997C-E423DF992341">
+        <File Id="BSGMANAGEMENT.EXE" Name="BSGManagement.exe" Source="MySourceFiles\$(var.PackageType)\Client\BSGManagement.exe" />
+      </Component>
+      <Component Id="CONFIG.INI" DiskId="1" Guid="503FD6F6-6522-4BCF-A0F8-E51B9723BE85">
+        <File Id="CONFIG.INI" Name="Config.ini" Source="MySourceFiles\$(var.PackageType)\Client\Config.ini" />
+      </Component>
+      <Component Id="DBLINKER.EXE" DiskId="1" Guid="1F5F41A3-AA08-42CD-98CC-83E4F2388C9D">
+        <File Id="DBLINKER.EXE" Name="DBLinker.exe" Source="MySourceFiles\$(var.PackageType)\Client\DBLinker.exe" />
+      </Component>
+      <Component Id="PRJMETADATA.EXE" DiskId="1" Guid="3234DF5F-B19E-49C1-A8A0-3BB1C6EB6FC0">
+        <File Id="PRJMETADATA.EXE" Name="PrjMetaData.exe" Source="MySourceFiles\$(var.PackageType)\Client\PrjMetaData.exe" />
+      </Component>
+      <Component Id="QTINTF.DLL" DiskId="1" Guid="59CA3C5A-7A2E-4485-B65D-903E992A924F">
+        <File Id="QTINTF.DLL" Name="qtintf.dll" Source="MySourceFiles\$(var.PackageType)\Client\qtintf.dll" />
+      </Component>
+      <Component Id="QTINTF70.DLL" DiskId="1" Guid="52FC19F0-0EEE-4341-A603-1E556BD728D5">
+        <File Id="QTINTF70.DLL" Name="qtintf70.dll" Source="MySourceFiles\$(var.PackageType)\Client\qtintf70.dll" />
+      </Component>
+      <Component Id="SERVERCFG.INI" DiskId="1" Guid="85F14FB5-FCF0-409D-8B09-D5E848488304">
+        <File Id="SERVERCFG.INI" Name="ServerCfg.ini" Source="MySourceFiles\$(var.PackageType)\Client\ServerCfg.ini" />
+      </Component>
+      <Component Id="UPDATE.INI" DiskId="1" Guid="B8D62350-15E1-41A4-99C5-4B0CAF8B6E68">
+        <File Id="UPDATE.INI" Name="Update.ini" Source="MySourceFiles\$(var.PackageType)\Client\Update.ini" />
+      </Component>
+      <Component Id="______.EXE" DiskId="1" Guid="4D94A639-2687-4F88-80E1-B63C62B0A3D7">
+        <File Id="______.EXE" Name="销售管理系统.exe" Source="MySourceFiles\$(var.PackageType)\Client\销售管理系统.exe" />
+      </Component>
+      
+    </DirectoryRef>
+<!--Short Cuts-->
+    <DirectoryRef Id="ProgramMenuDir" >
+      <Component Id="CMP_ShortCut" Guid="$(var.ProductId)">
+        <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
+        <Shortcut Id ="SC_MainExe" Name="$(var.ProductDescription)"  WorkingDirectory="INSTALLDIR" Target="[INSTALLLOCATION]\$(var.LongProductName)\$(var.PackageTypeFolder)\$(var.MainExeName)"/>
+             
+        
+        <RegistryValue Root="HKCU"
+                       Key="SOFTWARE\$(var.ManufacturerName)\$(var.LongProductName)"
+                       Name="installed"
+                       Type="integer"
+                       Value="1"
+                       KeyPath="yes" />
+
+      </Component>
+    </DirectoryRef>
+
+    <Icon Id="Main.exe" SourceFile="MySourceFiles\$(var.PackageTypeFolder)\Client\$(var.MainExeName)" />
+     
+    <!-- Features -->
+    <FeatureGroup Id="FG_Main">
+      <Feature Id="FComponents">
+
+        <ComponentRef Id='CMP_ShortCut' />
+        
+        <ComponentRef Id="BSGMANAGEMENT.EXE" />
+        <ComponentRef Id="CONFIG.INI" />
+        <ComponentRef Id="DBLINKER.EXE" />
+        <ComponentRef Id="PRJMETADATA.EXE" />
+        <ComponentRef Id="QTINTF.DLL" />
+        <ComponentRef Id="QTINTF70.DLL" />
+        <ComponentRef Id="SERVERCFG.INI" />
+        <ComponentRef Id="UPDATE.INI" />
+        <ComponentRef Id="______.EXE" />
+        <ComponentRef Id="SALESBASICINFO.MDF" />
+        <ComponentRef Id="SALESBASICINFO_LOG.LDF" />
+        <ComponentRef Id="SALESSYS.MDF" />
+        <ComponentRef Id="SALESSYS_LOG.LDF" />
+        <ComponentRef Id="SALESUSERDATA.MDF" />
+        <ComponentRef Id="SALESUSERDATALOG.MDF" />
+        <ComponentRef Id="SALESUSERDATALOG_LOG.LDF" />
+        <ComponentRef Id="SALESUSERDATA_LOG.LDF" />
+        <ComponentRef Id="IIS6.ZIP" />
+        <ComponentRef Id="UPDATE.INF" />
+
+      </Feature>
+    </FeatureGroup>
+  </Fragment>
+</Wix>

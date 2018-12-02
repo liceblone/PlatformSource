@@ -1,0 +1,65 @@
+object aboutFrm: TaboutFrm
+  Left = 382
+  Top = 208
+  BorderStyle = bsDialog
+  Caption = #20851#20110'...'
+  ClientHeight = 232
+  ClientWidth = 386
+  Color = clCaptionText
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = #23435#20307
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object GroupBox1: TGroupBox
+    Left = 32
+    Top = 24
+    Width = 329
+    Height = 185
+    TabOrder = 0
+    OnClick = GroupBox1Click
+    object lblVersion: TLabel
+      Left = 32
+      Top = 56
+      Width = 33
+      Height = 13
+      Caption = #29256#26412'V'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -13
+      Font.Name = #23435#20307
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label2: TLabel
+      Left = 32
+      Top = 96
+      Width = 91
+      Height = 13
+      Caption = #26368#21518#26356#26032#26102#38388#65306
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -13
+      Font.Name = #23435#20307
+      Font.Style = []
+      ParentFont = False
+    end
+    object LblUpdataTime: TLabel
+      Left = 120
+      Top = 136
+      Width = 7
+      Height = 13
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -13
+      Font.Name = #23435#20307
+      Font.Style = []
+      ParentFont = False
+    end
+  end
+end

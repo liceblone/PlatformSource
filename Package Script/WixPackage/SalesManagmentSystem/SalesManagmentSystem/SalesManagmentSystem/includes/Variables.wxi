@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  
+  <!-- the following parameter will be got from msbuild options-->
+
+
+  <?define ProgramFileFolderName = "LunaInfor" ?>
+  <?define ManufacturerName = "LunaInfor" ?>
+  <?define LongProductName   = $(var.ProductName)?>
+
+  <?if $(var.PackageType) = Internal ?>
+  <?define PackageTypeFolder = Prod ?>
+  <?else?>
+  <?define PackageTypeFolder = $(var.PackageType)?>
+  <?endif ?>
+
+ 
+  <?define ProductDescription = $(var.ProductName)?>
+   
+
+</Include>
+
+ 
+ 
+<!--ProductId=$(ProductId);ProductUpgradeCode=$(ProductUpgradeCode);UninstallShortcutGuid=$(UninstallShortcutGuid);ProductName=$(ProductName);ProductVersion=$(ProductVersion);MainExeName=$(MainExeName);KeyWords=$(KeyWords);PackageType=$(PackageType) -->

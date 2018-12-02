@@ -1,0 +1,13 @@
+--restore config		                
+exec Pr_RestoreSysData 'SalesUserDataLog','SalesBasicinfo'
+	                
+exec Pr_RestoreSysData 'SalesUserDataLog','SalesSys'
+	                
+--restore config		                
+exec Pr_RestoreSysData 'SalesUserDataLog','SalesBasicinfo'
+	                
+exec Pr_RestoreSysData 'SalesUserDataLog','SalesSys'
+	                
+if exists(select * from sysobjects where id=object_id(TAuthorizeObject) ) drop table 'TAuthorizeObject'
+ select * into  TAuthorizeObject from SalesUserDataLog.dbo.TAuthorizeObjectSalesBasicinfo
+	                

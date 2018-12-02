@@ -1,0 +1,1190 @@
+unit Editor;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, ComCtrls, ToolWin, ADODB, Db, DbCtrls, CheckLst, ImgList, variants,
+   UnitUserDefineRpt,UnitEditorReport,   DBGrids,   UnitModelFrm,
+  Mask, ActnList, FhlKnl, ExtCtrls;
+
+
+type
+  TEditorFrm = class(Tform)
+    ToolBar1: TToolBar;
+    SavBtn: TToolButton;
+    DataSource1: TDataSource;
+    CelBtn: TToolButton;
+    ToolButton3: TToolButton;
+    AddBtn: TToolButton;
+    CpyBtn: TToolButton;
+    DelBtn: TToolButton;
+    ToolButton7: TToolButton;
+    FirstBtn: TToolButton;
+    NextBtn: TToolButton;
+    PriorBtn: TToolButton;
+    LastBtn: TToolButton;
+    ToolButton12: TToolButton;
+    PageControl1: TPageControl;
+    ToolButton2: TToolButton;
+    ChgBtn: TToolButton;
+    ADODataSet1: TADODataSet;
+    ActionList1: TActionList;
+    AddAction: TAction;
+    CopyAction: TAction;
+    EditAction: TAction;
+    DeleteAction: TAction;
+    SaveAction: TAction;
+    CancelAction: TAction;
+    FirstAction: TAction;
+    PriorAction: TAction;
+    NextAction: TAction;
+    LastAction: TAction;
+    CloseAction: TAction;
+    PrintAction: TAction;
+    Splitter1: TSplitter;
+    PnlItem: TPanel;
+    CLBar: TControlBar;
+    ToolBar2: TToolBar;
+    ToolButton9: TToolButton;
+    ToolButton1: TToolButton;
+    ActReflash: TAction;
+    ActHelp: TAction;
+    ExtBtn: TToolButton;
+    PrintBtn: TToolButton;
+    ActAfterPost: TAction;
+    btnShowLog: TToolButton;
+    ActShowLog: TAction;
+    actlink: TAction;
+    btnCtrl: TToolButton;
+    ActCheck: TAction;
+    ActUnCheck: TAction;
+    ActSaveWithoutRefresh: TAction;
+
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure SetEditState(CanEdit:Boolean);
+    procedure AddActionExecute(Sender: TObject);
+    procedure CopyActionExecute(Sender: TObject);
+    procedure EditActionExecute(Sender: TObject);
+    procedure DeleteActionExecute(Sender: TObject);
+    procedure FirstActionExecute(Sender: TObject);
+    procedure PriorActionExecute(Sender: TObject);
+    procedure NextActionExecute(Sender: TObject);
+    procedure LastActionExecute(Sender: TObject);
+    procedure CloseActionExecute(Sender: TObject);
+    procedure SaveActionExecute(Sender: TObject);
+    procedure CancelActionExecute(Sender: TObject);
+    procedure SetCaptionActionExecute(Sender: TObject);
+    procedure PrintActionExecute(Sender: TObject);
+    procedure ToolBar1DblClick(Sender: TObject);
+    procedure UpdateSysFields();
+    function ActAfterPostExecute(Sender: TObject):boolean;
+    procedure btnShowLogClick(Sender: TObject);
+    procedure ActReflashExecute(Sender: TObject);
+    procedure ActShowLogExecute(Sender: TObject);
+    Function  GetParamterValues:Variant ;
+    function  GetSelfParamterValues: Variant;
+    procedure actlinkExecute(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure btnCtrlClick(Sender: TObject);
+    procedure ActCheckExecute(Sender: TObject);
+    procedure ActUnCheckExecute(Sender: TObject);
+    procedure DataSource1DataChange(Sender: TObject; Field: TField);
+    procedure ActSaveWithoutRefreshExecute(Sender: TObject);
+  private
+       FParamDataSet:  TDataSet;
+       FParams:Variant;
+       FOpenFlds:String;
+       FparentGrid:Tdbgrid;
+    fMainEditor: boolean;
+    procedure setfMainEditor(const Value: boolean);
+    function  getIsChk:boolean;
+    procedure SetCheckStyle(isChecked:boolean);
+    function GetBillcode: string;
+  public
+    fDict:TEditorDict;
+    FWindowsFID:string;
+    property MainEditor:boolean read fMainEditor write setfMainEditor default false;
+    property Billcode:string read GetBillcode;
+    procedure InitFrm(EditorId:String;fOpenParams:Variant;fDataSet:TDataSet;PparentGrid:Tdbgrid=nil;POpenFlds:String='');overload;
+  end;
+
+
+var
+  EditorFrm: TEditorFrm;
+
+implementation
+
+{$R *.DFM}
+uses datamodule,RepCard,UnitCrmMain,UPublicCtrl,UnitCreateComponent,UPublicFunction, UnitMulPrintModule,  RepBill,UnitBillEx,UnitCtrlConfig;
+
+procedure TEditorFrm.InitFrm(EditorId:string;fOpenParams:Variant;fDataSet:TDataSet;PparentGrid:Tdbgrid=nil;POpenFlds:String='');
+var
+  ftabs:TStringList;
+  i:integer;
+  TabCaptions:Tstringlist;
+  Tab:Ttabsheet;
+begin
+
+try
+    if self.Owner is TFrmCrm then
+       self.FWindowsFID:=( self.Owner as TFrmCrm).FWindowsFID;
+    TabCaptions:=Tstringlist.Create  ;
+    if Not FhlKnl1.Cf_GetDict_Editor(EditorId,fdict) then Close;
+    TabCaptions.CommaText := fdict.TabCaptins ;
+      //2006-7-26加toolbutton
+    if (trim(fDict.Actions)<>''  ) and   (trim(fDict.Actions)<>'-1' )then
+      FhlKnl1.Tb_CreateActionBtns_Ex(ToolBar1,self.ActionList1 ,fDict.Actions,logininfo.EmpId,self.FWindowsFID )
+    else
+      for i:=0 to self.ActionList1.ActionCount-1 do
+         Taction(ActionList1.Actions[i]).Visible :=true;
+
+
+
+
+    self.Width :=  fDict.Width;
+    height:=fDict.Height;
+
+    Caption:=fDict.Caption;
+
+    if (fDataSet<>nil)and ((fDict.DataSetId ='-1' )or (trim(fDict.DataSetId) ='')) then
+       DataSource1.DataSet:=fDataSet
+    else
+    Begin
+       self.FParamDataSet :=  fDataSet ;
+       self.FOpenFlds:=POpenFlds;
+       FParams:=fOpenParams;
+       FhlUser.SetDataSet(AdoDataSet1,fDict.DataSetId,fOpenParams);
+    end;
+
+    ftabs:=TStringList.Create;
+    ftabs.CommaText:=fDict.BoxIds;
+    for i:=0 to ftabs.Count-1 do
+    begin
+        if TabCaptions.Count <i+1 then  TabCaptions.Add('');
+        Tab:=FhlKnl1.Pc_CreateTabSheet(PageControl1,TabCaptions[i]) ;
+        Tab.Hint := TabCaptions[i] ;
+        FhlKnl1.Cf_SetBox(ftabs.Strings[i],DataSource1,Tab,dmFrm.UserDbCtrlActLst);
+   end;
+ //   if (trim(fDict.Actions)<>''  ) and   (trim(fDict.Actions)<>'-1' )then
+    SetEditState(false);
+    ftabs.Free;
+
+    if   PnlItem.Height =1 then
+    Splitter1.Enabled :=false;
+
+    if fDict.CpyFlds='' then
+       CopyAction.Visible :=false;
+
+    self.FparentGrid :=  PparentGrid;
+finally
+   TabCaptions.Free ;
+end;
+end;
+
+procedure TEditorFrm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+ if (DataSource1.State=dsEdit) or (DataSource1.State=dsInsert) then
+    case MessageDlg(fsDbChanged,mtConfirmation,[mbYes,mbNo,mbCancel],0) of
+         mrYes:begin
+                 SaveActionExecute(SavBtn);
+                 Action:=caHide;
+               end;
+         mrNo:begin
+                 CancelActionExecute(celBtn);
+                 Action:=caHide;
+              end;
+         else begin
+                 Action:=caNone;
+              end;
+    end;
+end;
+
+procedure TEditorFrm.SetEditState(CanEdit:Boolean);
+  var i:integer;bkColor:TColor;
+  var Checked:boolean;
+begin
+    Checked :=getIsChk;
+
+    if not CanEdit then
+    begin
+       SetCheckStyle(Checked);
+    end
+    else
+    begin
+        ActCheck.Enabled := false;
+        ActUncheck.Enabled :=false;
+    end;
+
+     FirstAction.Enabled    :=Not CanEdit;
+     CancelAction.Enabled   :=CanEdit               and not Checked ;
+     SaveAction.Enabled     :=CancelAction.Enabled  and not Checked;
+     ActSaveWithoutRefresh.Enabled:=SaveAction.Enabled    ;
+     SaveAction.Visible     := not Checked;
+     ActSaveWithoutRefresh.Visible:=SaveAction.Visible    ;
+     DeleteAction.Enabled   :=FirstAction.Enabled   and not Checked;
+     CopyAction.Enabled     :=FirstAction.Enabled   and not Checked;
+     AddAction.Enabled      :=FirstAction.Enabled   ;
+     EditAction.Enabled     :=FirstAction.Enabled   and not Checked;
+
+     
+     PriorAction.Enabled    :=FirstAction.Enabled;
+     NextAction.Enabled     :=FirstAction.Enabled;
+     LastAction.Enabled     :=FirstAction.Enabled;
+     ExtBtn.Enabled         :=FirstAction.Enabled;
+    
+
+     PrintAction.Enabled:=FirstAction.Enabled;
+        
+     if CanEdit then
+        bkColor:=clWhite
+     else
+        bkColor:=clCream;
+     For i:=0 to PageControl1.PageCount-1 do
+         FhlKnl1.Vl_SetCtrlStyle(bkColor,PageControl1.Pages[i],CanEdit);
+     //dmFrm.SetDataSetStyle(DataSource1.DataSet,Not CanEdit);
+
+end;
+
+procedure TEditorFrm.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+ if SaveAction.Enabled then
+ begin
+   case Key of
+     vk_Return:begin
+               if ssCtrl in Shift then
+               begin
+                  if  SaveAction.Visible or logininfo.Sys then
+                      SaveAction.Execute ;
+                  if  ActSaveWithoutRefresh.Visible or logininfo.Sys then
+                      ActSaveWithoutRefresh.Execute
+               end
+               else if Not (ActiveControl is TDbMemo) then
+                  FhlKnl1.Vl_DoBoxEnter(ActiveControl)
+               end;
+     vk_Escape:begin
+               self.CancelAction.Execute;
+             end;
+   end;
+ end else
+ begin
+   case Key of
+     vk_Escape:begin
+             self.CancelAction.Execute;
+             end;
+     vk_Insert:begin
+              if ssCtrl in Shift then
+              begin
+                 if  EditAction.Visible or logininfo.Sys then
+                 self.EditAction.Execute ;
+              end
+              else
+              begin
+                 if  AddAction.Visible or logininfo.Sys then
+                 self.AddAction.Execute;
+              end;
+             end;
+     vk_Delete:begin
+                 if  DeleteAction.Visible or logininfo.Sys then
+                 self.DeleteAction.Execute;
+             end;
+     vk_Home:self.FirstAction.Execute;
+     vk_End:self.LastAction.Execute;
+     vk_Prior:self.PriorAction.Execute;
+     vk_Next:self.NextAction.Execute;
+     vk_Print:
+            begin
+            if  PrintAction.Visible or logininfo.Sys then
+            self.PrintAction.Execute;
+            end;
+   end;
+ end;
+
+end;
+
+procedure TEditorFrm.AddActionExecute(Sender: TObject);
+var i:integer;
+begin
+    DataSource1.DataSet.Next ;
+
+    SetEditState(True);
+    FhlUser.AssignDefault(DataSource1.DataSet,false);
+    if not (DataSource1.DataSet.State in [dsinsert] ) then
+    DataSource1.DataSet.Append;
+
+    FhlKnl1.Vl_FocueACtrl(PageControl1.ActivePage);
+
+ 
+end;
+
+procedure TEditorFrm.CopyActionExecute(Sender: TObject);
+begin
+ if fDict.CpyFlds='' then exit;
+  SetEditState(true);
+  FhlKnl1.Ds_AssignValues(DataSource1.DataSet,FhlKnl1.Vr_CommaStrToVarArray(fDict.CpyFlds),FhlKnl1.Ds_GetFieldsValue(DataSource1.DataSet,fDict.CpyFlds),True,False);
+  FhlKnl1.Vl_FocueACtrl(PageControl1.ActivePage);
+end;
+
+procedure TEditorFrm.EditActionExecute(Sender: TObject);
+var k,i,J:integer;
+var FilterStr,F_FilterFlds,SourceFldValue,SourceFldName:string;
+
+var SourceLookUpCombox:  TFhlDbLookupComboBox;
+var DestLookUpCombox  :  TFhlDbLookupComboBox;
+
+var FldsLst:TStrings;
+begin
+        {
+for k:=0 to self.PageControl1.ActivePage.ControlCount  -1 do
+begin
+    if  (self.PageControl1.ActivePage.Controls [k] is TFhlDbLookupComboBox) then
+    begin
+          SourceLookUpCombox:= ( self.PageControl1.ActivePage.Controls[k] as  TFhlDbLookupComboBox  );
+
+          F_FilterFlds  :=SourceLookUpCombox.F_FilterFlds    ;
+          SourceFldName :=SourceLookUpCombox.Field.FieldName ;
+
+          if (SourceLookUpCombox.Field.Value =null)  then
+              SourceFldValue:=''
+          else
+             if  (self.PageControl1.ActivePage.Controls [k] is TFhlDbLookupComboBox) then
+              SourceFldValue:=TFhlDbLookupComboBox(self.PageControl1.ActivePage.Components[k]    ).Field.Value  ;
+
+          if  (F_FilterFlds<>'') and (F_FilterFlds<>'sEmpty') then
+          begin
+             FldsLst:=TStringlist.Create ;
+             FldsLst.CommaText:=F_FilterFlds;
+
+             for j:=0 to FldsLst.Count -1 do
+             begin
+
+                    for i:=0 to self.PageControl1.ActivePage.ControlCount -1 do
+                    begin
+                        if  self.PageControl1.ActivePage.Controls[i] is TDBLookupComboBox then
+                           if   uppercase(trim(TDBLookupComboBox (self.PageControl1.ActivePage.Controls[i]).DataField)) =uppercase(trim(FldsLst[J])) then
+                                 DestLookUpCombox:=   TFhlDbLookupComboBox (self.PageControl1.ActivePage.Controls[i]) ;
+                    end;
+
+                    if   (SourceFldValue<>'')   then
+                    begin
+                    FilterStr:=SourceFldName +' like '+quotedstr(SourceFldValue+'%' );
+                    DestLookUpCombox.ListSource.DataSet.Filter :=FilterStr;
+                    DestLookUpCombox.ListSource.DataSet.Filtered :=true;
+                    end
+                    else
+                    begin
+                       // FilterStr:=SourceFldName +' like '+quotedstr(''+'%' )    ;
+                        //DestLookUpCombox.ListSource.DataSet.Filtered :=true;
+                    end;
+
+                    if DestLookUpCombox<>nil then
+                    if DestLookUpCombox.ListSource.DataSet.IsEmpty then
+                        DestLookUpCombox.Enabled  :=false
+                    else
+                        DestLookUpCombox.Enabled  :=true ;
+             end;
+
+    end;
+    end;
+end;
+      }
+  if DataSource1.DataSet.IsEmpty then Exit;
+
+  if DataSource1.DataSet.FindField('FisSys')<>nil then
+  if DataSource1.DataSet.Fieldbyname('FisSys').AsBoolean then
+  begin
+      showmessage('系统数据 不能修改!');
+      if not LoginInfo.Sys then
+      exit;
+  end;
+
+  DataSource1.DataSet.Edit;
+  SetEditState(true);
+  FhlKnl1.Vl_FocueACtrl(PageControl1.ActivePage);
+end;
+
+procedure TEditorFrm.DeleteActionExecute(Sender: TObject);
+var     MsumFldLst,DLSumFldLst,DLSumFunc:TStringlist;
+    i,j:integer;
+    ValueSum:extended;
+    F_ID,MainFID :string;
+begin
+  if DataSource1.DataSet.IsEmpty then Exit;
+
+  if DataSource1.DataSet.FindField('FisSys')<>nil then
+  if DataSource1.DataSet.Fieldbyname('FisSys').AsBoolean then
+  begin
+      showmessage('系统数据 不能修改!');
+      if not LoginInfo.Sys then
+      exit;
+  end;
+  if self.Owner is TFrmCrm then
+  if  not fMainEditor then
+  if TFrmCrm(Owner ).Maindataset.findfield  ('F_ID')<>nil then
+      if  not fhlknl1.CheckIfIsTheLastestVersion(TFrmCrm(Owner ).Maindataset) then
+      begin
+          showmessage('当前数据已经被别一个客户端修改，需要先刷新再继续操作！');
+          CancelAction.Execute;
+          exit;
+      end;
+  try
+    fhluser.Validation (DataSource1.DataSet,false,false,true,false,false,false);
+  except
+       on err :exception do
+      begin
+          showmessage(err.Message );
+          exit;
+      end  ;
+  end;
+  if self.Owner is TFrmCrm then
+  begin
+      if not self.MainEditor then
+      begin
+           if TFrmCrm(Owner ).Maindataset.findfield  ('F_ID')<>nil then
+            if  not fhlknl1.CheckIfIsTheLastestVersion(TFrmCrm(Owner ).Maindataset) then
+            begin
+                showmessage('当前数据已经被别一个客户端修改，需要先刷新再继续操作！');
+                CancelAction.Execute;
+                exit;
+            end;
+       end 
+       else
+       begin        //2010-3-14 删除出错
+            for i:=0 to  TFrmCrm(Owner ).pgcSubInterface.PageCount-1 do
+            begin
+                if  TModelAbstractSheet(TFrmCrm(Owner ).pgcSubInterface.Pages[i]).OpenDataSet>0 then
+                begin
+                  begin
+                    showmessage('请先删除明细数据');
+                    exit;
+                  end;
+                end;
+            end;
+      end;
+ end;
+try
+    dmfrm.ADOConnection1.BeginTrans   ;
+  if not assigned(  Tadodataset(DataSource1.DataSet).BeforeDelete ) then
+  begin
+      if MessageBox(0, '确定删除？', '', MB_YESNO + MB_ICONQUESTION) = IDYES            then
+      begin
+          DataSource1.DataSet.Delete;
+      end;
+  end
+  else
+     DataSource1.DataSet.Delete;
+
+
+
+    if  Owner is TFrmCrm then          //crm   update main record
+    if  not fMainEditor then
+    if  TFrmCrm(Owner ).Maindataset.findfield  ('F_ID')<>nil then
+    begin
+        MainFID :=TFrmCrm(Owner ).Maindataset.fieldbyname ('F_ID').AsString  ;
+        MsumFldLst:= TStringlist.Create ;
+        DLSumFldLst:= TStringlist.Create ;
+        DLSumFunc:= TStringlist.Create ;
+        MsumFldLst.CommaText :=ModelTreeGridsheet(TFrmCrm(Owner ).pgcSubInterface.ActivePage).FMSumFieldName ;
+        DLSumFldLst.CommaText :=ModelTreeGridsheet(TFrmCrm(Owner ).pgcSubInterface.ActivePage).FDLSumFieldName ;
+        DLSumFunc.CommaText :=ModelTreeGridsheet(TFrmCrm(Owner ).pgcSubInterface.ActivePage).FDLSumFunction ;
+
+        for i:=0 to MsumFldLst.Count -1 do
+        begin
+             ValueSum:=0;
+             self.DataSource1.DataSet.First ;
+
+             if   (DataSource1.DataSet.FieldByName(DLSumFldLst[i]) is TNumericField )
+               or (DataSource1.DataSet.FieldByName(DLSumFldLst[i]) is TIntegerField )  then
+             for j:=0 to self.DataSource1.DataSet.RecordCount -1 do
+             begin
+                ValueSum:=ValueSum+ self.DataSource1.DataSet.FieldByName(DLSumFldLst[i]).AsFloat ;
+                self.DataSource1.DataSet.Next ;
+             end;
+             TFrmCrm(Owner ).Maindataset.Edit ;
+             if  DLSumFunc.Count =0 then
+                 TFrmCrm(Owner ).Maindataset.FieldByName(MsumFldLst[i]  ).AsFloat := ValueSum
+             else
+             begin
+                 if uppercase( DLSumFunc[i])=uppercase( 'Sum') then
+                 TFrmCrm(Owner ).Maindataset.FieldByName(MsumFldLst[i]  ).AsFloat := ValueSum   ;
+                 if uppercase( DLSumFunc[i])=uppercase( 'AVG') then
+                 TFrmCrm(Owner ).Maindataset.FieldByName(MsumFldLst[i]  ).AsFloat := ValueSum/DataSource1.DataSet.RecordCount ;
+                 if uppercase( DLSumFunc[i])=uppercase( 'CUR') then
+                 TFrmCrm(Owner ).Maindataset.FieldByName(MsumFldLst[i]  ).AsFloat :=  self.DataSource1.DataSet.FieldByName(DLSumFldLst[i]).AsFloat ;
+                 if uppercase( DLSumFunc[i])=uppercase( 'LAST') then
+                 begin
+                     self.DataSource1.DataSet.Last ;
+                     if self.DataSource1.DataSet.FieldByName(DLSumFldLst[i]).value <>null then
+                     TFrmCrm(Owner ).Maindataset.FieldByName(MsumFldLst[i]  ).value :=  self.DataSource1.DataSet.FieldByName(DLSumFldLst[i]).value ;
+                 end;
+                 if uppercase( DLSumFunc[i])=uppercase( 'FIRST') then
+                 begin
+                     self.DataSource1.DataSet.First  ;
+                     TFrmCrm(Owner ).Maindataset.FieldByName(MsumFldLst[i]  ).AsFloat :=  self.DataSource1.DataSet.FieldByName(DLSumFldLst[i]).AsFloat ;
+                 end;
+             end;
+        end;
+        if TFrmCrm(Owner ).Maindataset.State in [dsedit] then
+        begin
+          TFrmCrm(Owner ).Maindataset.Post ;
+          TFrmCrm(Owner ).Maindataset.Close ;
+          TFrmCrm(Owner ).Maindataset.Open ;
+        end;
+        TFrmCrm(Owner ).Maindataset.Locate('F_ID', MainFID,[]);
+      end;
+    dmfrm.ADOConnection1.CommitTrans  ;
+  except
+     on err :exception do
+      begin
+          dmfrm.ADOConnection1.RollbackTrans ;
+          showmessage(err.Message );
+          exit;
+      end  ;
+
+  end
+
+end;
+
+procedure TEditorFrm.FirstActionExecute(Sender: TObject);
+begin
+      if self.FParamDataSet <>nil then
+      begin
+         FParamDataSet.First;
+         self.FParams:=  FhlKnl1.Vr_MergeVarArray (self.FParams,GetParamterValues);
+         FhlKnl1.Ds_OpenDataSet(DataSource1.DataSet,self.FParams );
+      end
+      else
+      begin
+          DataSource1.DataSet.First;
+      end;
+end;
+
+procedure TEditorFrm.PriorActionExecute(Sender: TObject);
+begin 
+      if self.FParamDataSet <>nil then
+      begin
+         FParamDataSet.Prior   ;
+         self.FParams:=  FhlKnl1.Vr_MergeVarArray (self.FParams,GetParamterValues);
+         FhlKnl1.Ds_OpenDataSet(DataSource1.DataSet,self.FParams );
+      end
+      else
+      begin
+          DataSource1.DataSet.Prior;
+      end;
+
+end;
+
+procedure TEditorFrm.NextActionExecute(Sender: TObject);
+begin
+
+      if self.FParamDataSet <>nil then
+      begin
+         FParamDataSet.Next   ;
+         self.FParams:=  FhlKnl1.Vr_MergeVarArray (self.FParams,GetParamterValues);
+         FhlKnl1.Ds_OpenDataSet(DataSource1.DataSet,self.FParams );
+      end
+      else
+      begin
+          DataSource1.DataSet.Next;
+      end;
+end;
+
+procedure TEditorFrm.LastActionExecute(Sender: TObject);
+begin
+      if self.FParamDataSet <>nil then
+      begin
+         FParamDataSet.Last   ;
+         self.FParams:=  FhlKnl1.Vr_MergeVarArray (self.FParams,GetParamterValues);
+         FhlKnl1.Ds_OpenDataSet(DataSource1.DataSet,self.FParams );
+      end
+      else
+      begin
+          DataSource1.DataSet.Next ;
+          DataSource1.DataSet.Last;
+      end;
+end;
+
+procedure TEditorFrm.CloseActionExecute(Sender: TObject);
+begin
+Close;
+end;
+procedure TEditorFrm.UpdateSysFields;
+var       sql:string;
+begin
+
+  //  update  FLstEditEmp  FlstEditTime  FPhoneticize
+
+   sql:='select B.NameField   ,B.TableEname  '
+       +'  From T201 A '
+       +'  join '  +logininfo.SysDBPubName+'.dbo.Tallusertable B on A.F16=B.TableEname '
+       +'  where B.FisBasicTable=1 and  A.f01 ='+inttostr(DataSource1.DataSet.Tag );
+   fhlknl1.Kl_GetQuery2(sql);
+   if not fhlknl1.FreeQuery.IsEmpty then
+   begin
+        if DataSource1.DataSet.FindField (fhlknl1.FreeQuery.FieldByName('NameField').AsString )<>nil then
+          if DataSource1.DataSet.FindField ('FPhoneticize')<>nil then
+          if (DataSource1.DataSet.Fieldbyname ('FPhoneticize').Value =null) or (DataSource1.DataSet.Fieldbyname ('FPhoneticize').AsString  ='' ) then
+            if DataSource1.DataSet.FieldByName (fhlknl1.FreeQuery.FieldByName('NameField').AsString).Value<>null then
+              DataSource1.DataSet.FieldByName ('FPhoneticize').Value := GetHZPY(DataSource1.DataSet.FieldByName (fhlknl1.FreeQuery.FieldByName('NameField').AsString).Value );
+   end;
+
+
+   if  DataSource1.DataSet.FindField  ('FLstEditEmp') <>nil then
+       DataSource1.DataSet.FieldByName ('FLstEditEmp').AsString  :=  trim(logininfo.EmpId) ;
+   if  DataSource1.DataSet.FindField  ('FlstEditTime') <>nil then
+       DataSource1.DataSet.FieldByName ('FlstEditTime').Value :=now;
+end;
+procedure TEditorFrm.SaveActionExecute(Sender: TObject);
+var
+    MsumFldLst,DLSumFldLst,DLSumFunc:TStringlist;
+    i,j:integer;
+    ValueSum:extended;
+    bookmark:TBookmark;
+    F_ID,MainFID :string;
+    OriStortstr:string;
+begin
+    if self.Owner is TFrmCrm then
+    if  not fMainEditor then
+    if TFrmCrm(Owner ).Maindataset.findfield  ('F_ID')<>nil then
+        if  not fhlknl1.CheckIfIsTheLastestVersion(TFrmCrm(Owner ).Maindataset) then
+        begin
+            showmessage('当前数据已经被别一个客户端修改，需要先刷新再继续操作！');
+            CancelAction.Execute;
+            exit;
+        end;
+
+  try
+    Screen.Cursor:=CrSqlWait;
+    dmfrm.ADOConnection1.BeginTrans ;
+    FhlUser.Validation  (self.DataSource1.DataSet ,true,false,false,false,false,false);
+    ValueSum:=0;
+    UpdateSysFields();
+    DataSource1.DataSet.Post;
+    F_ID:=Tadodataset(self.DataSource1.DataSet).fieldbyname ('F_ID').AsString  ;
+    if self.Owner is TFrmCrm then          //crm   update main record
+    if  not fMainEditor then
+    if TFrmCrm(Owner ).Maindataset.findfield  ('F_ID')<>nil then
+    begin
+        MainFID :=TFrmCrm(Owner ).Maindataset.fieldbyname ('F_ID').AsString  ;
+        MsumFldLst:= TStringlist.Create ;
+        DLSumFldLst:= TStringlist.Create ;
+        DLSumFunc:= TStringlist.Create ;
+        MsumFldLst.CommaText :=ModelTreeGridsheet(TFrmCrm(Owner ).pgcSubInterface.ActivePage).FMSumFieldName ;
+        DLSumFldLst.CommaText :=ModelTreeGridsheet(TFrmCrm(Owner ).pgcSubInterface.ActivePage).FDLSumFieldName ;
+        DLSumFunc.CommaText :=ModelTreeGridsheet(TFrmCrm(Owner ).pgcSubInterface.ActivePage).FDLSumFunction ;
+        if MsumFldLst.CommaText<>'' then          begin
+            TFrmCrm(Owner ).Maindataset.Edit ;
+            self.DataSource1.DataSet.DisableControls ;
+            OriStortstr:=Tadodataset(DataSource1.DataSet).Sort ;
+
+            if DataSource1.DataSet.FindField ('Fcreatetime')<>nil then
+            Tadodataset(DataSource1.DataSet).Sort :='Fcreatetime ASC';
+
+            for i:=0 to MsumFldLst.Count -1 do
+            begin
+                 self.DataSource1.DataSet.First ;
+                 ValueSum:=0;
+                 if   (DataSource1.DataSet.FieldByName(DLSumFldLst[i]) is TNumericField )
+                   or (DataSource1.DataSet.FieldByName(DLSumFldLst[i]) is TIntegerField )  then
+                 for j:=0 to self.DataSource1.DataSet.RecordCount -1 do
+                 begin
+                    ValueSum:=ValueSum+ self.DataSource1.DataSet.FieldByName(DLSumFldLst[i]).AsFloat ;
+                    self.DataSource1.DataSet.Next ;
+                 end;
+                 if  DLSumFunc.Count =0 then
+                     TFrmCrm(Owner ).Maindataset.FieldByName(MsumFldLst[i]  ).AsFloat := ValueSum
+                 else
+                 begin
+                   if uppercase( DLSumFunc[i])=uppercase( 'Sum') then
+                   TFrmCrm(Owner ).Maindataset.FieldByName(MsumFldLst[i]  ).AsFloat := ValueSum   ;
+                   if uppercase( DLSumFunc[i])=uppercase( 'AVG') then
+                   TFrmCrm(Owner ).Maindataset.FieldByName(MsumFldLst[i]  ).AsFloat := ValueSum/DataSource1.DataSet.RecordCount ;
+                   if uppercase( DLSumFunc[i])=uppercase( 'CUR') then
+                   TFrmCrm(Owner ).Maindataset.FieldByName(MsumFldLst[i]  ).AsFloat :=  self.DataSource1.DataSet.FieldByName(DLSumFldLst[i]).AsFloat ;
+                   if uppercase( DLSumFunc[i])=uppercase( 'LAST') then
+                   begin
+                       self.DataSource1.DataSet.Last ;
+                       if self.DataSource1.DataSet.FieldByName(DLSumFldLst[i]).value  <>null then
+                       TFrmCrm(Owner ).Maindataset.FieldByName(MsumFldLst[i]  ).value   :=  self.DataSource1.DataSet.FieldByName(DLSumFldLst[i]).value  ;
+                   end;
+                   if uppercase( DLSumFunc[i])=uppercase( 'FIRST') then
+                   begin
+                       self.DataSource1.DataSet.First  ;
+                       TFrmCrm(Owner ).Maindataset.FieldByName(MsumFldLst[i]  ).AsFloat :=  self.DataSource1.DataSet.FieldByName(DLSumFldLst[i]).AsFloat ;
+                   end;
+                 end;
+            end;
+            if TFrmCrm(Owner ).Maindataset.State in [dsedit,dsinsert] then
+               TFrmCrm(Owner ).Maindataset.Post ;
+            Tadodataset(DataSource1.DataSet).Sort:=OriStortstr ;
+            self.DataSource1.DataSet.EnableControls ;
+         end;
+    end;
+    if not     ActAfterPostExecute(self.DataSource1.DataSet) then
+       dmfrm.ADOConnection1.RollbackTrans ;
+
+    dmfrm.ADOConnection1.CommitTrans  ;        //2010-4-17  调整事务提交出刷新的顺序
+
+    DataSource1.DataSet.Close ;
+    DataSource1.DataSet.Open ;
+
+    SetEditState(DataSource1.DataSet.State<>dsBrowse);
+
+    if self.Owner is TFrmCrm then          //crm   update main record
+    if  not fMainEditor then
+    if TFrmCrm(Owner ).Maindataset.findfield  ('F_ID')<>nil then
+    begin
+        TFrmCrm(Owner ).Maindataset.Close ;
+        TFrmCrm(Owner ).Maindataset.Open ;
+        if not TFrmCrm(Owner ).Maindataset.IsEmpty then
+        TFrmCrm(Owner ).Maindataset.Locate('F_ID', MainFID,[]);
+    end;
+    if not  DataSource1.DataSet.IsEmpty then
+    if self.DataSource1.DataSet.findfield   ('F_ID')<>nil then
+    self.DataSource1.DataSet.Locate('F_ID', F_ID,[]);
+    Screen.Cursor:=crDefault;
+  except
+     on err :exception do
+      begin
+          Screen.Cursor:=crDefault;
+          dmfrm.ADOConnection1.RollbackTrans ;
+         showmessage(err.Message );
+          exit;
+      end  ;
+
+  end
+
+end;
+
+procedure TEditorFrm.CancelActionExecute(Sender: TObject);
+begin
+DataSource1.DataSet.Cancel;
+SetEditState(false);
+end;
+
+procedure TEditorFrm.SetCaptionActionExecute(Sender: TObject);
+begin
+Caption:=fDict.Caption+' '+intTostr(DataSource1.DataSet.RecNo)+'/'+intTostr(DataSource1.DataSet.RecordCount);
+end;
+
+procedure TEditorFrm.PrintActionExecute(Sender: TObject);
+var
+    FrmMulModulePrint: TFrmMulModulePrint;
+    printID,F_ID:string;
+    lstBoxs:Tstrings;
+    PrintGrid:Tdbgrid;
+    RecNo:integer;
+begin
+  inherited;
+  try
+    if FparentGrid=nil then
+    exit;
+
+    PrintGrid :=FparentGrid;
+
+    lstBoxs:=Tstringlist.Create ;
+    lstBoxs.CommaText :=self.fDict.BoxIds;
+    printID:=lstBoxs[0];
+
+    FrmMulModulePrint:= TFrmMulModulePrint.Create (self);
+    if PrintGrid.DataSource.DataSet.findfield('F_ID') <>nil then
+    begin
+       F_ID:= PrintGrid.DataSource.DataSet.fieldbyname('F_ID').AsString ;
+       PrintGrid.DataSource.DataSet.Filtered :=false;
+       PrintGrid.DataSource.DataSet.Filter :='F_ID=' +quotedstr(F_ID);
+       PrintGrid.DataSource.DataSet.Filtered :=true;
+    end  ;
+
+
+    FrmMulModulePrint.FrmIni(printID  ,  DataSource1.DataSet    ,inttostr(DataSource1.DataSet.Tag ),lstBoxs[0] ,    fDict.BtmPrintID ,PrintGrid  );
+    FrmMulModulePrint.ShowModal;
+  finally
+    PrintGrid.DataSource.DataSet.Filtered :=false;
+    lstBoxs.Free;
+  end;
+end;
+procedure TEditorFrm.ToolBar1DblClick(Sender: TObject);
+var CrtCom:TfrmCreateComponent    ;
+ 
+begin
+
+
+
+  if LoginInfo.Sys  then
+  begin
+    CrtCom:=TfrmCreateComponent.Create(self);
+
+    CrtCom.FEditorDict  :=  fdict;
+    CrtCom.ModelType :=Modeleditor;
+    CrtCom.mtDataSet1:=Tadodataset(DataSource1.DataSet);
+    CrtCom.mtDataSetId :=inttostr(Tadodataset(DataSource1.DataSet).tag);
+  //  CrtCom.grpGrpParent.Width :=self.Width ;
+  //  CrtCom.grpGrpParent.Height :=self.Height ;
+     CrtCom.ShowModal ;
+    CrtCom.Free ;
+  end;
+
+try
+  
+finally
+
+end;
+end;
+
+
+
+
+
+
+
+function TEditorFrm.ActAfterPostExecute(Sender: TObject):boolean;
+var
+  fDataSet:TDataSet;
+  fDict:TAfterPostDict;
+
+    AbortStr,WarningStr:string;
+begin
+      result:=true;
+      fDataSet:=TDataSet(Sender);
+      if Not FhlKnl1.Cf_GetDict_AfterPost(intTostr(fDataSet.Tag),fdict) then result:=true;
+      if not   dmFrm.ExecStoredProc(fDict.fProc,FhlKnl1.Vr_MergeVarArray(FhlUser.GetSysParamsVal(fDict.fSysParams),FhlKnl1.Ds_GetFieldsValue(fDataSet,fDict.fDataParamFlds))) then
+      begin
+
+        if dmFrm.FreeStoredProc1.Parameters.Items[1].Value<>null then
+              AbortStr:=dmFrm.FreeStoredProc1.Parameters.Items[1].Value
+          else
+              AbortStr:='';
+          if dmFrm.FreeStoredProc1.Parameters.Items[2].Value<>null then
+              WarningStr:=dmFrm.FreeStoredProc1.Parameters.Items[2].Value
+          else
+              WarningStr:='';    {   }
+              
+        MessageDlg(#13#10+fDict.fErrorHint+AbortStr+WarningStr,mtError,[mbOk],0);
+        result:=false;
+      end;
+ 
+end;
+
+procedure TEditorFrm.btnShowLogClick(Sender: TObject);
+begin
+    if FparentGrid=nil then
+    exit;
+fhluser.showLogwindow(   FparentGrid) ;
+
+end;
+
+procedure TEditorFrm.ActReflashExecute(Sender: TObject);
+var bk  ,bkm:pointer;
+var i:integer;
+var PreviousBillCode:string;
+begin
+    try
+       Screen.Cursor:=CrSqlWait;
+       PreviousBillCode:=billcode;
+       if self.Owner is TFrmCrm then
+        if TFrmCrm(Owner ).Maindataset.findfield  ('F_ID')<>nil then
+        begin
+            bkm:=TFrmCrm(Owner ).Maindataset.GetBookmark ;
+            TFrmCrm(Owner ).Maindataset.Close;
+            TFrmCrm(Owner ).Maindataset.Open ;
+            TFrmCrm(Owner ).Maindataset.GotoBookmark(bkm) ;
+        end;
+        bk:=DataSource1.DataSet.GetBookmark ;
+        for i:=0 to DataSource1.DataSet.FieldCount -1 do
+            if (DataSource1.DataSet.Fields[i].FieldKind  = fkLookup ) then
+            begin
+                DataSource1.DataSet.Fields[i].LookupDataSet.Close;
+                DataSource1.DataSet.Fields[i].LookupDataSet.Open ;
+            end;
+        self.FParams:=  FhlKnl1.Vr_MergeVarArray (self.FParams,GetSelfParamterValues);
+        self.DataSource1.DataSet.Close;
+        FhlKnl1.Ds_OpenDataSet(DataSource1.DataSet,self.FParams );
+
+        SetEditState(DataSource1.DataSet.State<>dsBrowse);
+    finally
+        Screen.Cursor:=crDefault;
+    end;
+
+end;
+
+procedure TEditorFrm.ActShowLogExecute(Sender: TObject);
+begin
+    if FparentGrid=nil then
+    exit;
+fhluser.showLogwindow(   FparentGrid) ;
+
+end;
+
+procedure TEditorFrm.setfMainEditor(const Value: boolean);
+begin
+  fMainEditor := Value;
+end;
+
+function TEditorFrm.GetParamterValues: Variant;
+begin
+  self.FParams :=null;
+  result:=FhlKnl1.Ds_GetFieldsValue(self.FParamDataSet, self.FOpenFlds );
+end;
+
+function TEditorFrm.GetSelfParamterValues: Variant;
+begin
+//   if FParamDataSet.IsEmpty     then
+     FParams :=FhlKnl1.Ds_GetFieldsValue(DataSource1.DataSet, FOpenFlds ) ;
+//   else FParams :=FhlKnl1.Ds_GetFieldsValue(FParamDataSet, FOpenFlds );
+end;
+
+procedure TEditorFrm.actlinkExecute(Sender: TObject);
+var sql:string;
+var
+  frmid:string;
+  fBillType:string;
+  BillFrm:TFrmBillEx;
+  EditorFrm:TEditorFrm ;
+  Code:string;
+  FrmBillEx:TFrmBillEx ;
+  LstParameterFLDs,LstDefValues:Tstrings;
+  i:integer;
+begin
+  sql:='select  F19,F17,F20 From T525 where F02='+fDict.Actions+' and f16=' +inttostr(Taction(Sender).Index )+' and f17=' +inttostr(Taction(Sender).ActionComponent.Tag  )+' and f04='+quotedstr(  TToolButton (Taction(Sender).ActionComponent).Caption );
+  fhlknl1.Kl_GetQuery2 (sql  );
+  fBillType:=fhlknl1.FreeQuery.FieldByName('F19').AsString  ;
+  frmid:=fhlknl1.FreeQuery.FieldByName('F17').AsString      ;
+ 
+  if uppercase(fBillType)=uppercase('Analyser') then
+  begin
+      if DataSource1.DataSet .FindField('sDefaultVals')<>nil then
+      sDefaultVals:=self.DataSource1.DataSet .fieldbyname('sDefaultVals').AsString;
+      FhlUser.ShowAnalyserFrm(frmid,null);
+  end;
+
+  if uppercase(fBillType)=uppercase('Editor') then
+  begin
+      if DataSource1.DataSet .FindField('sDefaultVals')<>nil then
+      sDefaultVals:= DataSource1.DataSet .fieldbyname('sDefaultVals').AsString;
+      FhlUser.ShowEditorFrm(FrmId,Code).ShowModal ;
+  end;
+  if uppercase(fBillType)=uppercase('CRM') then
+  begin
+
+      if DataSource1.DataSet.FindField('sDefaultVals')<>nil then
+      sDefaultVals:=self.DataSource1.DataSet .fieldbyname('sDefaultVals').AsString;
+
+
+      if not  DataSource1.DataSet.IsEmpty then
+      begin
+        LstParameterFLDs:=Tstringlist.Create ;
+        LstDefValues:=Tstringlist.Create ;
+        LstParameterFLDs.CommaText :=fhlknl1.FreeQuery.FieldByName('F20').AsString      ;//  fDict.QryParamsFLDs ;
+        for i:=0 to  LstParameterFLDs.Count -1 do
+        begin
+          if    DataSource1.DataSet.FindField (LstParameterFLDs[i])<>nil then
+          begin
+             if  DataSource1.DataSet.FieldByName (LstParameterFLDs[i]).AsString <>'' then
+             begin
+                 LstDefValues.Add( LstParameterFLDs[i]+'=' +   DataSource1.DataSet.FieldByName (LstParameterFLDs[i]).AsString  );
+                 break;
+             end;
+          end;
+        end;
+        sDefaultVals:= LstDefValues.CommaText ;
+        LstParameterFLDs.Free;
+        LstDefValues.Free;
+      end;
+
+
+      FhlUser.ShowCRMFrm(frmid);
+  end;
+  if uppercase(fBillType)=uppercase('BillEx') then
+  begin
+    if not  DataSource1.DataSet.IsEmpty then
+    begin
+      LstDefValues:=Tstringlist.Create ;
+      LstParameterFLDs:=Tstringlist.Create ;
+      LstParameterFLDs.CommaText :=fhlknl1.FreeQuery.FieldByName('F20').AsString      ;//  fDict.QryParamsFLDs ;
+      for i:=0 to  LstParameterFLDs.Count -1 do
+      begin
+
+        if   DataSource1.DataSet.FindField (LstParameterFLDs[i])<>nil then
+        begin
+           if  DataSource1.DataSet.FieldByName (LstParameterFLDs[i]).AsString <>'' then
+           begin
+               LstDefValues.Add( LstParameterFLDs[i]+'=' +  DataSource1.DataSet.FieldByName (LstParameterFLDs[i]).AsString  );
+               Code:= DataSource1.DataSet.FieldByName (LstParameterFLDs[i]).AsString  ;
+               //break;
+           end;
+        end;
+      end;
+      sDefaultVals:= LstDefValues.CommaText ;
+      LstParameterFLDs.Free;
+      LstDefValues.Free;
+    end;
+    FrmBillEx:=TFrmBillEx.Create(nil);
+    FrmBillEx.SetParamDataset( DataSource1.DataSet  );
+    FrmBillEx.InitFrm(FrmId);
+    if Code<>'' then
+    begin
+       FrmBillEx.OpenBill( code  );
+    end;
+    FrmBillEx.FormStyle :=fsnormal;
+    FrmBillEx.Hide;
+    FrmBillEx.Position :=poDesktopCenter;
+    FrmBillEx.ScrollBtm.Visible :=true;
+	
+    FrmBillEx.ShowModal ;
+  end;
+end;
+
+procedure TEditorFrm.FormActivate(Sender: TObject);
+begin
+  btnCtrl.Visible     :=logininfo.Sys ;
+end;
+
+procedure TEditorFrm.btnCtrlClick(Sender: TObject);
+var  FrmCtrlConfig:TFrmCtrlConfig ;
+var BoxidLst:TStrings;
+begin
+  try
+    BoxidLst:=TStringlist.Create ;
+    BoxidLst.CommaText :=fDict.BoxIds ;
+    FrmCtrlConfig:=TFrmCtrlConfig.Create(nil) ;
+
+
+
+    FrmCtrlConfig.boxid :=BoxidLst [PageControl1.ActivePageIndex ]  ;
+    FrmCtrlConfig.ShowModal ;
+  finally
+    BoxidLst.Free ;
+    FrmCtrlConfig.Free;
+
+  end;
+
+end;
+
+function TEditorFrm.getIsChk: boolean;
+var LstChkState:Tstrings;
+begin
+   result:=false;
+   if self.DataSource1.DataSet.Active then
+     if DataSource1.DataSet.FindField(fDict.ChkFieldName)<>nil then
+     begin
+         // self.LblState.Visible :=false;
+          LstChkState:=Tstringlist.Create ;
+          LstChkState.CommaText :=fDict.IsChkValue;
+          if LstChkState.IndexOf( DataSource1.DataSet.FieldByName (fDict.ChkFieldName).AsString )>-1 then
+             result:=true  //SetCheckStyle(true)
+          else
+             result:=false;
+          
+          LstChkState.Free ;
+     end
+     else
+        if  DataSource1.DataSet.FindField('FisChk')<>nil then
+        begin
+          if  DataSource1.DataSet.FindField('FisChk').DataType in [ftBoolean] then
+             result:= DataSource1.DataSet.FieldByName('FisChk').AsBoolean;
+        end;
+end;
+
+procedure TEditorFrm.ActCheckExecute(Sender: TObject);
+begin
+  if self.DataSource1.DataSet.IsEmpty then exit;
+  Screen.Cursor:=CrSqlWait;
+  try
+    if   dmFrm.ExecStoredProc(fDict.CheckProc,varArrayof([billcode,LoginInfo.EmpId,LoginInfo.LoginId])) then
+    begin
+        self.ActReflashExecute(sender);
+          //OpenBill(fBillex.BillCode);
+    end;
+  finally
+    Screen.Cursor:=crDefault;
+  end;
+end;
+
+
+procedure TEditorFrm.ActUnCheckExecute(Sender: TObject);
+begin
+  inherited;
+    if self.DataSource1.DataSet.IsEmpty then exit;
+    Screen.Cursor:=CrSqlWait;
+    try
+    if  dmFrm.ExecStoredProc(fDict.UnCheckProc ,varArrayof([BillCode ,LoginInfo.EmpId,LoginInfo.LoginId])) then
+    begin
+       self.ActReflashExecute(sender);
+
+       // OpenBill(fBillex.BillCode);
+    end;
+    finally
+    Screen.Cursor:=crDefault;
+    end;
+end;
+
+procedure TEditorFrm.SetCheckStyle(isChecked: boolean  );
+begin
+  ActCheck.Enabled :=  (not IsChecked ) and (not DataSource1.DataSet.IsEmpty );
+  ActUncheck.Enabled :=IsChecked ;
+end;
+
+function TEditorFrm.GetBillcode: string;
+begin
+   result:='';
+   if not DataSource1.DataSet.Active then exit;
+   if DataSource1.DataSet.FindField(fdict.PKFieldName)<>nil then
+       result :=self.DataSource1.DataSet.fieldbyname(fdict.PKFieldName).AsString;
+
+end;
+
+procedure TEditorFrm.DataSource1DataChange(Sender: TObject; Field: TField);
+begin
+  // SetEditState(false);
+      SetEditState( ( DataSource1.DataSet.State in [dsinsert , dsEdit]) );
+end;
+
+procedure TEditorFrm.ActSaveWithoutRefreshExecute(Sender: TObject);
+var
+    MsumFldLst,DLSumFldLst,DLSumFunc:TStringlist;
+    i,j:integer;
+    ValueSum:extended;
+    bookmark:TBookmark;
+    F_ID,MainFID :string;
+    OriStortstr:string;
+begin
+
+
+  try
+    Screen.Cursor:=CrSqlWait;
+    dmfrm.ADOConnection1.BeginTrans ;
+    FhlUser.Validation  (self.DataSource1.DataSet ,true,false,false,false,false,false);
+    ValueSum:=0;
+    UpdateSysFields();
+    DataSource1.DataSet.Post;
+    F_ID:=Tadodataset(self.DataSource1.DataSet).fieldbyname ('F_ID').AsString  ;
+
+    if not     ActAfterPostExecute(self.DataSource1.DataSet) then
+       dmfrm.ADOConnection1.RollbackTrans ;
+
+    dmfrm.ADOConnection1.CommitTrans  ;        //2010-4-17  调整事务提交出刷新的顺序
+
+    SetEditState(DataSource1.DataSet.State<>dsBrowse);
+
+    if not  DataSource1.DataSet.IsEmpty then
+    if self.DataSource1.DataSet.findfield   ('F_ID')<>nil then
+    self.DataSource1.DataSet.Locate('F_ID', F_ID,[]);
+    Screen.Cursor:=crDefault;
+  except
+     on err :exception do
+      begin
+          Screen.Cursor:=crDefault;
+          dmfrm.ADOConnection1.RollbackTrans ;
+         showmessage(err.Message );
+          exit;
+      end  ;
+
+  end
+
+end;
+
+
+end.

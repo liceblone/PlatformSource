@@ -1,0 +1,319 @@
+object EditorFrmSystool: TEditorFrmSystool
+  Left = 178
+  Top = 152
+  BorderStyle = bsDialog
+  Caption = 'EditorFrmSystool'
+  ClientHeight = 569
+  ClientWidth = 847
+  Color = clBtnFace
+  Font.Charset = GB2312_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = #23435#20307
+  Font.Style = []
+  KeyPreview = True
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnClose = FormClose
+  OnKeyDown = FormKeyDown
+  PixelsPerInch = 96
+  TextHeight = 11
+  object Splitter1: TSplitter
+    Left = 0
+    Top = 484
+    Width = 847
+    Height = 5
+    Cursor = crVSplit
+    Align = alBottom
+  end
+  object CoolBar1: TCoolBar
+    Left = 0
+    Top = 0
+    Width = 847
+    Height = 40
+    AutoSize = True
+    Bands = <
+      item
+        Control = ToolBar1
+        ImageIndex = -1
+        MinHeight = 36
+        Width = 843
+      end>
+    object ToolBar1: TToolBar
+      Left = 9
+      Top = 0
+      Width = 830
+      Height = 36
+      AutoSize = True
+      ButtonHeight = 36
+      ButtonWidth = 46
+      Caption = 'ToolBar1'
+      Color = clCream
+      EdgeBorders = []
+      Flat = True
+      Font.Charset = GB2312_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = #23435#20307
+      Font.Style = []
+      Images = dmFrm.ImageList1
+      ParentColor = False
+      ParentFont = False
+      ShowCaptions = True
+      TabOrder = 0
+      OnDblClick = ToolBar1DblClick
+      object PrintBtn: TToolButton
+        Left = 0
+        Top = 0
+        Action = PrintAction
+        AutoSize = True
+      end
+      object ToolButton2: TToolButton
+        Left = 37
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton2'
+        ImageIndex = 9
+        Style = tbsSeparator
+      end
+      object SavBtn: TToolButton
+        Left = 45
+        Top = 0
+        Action = SaveAction
+        AutoSize = True
+      end
+      object CelBtn: TToolButton
+        Left = 82
+        Top = 0
+        Action = CancelAction
+        AutoSize = True
+      end
+      object ToolButton3: TToolButton
+        Left = 119
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton3'
+        ImageIndex = 2
+        Style = tbsSeparator
+      end
+      object AddBtn: TToolButton
+        Left = 127
+        Top = 0
+        Action = AddAction
+        AutoSize = True
+      end
+      object CpyBtn: TToolButton
+        Left = 164
+        Top = 0
+        Action = CopyAction
+        AutoSize = True
+      end
+      object ChgBtn: TToolButton
+        Left = 201
+        Top = 0
+        Action = EditAction
+        AutoSize = True
+      end
+      object DelBtn: TToolButton
+        Left = 238
+        Top = 0
+        Action = DeleteAction
+        AutoSize = True
+      end
+      object ToolButton7: TToolButton
+        Left = 275
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton7'
+        ImageIndex = 5
+        Style = tbsSeparator
+      end
+      object FirstBtn: TToolButton
+        Left = 283
+        Top = 0
+        Action = FirstAction
+        AutoSize = True
+      end
+      object PriorBtn: TToolButton
+        Left = 320
+        Top = 0
+        Action = PriorAction
+        AutoSize = True
+      end
+      object NextBtn: TToolButton
+        Left = 370
+        Top = 0
+        Action = NextAction
+        AutoSize = True
+      end
+      object LastBtn: TToolButton
+        Left = 420
+        Top = 0
+        Action = LastAction
+        AutoSize = True
+      end
+      object ToolButton12: TToolButton
+        Left = 457
+        Top = 0
+        Width = 8
+        Caption = 'ToolButton12'
+        ImageIndex = 9
+        Style = tbsSeparator
+      end
+      object ExtBtn: TToolButton
+        Left = 465
+        Top = 0
+        Action = CloseAction
+        AutoSize = True
+      end
+      object btnSql: TToolButton
+        Left = 502
+        Top = 0
+        Action = actSql
+        Caption = 'tSql'
+      end
+    end
+  end
+  object PageControl1: TPageControl
+    Left = 0
+    Top = 40
+    Width = 847
+    Height = 443
+    Align = alClient
+    Font.Charset = GB2312_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = #23435#20307
+    Font.Style = []
+    MultiLine = True
+    ParentFont = False
+    TabOrder = 1
+  end
+  object PnlItem: TPanel
+    Left = 0
+    Top = 483
+    Width = 847
+    Height = 1
+    Align = alBottom
+    Font.Charset = GB2312_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = #23435#20307
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 2
+  end
+  object pnlInfo: TPanel
+    Left = 0
+    Top = 489
+    Width = 847
+    Height = 80
+    Align = alBottom
+    Caption = 'pnlInfo'
+    TabOrder = 3
+    object mmoSql: TMemo
+      Left = 1
+      Top = 1
+      Width = 845
+      Height = 78
+      Align = alClient
+      Lines.Strings = (
+        'mmoSql')
+      TabOrder = 0
+    end
+  end
+  object DataSource1: TDataSource
+    DataSet = ADODataSet1
+    Left = 128
+    Top = 149
+  end
+  object ADODataSet1: TADODataSet
+    Connection = dmFrm.ADOConnection1
+    AfterEdit = ADODataSet1AfterEdit
+    AfterPost = ADODataSet1AfterPost
+    BeforeDelete = ADODataSet1BeforeDelete
+    OnNewRecord = ADODataSet1NewRecord
+    Parameters = <>
+    Left = 232
+    Top = 144
+  end
+  object ActionList1: TActionList
+    Images = dmFrm.ImageList1
+    Left = 472
+    Top = 80
+    object AddAction: TAction
+      Caption = #26032#22686
+      ImageIndex = 7
+      OnExecute = AddActionExecute
+    end
+    object CopyAction: TAction
+      Caption = #22797#21046
+      ImageIndex = 1
+      OnExecute = CopyActionExecute
+    end
+    object EditAction: TAction
+      Caption = #20462#25913
+      ImageIndex = 21
+      OnExecute = EditActionExecute
+    end
+    object DeleteAction: TAction
+      Caption = #21024#38500
+      ImageIndex = 2
+      OnExecute = DeleteActionExecute
+    end
+    object SaveAction: TAction
+      Caption = #20445#23384
+      ImageIndex = 9
+      OnExecute = SaveActionExecute
+    end
+    object CancelAction: TAction
+      Caption = #25918#24323
+      ImageIndex = 4
+      OnExecute = CancelActionExecute
+    end
+    object FirstAction: TAction
+      Caption = #39318#24352
+      ImageIndex = 25
+      OnExecute = FirstActionExecute
+    end
+    object PriorAction: TAction
+      Caption = #19978#19968#24352
+      ImageIndex = 22
+      OnExecute = PriorActionExecute
+    end
+    object NextAction: TAction
+      Caption = #19979#19968#24352
+      ImageIndex = 24
+      OnExecute = NextActionExecute
+    end
+    object LastAction: TAction
+      Caption = #26411#24352
+      ImageIndex = 23
+      OnExecute = LastActionExecute
+    end
+    object CloseAction: TAction
+      Caption = #20851#38381
+      ImageIndex = 8
+      OnExecute = CloseActionExecute
+    end
+    object PrintAction: TAction
+      Caption = #25171#21360
+      ImageIndex = 13
+      OnExecute = PrintActionExecute
+    end
+    object SetCaptionAction: TAction
+      Caption = #26356#26032#26631#39064
+      ImageIndex = 28
+      OnExecute = SetCaptionActionExecute
+    end
+    object actInputTaxAmt: TAction
+      Caption = #31246#37329
+      ImageIndex = 29
+    end
+    object actSql: TAction
+      Caption = 'actSql'
+      ImageIndex = 42
+      OnExecute = actSqlExecute
+    end
+  end
+end

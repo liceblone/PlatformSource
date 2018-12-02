@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBCustomAction", "DBCustomAction\DBCustomAction.csproj", "{16425130-0DB6-4046-A8B3-58DE716174F5}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "HRMDeploment_Setup", "HRMDeploment_Setup\HRMDeploment_Setup.vdproj", "{16497799-D982-4381-9816-330C275ABA33}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{16425130-0DB6-4046-A8B3-58DE716174F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16425130-0DB6-4046-A8B3-58DE716174F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16425130-0DB6-4046-A8B3-58DE716174F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16425130-0DB6-4046-A8B3-58DE716174F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16497799-D982-4381-9816-330C275ABA33}.Debug|Any CPU.ActiveCfg = Debug
+		{16497799-D982-4381-9816-330C275ABA33}.Debug|Any CPU.Build.0 = Debug
+		{16497799-D982-4381-9816-330C275ABA33}.Release|Any CPU.ActiveCfg = Release
+		{16497799-D982-4381-9816-330C275ABA33}.Release|Any CPU.Build.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

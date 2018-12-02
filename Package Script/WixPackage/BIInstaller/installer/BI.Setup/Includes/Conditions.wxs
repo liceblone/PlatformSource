@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+    <Property Id="LaunchConditionsFile" Value="1" />
+    
+    <!-- Check that we have elevated permissions if installing -->
+    <Condition Message="!(loc.ValidationAdministrator)">Installed OR Privileged</Condition>
+
+    <!--Check .Net Framewok-->
+    <Condition Message="!(loc.ValidationDotNet)">
+      <![CDATA[Installed OR (NETFRAMEWORK30 OR NETFRAMEWORK35 OR NETFRAMEWORK40CLIENT OR NETFRAMEWORK40FULL)]]>
+    </Condition>
+
+    <Condition Message="!(loc.ValidationVersionNew)"><![CDATA[Installed OR NOT NEWER_VERSION_FOUND]]></Condition>
+
+  </Fragment>
+</Wix>

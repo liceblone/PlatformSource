@@ -1,0 +1,20 @@
+
+
+--SalesUserData
+SP_HELPTEXT Pr_EmpBFP
+SP_HELPTEXT Pr_ClearInvalidAuthorizeObjs
+SP_HELPTEXT Pr_ResetPassWord
+SP_HELPTEXT Pr_ChangeLabels
+
+
+--
+
+select *From T204 where isnull(f13,'')<>''
+
+select *From T203
+
+select *From T205
+
+select *From T402 where isnull(f02,'')<>''
+
+--Pr_Reconcile	sEmpid 

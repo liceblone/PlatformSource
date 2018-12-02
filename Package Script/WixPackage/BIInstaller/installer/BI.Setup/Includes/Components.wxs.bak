@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?include $(var.ProjectDir)\Includes\Variables.wxi ?>
+
+  <Fragment Id="ComponentesFragment">
+    <!--Directory tree-->
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="$(var.PlatformProgramFilesFolder)">
+        <Directory Id="INSTALLLOCATION" Name="$(var.ProgramFileFolderName)" >        
+            <Directory Id="HRCMANALYTICSCORE" Name="HRCM Analytics">
+            
+              <Directory Id="MainHRCMCUBE" Name="HRCMCube"></Directory>
+                <Directory Id="MainHRCMSSIS" Name="HRCMSSIS"></Directory>
+                <Directory Id="D_Wix.DBScript" Name="DBScript">
+                  <Directory Id="BI.CREATEDBSQL" Name="BI.CreateDBSQL" />
+                  <Directory Id="BI.DATASQL" Name="BI.StructureSQL" />
+              </Directory>
+            
+            </Directory>
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="ProgramMenuDir" Name="$(var.ProgramFileFolderName)">
+          <Directory Id="MenuHRCMAnalytics" Name ="HRCM Analytics">
+          </Directory>  
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <!--Components-->
+    <ComponentGroup Id="CG_CreateDB">
+      <Component Id="cmp8ED399792B183E6A39CDE32ED8BC95F9" Directory="BI.CREATEDBSQL" Guid="{835F8A93-8280-4A88-B34C-DE731D1D6F44}">
+        <File Id="fil25044444B3C75610A43228F06F2B92B5" KeyPath="yes" Source="$(var.SourceItemsDir)CreateDB.SQL" />
+      </Component>
+    </ComponentGroup>
+
+    <ComponentGroup Id="CG_CreateStructure">
+      <Component Id="cmpD45184ABB9B8DB2965CD6DE224005266" Directory="BI.DATASQL" Guid="{DF1F31E9-B0CD-430C-98B4-4D01909FE0F1}">
+        <File Id="fil8E3E3339E30D91E6D4F7E9B01542FF6A" KeyPath="yes" Source="$(var.SourceItemsDir)CreateStructure.SQL" />
+      </Component>
+    </ComponentGroup>
+
+    
+    <DirectoryRef Id="MainHRCMCUBE">
+          <Component Id="HRCMCUBE.SLN" DiskId="1" Guid="BF17237A-866E-4F98-84CE-B43D547923F8">
+              <File Id="HRCMCUBE.SLN" Name="HRCMCube.sln" Source="..\..\Cube\HRCMCube.sln" />
+          </Component>
+          <Component Id="HRCMCUBE.SUO" DiskId="1" Guid="F9E59D45-7DEF-4672-B966-9A456AC1ACBD">
+              <File Id="HRCMCUBE.SUO" Name="HRCMCube.suo" Source="..\..\Cube\HRCMCube.suo" />
+          </Component>
+          <Component Id="HRMCDNHOSP.XMLA" DiskId="1" Guid="AFD52314-6D3E-4552-8890-4E6B726EC458">
+              <File Id="HRMCDNHOSP.XMLA" Name="HRMCDNHosp.xmla" Source="..\..\Cube\HRMCDNHosp.xmla" />
+          </Component>
+          <Directory Id="HRCMCUBE" Name="HRCMCube">
+              <Component Id="ACCOUNT_REP.DIM" DiskId="1" Guid="6AC08AC9-ADD6-47C9-82EA-08B8A914837F">
+                  <File Id="ACCOUNT_REP.DIM" Name="Account Rep.dim" Source="..\..\Cube\HRCMCube\Account Rep.dim" />
+              </Component>
+              <Component Id="ACCOUNT.DIM" DiskId="1" Guid="D87A66D0-4421-4A0D-8DF4-B9756CDB9C46">
+                  <File Id="ACCOUNT.DIM" Name="Account.dim" Source="..\..\Cube\HRCMCube\Account.dim" />
+              </Component>
+              <Component Id="ADJUSTMENT_TYPE.DIM" DiskId="1" Guid="AEC1A8E1-EB88-43B3-AEFD-D0CC5AF7D4F6">
+                  <File Id="ADJUSTMENT_TYPE.DIM" Name="Adjustment Type.dim" Source="..\..\Cube\HRCMCube\Adjustment Type.dim" />
+              </Component>
+              <Component Id="ADMIT_TYPE.DIM" DiskId="1" Guid="C6C765F9-2A8F-4464-8732-6C74D762CFD9">
+                  <File Id="ADMIT_TYPE.DIM" Name="Admit Type.dim" Source="..\..\Cube\HRCMCube\Admit Type.dim" />
+              </Component>
+              <Component Id="AR_TRANSACTIONS.CUBE" DiskId="1" Guid="FC99CFF8-FA31-4D3A-9496-3F8062EDF95D">
+                  <File Id="AR_TRANSACTIONS.CUBE" Name="AR Transactions.cube" Source="..\..\Cube\HRCMCube\AR Transactions.cube" />
+              </Component>
+              <Component Id="AR_TRANSACTIONS.PARTITIONS" DiskId="1" Guid="AA64BA11-979E-4ED6-AC1C-46246CF372A3">
+                  <File Id="AR_TRANSACTIONS.PARTITIONS" Name="AR Transactions.partitions" Source="..\..\Cube\HRCMCube\AR Transactions.partitions" />
+              </Component>
+              <Component Id="BUSINESS_UNIT.DIM" DiskId="1" Guid="C988DE9D-6786-4FAE-B700-8FF8A10E7111">
+                  <File Id="BUSINESS_UNIT.DIM" Name="Business Unit.dim" Source="..\..\Cube\HRCMCube\Business Unit.dim" />
+              </Component>
+              <Component Id="CAMPUS.DIM" DiskId="1" Guid="E781B1D8-3F62-4212-B198-D63A4657B562">
+                  <File Id="CAMPUS.DIM" Name="Campus.dim" Source="..\..\Cube\HRCMCube\Campus.dim" />
+              </Component>
+              <Component Id="CHARGE_TYPE.DIM" DiskId="1" Guid="229C2B7B-5A92-4A65-B5F3-7F23D47722B6">
+                  <File Id="CHARGE_TYPE.DIM" Name="Charge Type.dim" Source="..\..\Cube\HRCMCube\Charge Type.dim" />
+              </Component>
+              <Component Id="CLAIM.DIM" DiskId="1" Guid="EDA5AB97-DE4B-4E0B-86F6-5D1B8C21A361">
+                  <File Id="CLAIM.DIM" Name="Claim.dim" Source="..\..\Cube\HRCMCube\Claim.dim" />
+              </Component>
+              <Component Id="CLINIC.DIM" DiskId="1" Guid="104050CA-60A7-4084-8581-BDA7D7D644EA">
+                  <File Id="CLINIC.DIM" Name="Clinic.dim" Source="..\..\Cube\HRCMCube\Clinic.dim" />
+              </Component>
+              <Component Id="COMPANY.DIM" DiskId="1" Guid="E9A01B41-C007-4CEC-BA3C-48AC04993395">
+                  <File Id="COMPANY.DIM" Name="Company.dim" Source="..\..\Cube\HRCMCube\Company.dim" />
+              </Component>
+              <Component Id="DATE.DIM" DiskId="1" Guid="B40F0474-041E-4F8A-BB0F-BE1F7229F8F8">
+                  <File Id="DATE.DIM" Name="Date.dim" Source="..\..\Cube\HRCMCube\Date.dim" />
+              </Component>
+              <Component Id="DAYS_TO_PAY.DIM" DiskId="1" Guid="4CCACD2E-3B7D-4220-9892-21F803AD3927">
+                  <File Id="DAYS_TO_PAY.DIM" Name="Days To Pay.dim" Source="..\..\Cube\HRCMCube\Days To Pay.dim" />
+              </Component>
+              <Component Id="DEFICIENCY.CUBE" DiskId="1" Guid="DA38B5AB-E34F-455E-809B-CA1B25EBBF95">
+                  <File Id="DEFICIENCY.CUBE" Name="Deficiency.cube" Source="..\..\Cube\HRCMCube\Deficiency.cube" />
+              </Component>
+              <Component Id="DEFICIENCY.DIM" DiskId="1" Guid="0FB67C15-2CA7-46DD-B3C4-1B6477F47DEE">
+                  <File Id="DEFICIENCY.DIM" Name="Deficiency.dim" Source="..\..\Cube\HRCMCube\Deficiency.dim" />
+              </Component>
+              <Component Id="DEFICIENCY.PARTITIONS" DiskId="1" Guid="222A1D03-779F-4D17-8CC9-E209F6A24297">
+                  <File Id="DEFICIENCY.PARTITIONS" Name="Deficiency.partitions" Source="..\..\Cube\HRCMCube\Deficiency.partitions" />
+              </Component>
+              <Component Id="DEPARTMENT.DIM" DiskId="1" Guid="6D56660A-A6F8-4224-A3B5-03EC23D45111">
+                  <File Id="DEPARTMENT.DIM" Name="Department.dim" Source="..\..\Cube\HRCMCube\Department.dim" />
+              </Component>
+              <Component Id="FINANCIAL_CLASS.DIM" DiskId="1" Guid="8080E289-7397-426D-A40C-12A65481447F">
+                  <File Id="FINANCIAL_CLASS.DIM" Name="Financial Class.dim" Source="..\..\Cube\HRCMCube\Financial Class.dim" />
+              </Component>
+              <Component Id="FISCAL_PERIOD.DIM" DiskId="1" Guid="536A801E-3F4F-41E8-B075-1C4A31C6EDFB">
+                  <File Id="FISCAL_PERIOD.DIM" Name="Fiscal Period.dim" Source="..\..\Cube\HRCMCube\Fiscal Period.dim" />
+              </Component>
+              <Component Id="GL_ACCOUNT.DIM" DiskId="1" Guid="17ADCD99-187C-4007-B036-8F321B88084E">
+                  <File Id="GL_ACCOUNT.DIM" Name="GL Account.dim" Source="..\..\Cube\HRCMCube\GL Account.dim" />
+              </Component>
+              <Component Id="HRCM_BI_DATA_MART.DS" DiskId="1" Guid="C98E5C73-0315-475A-8F85-AEE7711000CB">
+                  <File Id="HRCM_BI_DATA_MART.DS" Name="HRCM BI Data Mart.ds" Source="..\..\Cube\HRCMCube\HRCM BI Data Mart.ds" />
+              </Component>
+              <Component Id="HRCM_BI_DATA_MART.DSV" DiskId="1" Guid="7BCEC72D-0BE8-4170-9036-A41B4E033FFF">
+                  <File Id="HRCM_BI_DATA_MART.DSV" Name="HRCM BI Data Mart.dsv" Source="..\..\Cube\HRCMCube\HRCM BI Data Mart.dsv" />
+              </Component>
+              <Component Id="HRCMCUBE.DATABASE" DiskId="1" Guid="D2CBF404-9631-441E-B320-E0515E8D9A2B">
+                  <File Id="HRCMCUBE.DATABASE" Name="HRCMCube.database" Source="..\..\Cube\HRCMCube\HRCMCube.database" />
+              </Component>
+              <Component Id="HRCMCUBE.DWPROJ" DiskId="1" Guid="98FD1CCA-EA09-4681-987C-4F384F31398C">
+                  <File Id="HRCMCUBE.DWPROJ" Name="HRCMCube.dwproj" Source="..\..\Cube\HRCMCube\HRCMCube.dwproj" />
+              </Component>
+              <Component Id="HRCMCUBE.DWPROJ.USER" DiskId="1" Guid="8F0BFF67-9183-458D-BCA5-2857B12760CA">
+                  <File Id="HRCMCUBE.DWPROJ.USER" Name="HRCMCube.dwproj.user" Source="..\..\Cube\HRCMCube\HRCMCube.dwproj.user" />
+              </Component>
+              <Component Id="HRM_BI_CUBE.CUBE" DiskId="1" Guid="55C9CF6D-F949-4941-8C38-B03C137C3C2E">
+                  <File Id="HRM_BI_CUBE.CUBE" Name="HRM BI Cube.cube" Source="..\..\Cube\HRCMCube\HRM BI Cube.cube" />
+              </Component>
+              <Component Id="HRM_BI_CUBE.PARTITIONS" DiskId="1" Guid="AEDA43FC-0BA5-4088-9FA4-9437D8E35BC6">
+                  <File Id="HRM_BI_CUBE.PARTITIONS" Name="HRM BI Cube.partitions" Source="..\..\Cube\HRCMCube\HRM BI Cube.partitions" />
+              </Component>
+              <Component Id="HRMCUBE.DWPROJ.USER" DiskId="1" Guid="4F93F1B1-C56E-48F2-AD8B-0F7D8F9F1C81">
+                  <File Id="HRMCUBE.DWPROJ.USER" Name="HRMCube.dwproj.user" Source="..\..\Cube\HRCMCube\HRMCube.dwproj.user" />
+              </Component>
+              <Component Id="INSURANCE.DIM" DiskId="1" Guid="4478A56F-073A-4B25-AB84-6A2A80AC7E76">
+                  <File Id="INSURANCE.DIM" Name="Insurance.dim" Source="..\..\Cube\HRCMCube\Insurance.dim" />
+              </Component>
+              <Component Id="INTERNAL_FUND_TYPE.DIM" DiskId="1" Guid="A46775DA-1380-4E7E-BE1F-74138FDF7020">
+                  <File Id="INTERNAL_FUND_TYPE.DIM" Name="Internal Fund Type.dim" Source="..\..\Cube\HRCMCube\Internal Fund Type.dim" />
+              </Component>
+              <Component Id="MEDICAL_SERVICE.DIM" DiskId="1" Guid="B668E8AB-6796-4F0A-9C89-BBBBE77D9775">
+                  <File Id="MEDICAL_SERVICE.DIM" Name="Medical Service.dim" Source="..\..\Cube\HRCMCube\Medical Service.dim" />
+              </Component>
+              <Component Id="MOH.CUBE" DiskId="1" Guid="B0D45FAE-2133-4A4A-A81B-75BC0A3DA5EB">
+                  <File Id="MOH.CUBE" Name="MOH.cube" Source="..\..\Cube\HRCMCube\MOH.cube" />
+              </Component>
+              <Component Id="MOH.PARTITIONS" DiskId="1" Guid="740446F3-D7AA-4D67-B184-012F4B3355C9">
+                  <File Id="MOH.PARTITIONS" Name="MOH.partitions" Source="..\..\Cube\HRCMCube\MOH.partitions" />
+              </Component>
+              <Component Id="NON_AR_BANK_TYPE.DIM" DiskId="1" Guid="0C0D7515-6D09-45E7-B52A-517F3C8894F5">
+                  <File Id="NON_AR_BANK_TYPE.DIM" Name="Non AR Bank Type.dim" Source="..\..\Cube\HRCMCube\Non AR Bank Type.dim" />
+              </Component>
+              <Component Id="NON_AR_DISBURSEMENT_TYPE.DIM" DiskId="1" Guid="6505C3EC-C02E-4CBA-883D-E85BF95F2282">
+                  <File Id="NON_AR_DISBURSEMENT_TYPE.DIM" Name="Non AR Disbursement Type.dim" Source="..\..\Cube\HRCMCube\Non AR Disbursement Type.dim" />
+              </Component>
+              <Component Id="PATIENT_TYPE.DIM" DiskId="1" Guid="5EE003F2-397B-48B2-92AB-A12081F7E50B">
+                  <File Id="PATIENT_TYPE.DIM" Name="Patient Type.dim" Source="..\..\Cube\HRCMCube\Patient Type.dim" />
+              </Component>
+              <Component Id="PATIENT.DIM" DiskId="1" Guid="D20ED8E1-79B8-4BA7-8E9D-E7DB3A9E9AC1">
+                  <File Id="PATIENT.DIM" Name="Patient.dim" Source="..\..\Cube\HRCMCube\Patient.dim" />
+              </Component>
+              <Component Id="PAYMENT_TYPE.DIM" DiskId="1" Guid="C5D367A2-CDC6-4777-91A4-DFBFB066E178">
+                  <File Id="PAYMENT_TYPE.DIM" Name="Payment Type.dim" Source="..\..\Cube\HRCMCube\Payment Type.dim" />
+              </Component>
+              <Component Id="PAYOR.DIM" DiskId="1" Guid="F8483B7F-543D-442C-8458-C1645AF059A8">
+                  <File Id="PAYOR.DIM" Name="Payor.dim" Source="..\..\Cube\HRCMCube\Payor.dim" />
+              </Component>
+              <Component Id="PETTY_CASH_DISBURSEMENT_TYPE.DIM" DiskId="1" Guid="02AA0EF7-8BA6-4F2A-9BCC-55A30FF92F53">
+                  <File Id="PETTY_CASH_DISBURSEMENT_TYPE.DIM" Name="Petty Cash Disbursement Type.dim" Source="..\..\Cube\HRCMCube\Petty Cash Disbursement Type.dim" />
+              </Component>
+              <Component Id="PETTY_CASH_REIMBURSEMENT_TYPE.DIM" DiskId="1" Guid="7C577839-ED27-4158-BB14-2E2EADEB8AFD">
+                  <File Id="PETTY_CASH_REIMBURSEMENT_TYPE.DIM" Name="Petty Cash Reimbursement Type.dim" Source="..\..\Cube\HRCMCube\Petty Cash Reimbursement Type.dim" />
+              </Component>
+              <Component Id="PHYSICIAN.DIM" DiskId="1" Guid="4A570253-0CBE-42C1-B7A2-10658049CD19">
+                  <File Id="PHYSICIAN.DIM" Name="Physician.dim" Source="..\..\Cube\HRCMCube\Physician.dim" />
+              </Component>
+              <Component Id="ROLE.ROLE" DiskId="1" Guid="B52CEBD5-3929-4643-9C96-3B8BA6BAE0AB">
+                  <File Id="ROLE.ROLE" Name="Role.role" Source="..\..\Cube\HRCMCube\Role.role" />
+              </Component>
+              <Component Id="TRANSACTION_CODE.DIM" DiskId="1" Guid="98BB92BC-1555-40A4-8079-A4AC5B4F8F16">
+                  <File Id="TRANSACTION_CODE.DIM" Name="Transaction Code.dim" Source="..\..\Cube\HRCMCube\Transaction Code.dim" />
+              </Component>
+              <Component Id="US_EXCHANGE_TYPE.DIM" DiskId="1" Guid="B7CEC98C-9417-48BA-98C6-5BBF2BFA54DA">
+                  <File Id="US_EXCHANGE_TYPE.DIM" Name="US Exchange Type.dim" Source="..\..\Cube\HRCMCube\US Exchange Type.dim" />
+              </Component>
+              <Component Id="WRITE_OFF_TYPE.DIM" DiskId="1" Guid="F2355FDF-AA75-4CAF-982E-B890B69BD7C6">
+                  <File Id="WRITE_OFF_TYPE.DIM" Name="Write Off Type.dim" Source="..\..\Cube\HRCMCube\Write Off Type.dim" />
+              </Component>
+          </Directory>
+    </DirectoryRef>
+    
+
+    <DirectoryRef Id="MainHRCMSSIS">
+            <Component Id="CDNHOSPNIGHTLYPROCESSING.DTSX" DiskId="1" Guid="F12A753C-786A-42A3-8F63-6DFBDB9D3E24">
+                <File Id="CDNHOSPNIGHTLYPROCESSING.DTSX" Name="CDNHospNightlyProcessing.dtsx" Source="..\..\ETL\CDNHospNightlyProcessing.dtsx" />
+            </Component>
+            <Component Id="CDNHOSPPREPAREDM.DTSX" DiskId="1" Guid="8E778A13-055B-4F77-AE9A-C79F228363BF">
+                <File Id="CDNHOSPPREPAREDM.DTSX" Name="CDNHospPrepareDM.dtsx" Source="..\..\ETL\CDNHospPrepareDM.dtsx" />
+            </Component>
+            <Component Id="HRCMBISSIS.SLN" DiskId="1" Guid="BF553A65-B11D-4C54-88C4-42F6F222497E">
+                <File Id="HRCMBISSIS.SLN" Name="HRCMBISSIS.sln" Source="..\..\ETL\HRCMBISSIS.sln" />
+            </Component>
+            <Directory Id="HRCMBISSIS" Name="HRCMBISSIS">
+                <Component Id="CDNHOSP_ETL.DTSX" DiskId="1" Guid="61FFA020-BD0D-4AF0-A139-2E339F1713BB">
+                    <File Id="CDNHOSP_ETL.DTSX" Name="CDNHosp_ETL.dtsx" Source="..\..\ETL\HRCMBISSIS\CDNHosp_ETL.dtsx" />
+                </Component>
+                <Component Id="HRCMBISSIS.DTPROJ" DiskId="1" Guid="142FC86D-3A6B-423C-BF2E-FF34BFE6F16D">
+                    <File Id="HRCMBISSIS.DTPROJ" Name="HRCMBISSIS.dtproj" Source="..\..\ETL\HRCMBISSIS\HRCMBISSIS.dtproj" />
+                </Component>
+                <Component Id="HRCMBISSIS.DTPROJ.USER" DiskId="1" Guid="7E9C88F8-500B-4B07-B2AA-37395667A70D">
+                    <File Id="HRCMBISSIS.DTPROJ.USER" Name="HRCMBISSIS.dtproj.user" Source="..\..\ETL\HRCMBISSIS\HRCMBISSIS.dtproj.user" />
+                </Component>
+            </Directory>
+    </DirectoryRef>
+
+
+    <!--Short Cuts-->
+    <DirectoryRef Id="ProgramMenuDir" >    
+      <Component Id="CMP_ShortCut_FolderAnalytics" Guid="{684C467F-4D66-4399-BA37-AA4188D3BCAE}">
+          <RemoveFolder Id="ProgramMenuDir" On="uninstall" /> 
+          <RegistryValue Root="HKCU"
+                          Key="SOFTWARE\$(var.ManufacturerName)\HRCMANALYTICSCORE"
+                          Name="installed"
+                          Type="integer"
+                          Value="1"
+                          KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+    
+    <DirectoryRef Id="MenuHRCMAnalytics" >    
+      <Component Id="CMP_ShortCut" Guid="$(var.ProductId)">
+        <RemoveFolder Id="MenuHRCMAnalytics" On="uninstall" /> 
+        <Shortcut Id ="SC_FolderCUBE" Name="HRCM Cube"  Directory="MenuHRCMAnalytics" WorkingDirectory="MainHRCMCUBE" Target="[MainHRCMCUBE]\HRCMCube.sln"/>
+        <Shortcut Id ="SC_FolderSSIS" Name="HRCM SSIS"  Directory="MenuHRCMAnalytics" WorkingDirectory="MainHRCMSSIS" Target="[MainHRCMSSIS]\HRCMBISSIS.sln"/>
+        <RegistryValue Root="HKCU"
+                        Key="SOFTWARE\$(var.ManufacturerName)\$(var.ProductName)"
+                        Name="installed"
+                        Type="integer"
+                        Value="1"
+                        KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+    
+
+    <!-- Features -->
+    <FeatureGroup Id="FG_Main" >
+      
+      <Feature Id="BI.Solution" Title="BI Solution"        
+                 Level="1"
+                 Description="Project HRCM CUBE"
+                 Display="expand"
+                 ConfigurableDirectory="INSTALLLOCATION"
+                 AllowAdvertise="no">
+        
+        <ComponentRef Id="CMP_ShortCut" /> 
+        <ComponentRef Id="CMP_ShortCut_FolderAnalytics" /> 
+        
+
+        <Feature Id="F_Wix.CUBE" Title="Project HRCM CUBE" 
+                 Level="2"
+                 Description="Project HRCM CUBE">
+            <ComponentRef Id="HRCMCUBE.SLN" />
+            <ComponentRef Id="HRCMCUBE.SUO" />
+            <ComponentRef Id="HRMCDNHOSP.XMLA" />
+            <ComponentRef Id="ACCOUNT_REP.DIM" />
+            <ComponentRef Id="ACCOUNT.DIM" />
+            <ComponentRef Id="ADJUSTMENT_TYPE.DIM" />
+            <ComponentRef Id="ADMIT_TYPE.DIM" />
+            <ComponentRef Id="AR_TRANSACTIONS.CUBE" />
+            <ComponentRef Id="AR_TRANSACTIONS.PARTITIONS" />
+            <ComponentRef Id="BUSINESS_UNIT.DIM" />
+            <ComponentRef Id="CAMPUS.DIM" />
+            <ComponentRef Id="CHARGE_TYPE.DIM" />
+            <ComponentRef Id="CLAIM.DIM" />
+            <ComponentRef Id="CLINIC.DIM" />
+            <ComponentRef Id="COMPANY.DIM" />
+            <ComponentRef Id="DATE.DIM" />
+            <ComponentRef Id="DAYS_TO_PAY.DIM" />
+            <ComponentRef Id="DEFICIENCY.CUBE" />
+            <ComponentRef Id="DEFICIENCY.DIM" />
+            <ComponentRef Id="DEFICIENCY.PARTITIONS" />
+            <ComponentRef Id="DEPARTMENT.DIM" />
+            <ComponentRef Id="FINANCIAL_CLASS.DIM" />
+            <ComponentRef Id="FISCAL_PERIOD.DIM" />
+            <ComponentRef Id="GL_ACCOUNT.DIM" />
+            <ComponentRef Id="HRCM_BI_DATA_MART.DS" />
+            <ComponentRef Id="HRCM_BI_DATA_MART.DSV" />
+            <ComponentRef Id="HRCMCUBE.DATABASE" />
+            <ComponentRef Id="HRCMCUBE.DWPROJ" />
+            <ComponentRef Id="HRCMCUBE.DWPROJ.USER" />
+            <ComponentRef Id="HRM_BI_CUBE.CUBE" />
+            <ComponentRef Id="HRM_BI_CUBE.PARTITIONS" />
+            <ComponentRef Id="HRMCUBE.DWPROJ.USER" />
+            <ComponentRef Id="INSURANCE.DIM" />
+            <ComponentRef Id="INTERNAL_FUND_TYPE.DIM" />
+            <ComponentRef Id="MEDICAL_SERVICE.DIM" />
+            <ComponentRef Id="MOH.CUBE" />
+            <ComponentRef Id="MOH.PARTITIONS" />
+            <ComponentRef Id="NON_AR_BANK_TYPE.DIM" />
+            <ComponentRef Id="NON_AR_DISBURSEMENT_TYPE.DIM" />
+            <ComponentRef Id="PATIENT_TYPE.DIM" />
+            <ComponentRef Id="PATIENT.DIM" />
+            <ComponentRef Id="PAYMENT_TYPE.DIM" />
+            <ComponentRef Id="PAYOR.DIM" />
+            <ComponentRef Id="PETTY_CASH_DISBURSEMENT_TYPE.DIM" />
+            <ComponentRef Id="PETTY_CASH_REIMBURSEMENT_TYPE.DIM" />
+            <ComponentRef Id="PHYSICIAN.DIM" />
+            <ComponentRef Id="ROLE.ROLE" />
+            <ComponentRef Id="TRANSACTION_CODE.DIM" />
+            <ComponentRef Id="US_EXCHANGE_TYPE.DIM" />
+            <ComponentRef Id="WRITE_OFF_TYPE.DIM" />
+        </Feature> 
+      
+        <Feature Id="F_Wix.SSIS" Title="Project HRCM SSIS" 
+                 Level="2"
+                 Description="Project HRCM SSIS" >
+            <ComponentRef Id="CDNHOSPNIGHTLYPROCESSING.DTSX" />
+            <ComponentRef Id="CDNHOSPPREPAREDM.DTSX" />
+            <ComponentRef Id="HRCMBISSIS.SLN" />
+            <ComponentRef Id="CDNHOSP_ETL.DTSX" />
+            <ComponentRef Id="HRCMBISSIS.DTPROJ" />
+            <ComponentRef Id="HRCMBISSIS.DTPROJ.USER" />  
+        </Feature>
+      
+        <Feature Id="F_Wix.CreateDB"
+                Title="!(loc.F_A01Wix.CreateDB.Title)"
+                Level="2"
+                Description="!(loc.F_A01Wix.CreateDB.Description)"
+                Absent="disallow">
+            <ComponentGroupRef Id="CG_CreateDB" /> 
+            <ComponentGroupRef Id="CG_CreateStructure" /> 
+        </Feature>
+        
+      </Feature>
+    </FeatureGroup>  
+  </Fragment>
+</Wix>

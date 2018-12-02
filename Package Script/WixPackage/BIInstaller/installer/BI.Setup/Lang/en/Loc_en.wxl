@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization" Codepage="1252">
+	<String Id="LANG" Overridable="yes">1033</String>
+	<String Id="CodePage" Overridable="yes">1252</String>
+	<String Id="LicenseRtf" Overridable="yes">Lang\en\EULA_en.rtf</String>
+	<String Id="ProductDescription" Overridable="yes">Installer database objects</String>
+	<String Id="ProductComments" Overridable="yes">Installer database objects</String>
+	<String Id="KeyWords" Overridable="yes">Installer,MSI,Database</String>
+
+	<!--Location Validation and error-->
+	<String Id="ValidationVersionAlreadyUpdated" Overridable="yes">A version of [ProductName] is already installed</String>
+	<String Id="ValidationVersionNew" Overridable="yes">A new version of [ProductName] is already installed</String>
+	<String Id="ValidationAdministrator" Overridable="yes">The user must be an administrator of the machine</String>
+	<String Id="ValidationDotNet" Overridable="yes">This product requires Microsoft Framework 4.0 or higher</String>
+
+
+
+  <!--Dialog UIInvalidPidDlg-->
+  <String Id="UIInvalidPidDlg_Text" Overridable="yes">The user key you entered is invalid. Please, enter the key printed on the label of the box of the installation CD</String>
+  <String Id="ExecuteAppToExit" Overridable="yes">Run Application [ProductName] to exit the installer</String>
+  
+  <String Id="Readme" Overridable="yes">Readme</String>
+  <String Id="UninstallName" Overridable="yes">Uninstall</String>
+
+  <!--UIProgressDlg Dialog-->
+  <String Id="UIProgressDlg_ExecutingTask" Overridable="yes"><![CDATA[Executing: [1]]]></String>
+
+	<!--DatabaseServerDlg Dialog-->
+	<String Id="DatabaseServerDlg_Header" Overridable="yes">Connection to database server</String>
+	<String Id="DatabaseServerDlg_Title" Overridable="yes">Connection to database server</String>
+	<String Id="DatabaseServerDlg_Description" Overridable="yes">Enter the authentication information</String>
+	<String Id="DatabaseServerDlg_WinAuthentication" Overridable="yes">Use Windows Authentication</String>
+	<String Id="DatabaseServerDlg_SqlAuthentication" Overridable="yes">Use SQL Server Authentication</String>
+	<String Id="DatabaseServerDlg_ServerLabel" Overridable="yes">Name of the database server:</String>
+  <String Id="DatabaseServerDlg_AuthenticationLabel" Overridable="yes">Connecting to the server:</String>
+  <String Id="DatabaseServerDlg_UserLabel" Overridable="yes">Username:</String>
+  <String Id="DatabaseServerDlg_PasswordLabel" Overridable="yes">Password:</String>
+  <String Id="DatabaseServerDlg_Test" Overridable="yes">&amp;Test connection</String>
+  <String Id="DatabaseServerDlg_DatabaseLabel" Overridable="yes">Database Name:</String>
+  <String Id="DatabaseServerDlg_ExecuteScripts" Overridable="yes">Run database scripts</String>
+  <String Id="DatabaseServerDlg_IncludeDatabaInAuthentication" Overridable="yes">Include authentication database</String>
+  <String Id="DatabaseServerDlg_AuthenticationErrorMessage" Overridable="yes">Failed to authenticate the user on the database server</String>
+  <String Id="DatabaseServerDlg_ServerRequired" Overridable="yes">Required server name</String>
+  <String Id="DatabaseServerDlg_DataBaseRequired" Overridable="yes">Database name required</String>
+  <String Id="DatabaseServerDlg_UserPasswordRequired" Overridable="yes">Username and password required</String>
+
+  <!-- ToolsVersion Dialog-->
+  <String Id="ToolsVersionDlg_Header" Overridable="yes">Development Tools version installed</String>
+  <String Id="ToolsVersionDlg_Title" Overridable="yes">Development Tools version installed</String>
+  <String Id="ToolsVersionDlg_2008" Overridable="yes">SQL Server Business Intelligence Development Studio (Visual Studio 2008)</String>
+  <String Id="ToolsVersionDlg_2012" Overridable="yes">SQL Server Data Tools (Visual Studio 2010)</String>
+  <String Id="ToolsVersionDlg_Description" Overridable="yes">Select the version of Business Intelligence Development Tools installed</String>
+
+  <!--UI-->
+  <String Id="Return" Overridable="yes">Return&amp;</String>
+  <String Id="ErrorValidation" Overridable="yes">Failed to validate one of the fields</String>
+
+  <!--Paths install database-->
+  <String Id="Database_Path_Primary" Overridable="yes">Path for main database file *. Mdf</String>
+  <String Id="Database_Path_Log" Overridable="yes">Path for log file *. Ldf</String>
+</WixLocalization>

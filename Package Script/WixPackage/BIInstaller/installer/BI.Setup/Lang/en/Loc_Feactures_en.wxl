@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization" Codepage="1252">
+  <!--Features-->
+  <String Id="F_Wix.DBScript.Title" Overridable="yes">database</String>
+  <String Id="F_Wix.DBScript.Description" Overridable="yes">database</String>
+  <String Id="F_A01Wix.CreateDB.Title" Overridable="yes">Creating database</String>
+  <String Id="F_A01Wix.CreateDB.Description" Overridable="yes">Database creation and data </String> 
+</WixLocalization>

@@ -1,0 +1,21 @@
+[DBConn]
+Server=13W6y0]7H9d7w8k6c366m
+DataBase=5FE646a6*Ek6P9f6F3E6S9s6w3f7n1p6T2\4,4q7+9a6P5#7.3_5T9`6=3=7/517C2P4K
+User=P1D6N3y7G
+Password=C1%3L
+ToolDataBase=sysTool
+LogDataBase=BusiSuitUserDataLog
+PubDataBasePreFix=
+[Config]
+DBLink=0
+UserDB=BusiSuitUserData
+
+
+
+[url]
+ipurl=http://192.168.2.77/sound/main.asp?rdname=
+
+
+
+
+//update sys_dataBase set name='BusiSuitUserData' ,db='BusiSuitUserData'

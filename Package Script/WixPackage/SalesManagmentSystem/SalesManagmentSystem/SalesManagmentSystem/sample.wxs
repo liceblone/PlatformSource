@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="3A1EDAC6-687B-4BBD-8CD3-E5F7923B8A3F" Name="TestProduct" Language="1033" Version="0.0.0.1" Manufacturer="WixEdit" UpgradeCode="5828A0A6-94BF-4097-96C2-1A9E2A5B2E6F">
+        <Package Description="Test file in a Product" Comments="Simple test" InstallerVersion="200" Compressed="yes" />
+        <Media Id="1" Cabinet="simple.cab" EmbedCab="yes" />
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="MYSOURCEFILES" Name="MySourceFiles">
+                <Directory Id="CLIENT" Name="Client">
+                    <Component Id="BSGMANAGEMENT.EXE" DiskId="1" Guid="65B69C3F-B218-4841-997C-E423DF992341">
+                        <File Id="BSGMANAGEMENT.EXE" Name="BSGManagement.exe" Source="TestProjects\SalesManagmentSystem\SalesManagmentSystem\SalesManagmentSystem\MySourceFiles\Client\BSGManagement.exe" />
+                    </Component>
+                    <Component Id="CONFIG.INI" DiskId="1" Guid="503FD6F6-6522-4BCF-A0F8-E51B9723BE85">
+                        <File Id="CONFIG.INI" Name="Config.ini" Source="TestProjects\SalesManagmentSystem\SalesManagmentSystem\SalesManagmentSystem\MySourceFiles\Client\Config.ini" />
+                    </Component>
+                    <Component Id="DBLINKER.EXE" DiskId="1" Guid="1F5F41A3-AA08-42CD-98CC-83E4F2388C9D">
+                        <File Id="DBLINKER.EXE" Name="DBLinker.exe" Source="TestProjects\SalesManagmentSystem\SalesManagmentSystem\SalesManagmentSystem\MySourceFiles\Client\DBLinker.exe" />
+                    </Component>
+                    <Component Id="PRJMETADATA.EXE" DiskId="1" Guid="3234DF5F-B19E-49C1-A8A0-3BB1C6EB6FC0">
+                        <File Id="PRJMETADATA.EXE" Name="PrjMetaData.exe" Source="TestProjects\SalesManagmentSystem\SalesManagmentSystem\SalesManagmentSystem\MySourceFiles\Client\PrjMetaData.exe" />
+                    </Component>
+                    <Component Id="QTINTF.DLL" DiskId="1" Guid="59CA3C5A-7A2E-4485-B65D-903E992A924F">
+                        <File Id="QTINTF.DLL" Name="qtintf.dll" Source="TestProjects\SalesManagmentSystem\SalesManagmentSystem\SalesManagmentSystem\MySourceFiles\Client\qtintf.dll" />
+                    </Component>
+                    <Component Id="QTINTF70.DLL" DiskId="1" Guid="52FC19F0-0EEE-4341-A603-1E556BD728D5">
+                        <File Id="QTINTF70.DLL" Name="qtintf70.dll" Source="TestProjects\SalesManagmentSystem\SalesManagmentSystem\SalesManagmentSystem\MySourceFiles\Client\qtintf70.dll" />
+                    </Component>
+                    <Component Id="SERVERCFG.INI" DiskId="1" Guid="85F14FB5-FCF0-409D-8B09-D5E848488304">
+                        <File Id="SERVERCFG.INI" Name="ServerCfg.ini" Source="TestProjects\SalesManagmentSystem\SalesManagmentSystem\SalesManagmentSystem\MySourceFiles\Client\ServerCfg.ini" />
+                    </Component>
+                    <Component Id="UPDATE.INI" DiskId="1" Guid="B8D62350-15E1-41A4-99C5-4B0CAF8B6E68">
+                        <File Id="UPDATE.INI" Name="Update.ini" Source="TestProjects\SalesManagmentSystem\SalesManagmentSystem\SalesManagmentSystem\MySourceFiles\Client\Update.ini" />
+                    </Component>
+                    <Component Id="______.EXE" DiskId="1" Guid="4D94A639-2687-4F88-80E1-B63C62B0A3D7">
+                        <File Id="______.EXE" Name="销售管理系统.exe" Source="TestProjects\SalesManagmentSystem\SalesManagmentSystem\SalesManagmentSystem\MySourceFiles\Client\销售管理系统.exe" />
+                    </Component>
+                    <Directory Id="DBBACKUP" Name="DBBackup" />
+                    <Directory Id="PACKAGE" Name="Package" />
+                    <Directory Id="UPGRADELOG" Name="UpgradeLog" />
+                </Directory>
+                <Directory Id="DATABASE" Name="DataBase">
+                    <Directory Id="SYSDATA" Name="SysData">
+                        <Component Id="SALESBASICINFO.MDF" DiskId="1" Guid="132BD63A-D415-4F86-9BEB-B405FB3D15B7">
+                            <File Id="SALESBASICINFO.MDF" Name="SalesBasicinfo.MDF" Source="TestProjects\SalesManagmentSystem\SalesManagmentSystem\SalesManagmentSystem\MySourceFiles\DataBase\SysData\SalesBasicinfo.MDF" />
+                        </Component>
+                        <Component Id="SALESBASICINFO_LOG.LDF" DiskId="1" Guid="5655879F-437A-4E0D-B35A-EAA3C7FD7389">
+                            <File Id="SALESBASICINFO_LOG.LDF" Name="SalesBasicinfo_LOG.LDF" Source="TestProjects\SalesManagmentSystem\SalesManagmentSystem\SalesManagmentSystem\MySourceFiles\DataBase\SysData\SalesBasicinfo_LOG.LDF" />
+                        </Component>
+                        <Component Id="SALESSYS.MDF" DiskId="1" Guid="BFD57784-1979-445A-8B9D-E1370C93CD07">
+                            <File Id="SALESSYS.MDF" Name="SalesSys.MDF" Source="TestProjects\SalesManagmentSystem\SalesManagmentSystem\SalesManagmentSystem\MySourceFiles\DataBase\SysData\SalesSys.MDF" />
+                        </Component>
+                        <Component Id="SALESSYS_LOG.LDF" DiskId="1" Guid="E284348E-4881-4E26-A400-80B27AE46629">
+                            <File Id="SALESSYS_LOG.LDF" Name="SalesSys_LOG.LDF" Source="TestProjects\SalesManagmentSystem\SalesManagmentSystem\SalesManagmentSystem\MySourceFiles\DataBase\SysData\SalesSys_LOG.LDF" />
+                        </Component>
+                    </Directory>
+                    <Directory Id="USERDATA" Name="UserData">
+                        <Component Id="SALESUSERDATA.MDF" DiskId="1" Guid="B89D819F-4B3D-4EB6-89C5-534E821B5A09">
+                            <File Id="SALESUSERDATA.MDF" Name="SalesUserData.MDF" Source="TestProjects\SalesManagmentSystem\SalesManagmentSystem\SalesManagmentSystem\MySourceFiles\DataBase\UserData\SalesUserData.MDF" />
+                        </Component>
+                        <Component Id="SALESUSERDATALOG.MDF" DiskId="1" Guid="C72E3B30-F92B-4675-807E-7B2366591013">
+                            <File Id="SALESUSERDATALOG.MDF" Name="SalesUserDataLog.MDF" Source="TestProjects\SalesManagmentSystem\SalesManagmentSystem\SalesManagmentSystem\MySourceFiles\DataBase\UserData\SalesUserDataLog.MDF" />
+                        </Component>
+                        <Component Id="SALESUSERDATALOG_LOG.LDF" DiskId="1" Guid="D04C61E9-1577-49DE-9728-6027EFD05EF9">
+                            <File Id="SALESUSERDATALOG_LOG.LDF" Name="SalesUserDataLog_LOG.LDF" Source="TestProjects\SalesManagmentSystem\SalesManagmentSystem\SalesManagmentSystem\MySourceFiles\DataBase\UserData\SalesUserDataLog_LOG.LDF" />
+                        </Component>
+                        <Component Id="SALESUSERDATA_LOG.LDF" DiskId="1" Guid="D31CE840-A3E0-44AE-9772-902A1427D83C">
+                            <File Id="SALESUSERDATA_LOG.LDF" Name="SalesUserData_LOG.LDF" Source="TestProjects\SalesManagmentSystem\SalesManagmentSystem\SalesManagmentSystem\MySourceFiles\DataBase\UserData\SalesUserData_LOG.LDF" />
+                        </Component>
+                    </Directory>
+                </Directory>
+                <Directory Id="IIS_____" Name="iis完整安装包">
+                    <Component Id="IIS6.ZIP" DiskId="1" Guid="52C440FA-DF9F-44DF-AC4E-5580148632E5">
+                        <File Id="IIS6.ZIP" Name="IIS6.zip" Source="TestProjects\SalesManagmentSystem\SalesManagmentSystem\SalesManagmentSystem\MySourceFiles\iis完整安装包\IIS6.zip" />
+                    </Component>
+                </Directory>
+                <Directory Id="UPDATEWEB" Name="UpdateWeb">
+                    <Component Id="UPDATE.INF" DiskId="1" Guid="4D61AB23-AB88-4070-8CA9-5594C86D1A61">
+                        <File Id="UPDATE.INF" Name="Update.inf" Source="TestProjects\SalesManagmentSystem\SalesManagmentSystem\SalesManagmentSystem\MySourceFiles\UpdateWeb\Update.inf" />
+                    </Component>
+                </Directory>
+            </Directory>
+        </Directory>
+        <Feature Id="DefaultFeature" Title="Main Feature" Level="1">
+            <ComponentRef Id="BSGMANAGEMENT.EXE" />
+            <ComponentRef Id="CONFIG.INI" />
+            <ComponentRef Id="DBLINKER.EXE" />
+            <ComponentRef Id="PRJMETADATA.EXE" />
+            <ComponentRef Id="QTINTF.DLL" />
+            <ComponentRef Id="QTINTF70.DLL" />
+            <ComponentRef Id="SERVERCFG.INI" />
+            <ComponentRef Id="UPDATE.INI" />
+            <ComponentRef Id="______.EXE" />
+            <ComponentRef Id="SALESBASICINFO.MDF" />
+            <ComponentRef Id="SALESBASICINFO_LOG.LDF" />
+            <ComponentRef Id="SALESSYS.MDF" />
+            <ComponentRef Id="SALESSYS_LOG.LDF" />
+            <ComponentRef Id="SALESUSERDATA.MDF" />
+            <ComponentRef Id="SALESUSERDATALOG.MDF" />
+            <ComponentRef Id="SALESUSERDATALOG_LOG.LDF" />
+            <ComponentRef Id="SALESUSERDATA_LOG.LDF" />
+            <ComponentRef Id="IIS6.ZIP" />
+            <ComponentRef Id="UPDATE.INF" />
+        </Feature>
+        <UI />
+    </Product>
+</Wix>

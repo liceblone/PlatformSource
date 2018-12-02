@@ -1,0 +1,1668 @@
+Document Type: WSE
+item: Global
+  Version=9.02
+  Title=客户端安装程序 Installation
+  Title French= Installation
+  Flags=00010100
+  Languages=65 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  Copy Default=1
+  Japanese Font Name=MS Gothic
+  Japanese Font Size=9
+  Progress Bar DLL=%_WISE_%\Progress\WizWin32a.DLL
+  Start Gradient=0 0 255
+  End Gradient=0 0 0
+  Windows Flags=00000100000000010011110000000000
+  Log Pathname=%MAINDIR%\Client\INSTALL.LOG
+  Message Font=宋体
+  Font Size=9
+  Pages Modified=00011001011100100000001000000011
+  Extra Pages=00000000000000000000000010110000
+  Disk Label=Default
+  Disk Filename=SETUP
+  Patch Flags=0000000000000001
+  Patch Threshold=85
+  Patch Memory=4000
+  MIF PDF Version=1.0
+  MIF SMS Version=2.0
+  FTP Cluster Size=20
+  Per-User Version ID=1
+  Dialogs Version=7
+  Version File=V2.0.0.1
+  Version Company=销售管理系统客户端
+  Crystal Format=10111100101100000010001001001001
+  Crystal Destination=00000000000000000000000000001011
+  Step View=全部(&A)
+  Variable Name1=_SYS_
+  Variable Default1=C:\WINDOWS\system32
+  Variable Flags1=00001000
+  Variable Name2=_WIN_
+  Variable Default2=C:\WINDOWS
+  Variable Flags2=00001000
+  Variable Name3=_WISE_
+  Variable Default3=C:\PROGRA~2\WISEIN~1
+  Variable Flags3=00001000
+  Variable Name4=_ALIASNAME_
+  Variable Flags4=00001000
+  Variable Name5=_ALIASPATH_
+  Variable Flags5=00001000
+  Variable Name6=_ALIASTYPE_
+  Variable Flags6=00001000
+end
+item: Remark
+  Text=当您创建一个新安装程序时，如果不想出现Rem（注释）段，
+end
+item: Remark
+  Text=请从 Wise 应用程序目录的 Template 子目录中打开文件 空工程.wse，
+end
+item: Remark
+  Text=删除 Rem 语句，并从文件菜单选择保存。
+end
+item: Open/Close INSTALL.LOG
+  Flags=00000001
+end
+item: Remark
+end
+item: Remark
+  Text=如果目标系统不具有可写的 Windows\System 目录，系统文件将被写入 Windows\ 目录
+end
+item: Check if File/Dir Exists
+  Pathname=%SYS%
+  Flags=10000100
+end
+item: Set Variable
+  Variable=SYS
+  Value=%WIN%
+end
+item: End Block
+end
+item: Remark
+end
+item: Remark
+  Text=APPTITLE 变量是安装程序应用程序的标题
+end
+item: Set Variable
+  Variable=APPTITLE
+  Value=客户端安装程序
+  Flags=10000000
+end
+item: Remark
+end
+item: Remark
+  Text=GROUP 变量是位于开始菜单控制快捷方式将放入的程序文件组
+end
+item: Set Variable
+  Variable=GROUP
+  Value=销售管理系统客户端
+  Flags=10000000
+end
+item: Remark
+end
+item: Remark
+  Text=DISABLED 变量被初始化以向后兼容
+end
+item: Set Variable
+  Variable=DISABLED
+  Value=!
+end
+item: Remark
+end
+item: Remark
+  Text=MAINDIR 是控制默认目标目录的变量
+end
+item: Set Variable
+  Variable=MAINDIR
+  Value=FabricSalesClient
+  Flags=10000000
+end
+item: Remark
+end
+item: Remark
+  Text=USERNAME 是控制 Windows 登录名称的变量
+end
+item: Get System Information
+  Variable=USERNAME
+  Flags=00010001
+end
+item: Remark
+end
+item: Remark
+  Text=这个 IF/THEN/ELSE 块从注册表读取默认的 Program Files 和 Common 目录
+end
+item: Check Configuration
+  Flags=10111011
+end
+item: Get Registry Key Value
+  Variable=COMMON
+  Key=SOFTWARE\Microsoft\Windows\CurrentVersion
+  Default=C:\Program Files\Common Files
+  Value Name=CommonFilesDir
+  Flags=00000100
+end
+item: Get Registry Key Value
+  Variable=PROGRAM_FILES
+  Key=SOFTWARE\Microsoft\Windows\CurrentVersion
+  Default=C:\Program Files
+  Value Name=ProgramFilesDir
+  Flags=00000100
+end
+item: Set Variable
+  Variable=MAINDIR
+  Value=C:\%MAINDIR%
+  Flags=00001100
+end
+item: Set Variable
+  Variable=EXPLORER
+  Value=1
+end
+item: Else Statement
+end
+item: Set Variable
+  Variable=MAINDIR
+  Value=C:\%MAINDIR%
+  Flags=00001100
+end
+item: End Block
+end
+item: Remark
+end
+item: Remark
+  Text=BACKUP 是当覆盖文件时所有备份文件将被复制到的路径变量
+end
+item: Set Variable
+  Variable=BACKUP
+  Value=%MAINDIR%\BACKUP
+  Flags=10000000
+end
+item: Remark
+end
+item: Remark
+  Text=DOBACKUP 决定是否要执行备份。可能的值是A(执行备份)或B(不执行备份)
+end
+item: Set Variable
+  Variable=DOBACKUP
+  Value=B
+  Flags=10000000
+end
+item: Remark
+end
+item: Remark
+  Text=如果 COMPONENTS 为启动，COMPONENTS 变量使用可能的选择被初始化
+end
+item: Set Variable
+  Variable=COMPONENTS
+  Flags=10000000
+end
+item: Remark
+end
+item: Remark
+  Text=RUN 变量用来设定安装完成后是否开始运行程序，可能的值是A(运行)或B(不运行)
+end
+item: Set Variable
+  Variable=RUN
+  Value=B
+  Flags=10000000
+end
+item: Remark
+end
+item: Remark
+  Text=DESKTOPICON 变量用来确定安装完成后是否在桌面添加程序图标，可能的值是A(添加)或B(不添加)
+end
+item: Set Variable
+  Variable=DESKTOPICON
+  Value=B
+  Flags=10000000
+end
+item: Remark
+end
+item: Remark
+  Text=BRANDING 决定安装程序是否需要用一个姓名和公司绑定。默认地，这将写入到 INST 目录(安装介质)
+end
+item: Set Variable
+  Variable=BRANDING
+  Value=0
+end
+item: If/While Statement
+  Variable=BRANDING
+  Value=1
+end
+item: Read INI Value
+  Variable=NAME
+  Pathname=%INST%\CUSTDATA.INI
+  Section=Registration
+  Item=Name
+end
+item: Read INI Value
+  Variable=COMPANY
+  Pathname=%INST%\CUSTDATA.INI
+  Section=Registration
+  Item=Company
+end
+item: If/While Statement
+  Variable=NAME
+end
+item: Set Variable
+  Variable=DOBRAND
+  Value=1
+end
+item: Get System Information
+  Variable=NAME
+  Flags=00000110
+end
+item: Get System Information
+  Variable=COMPANY
+  Flags=00000111
+end
+item: End Block
+end
+item: End Block
+end
+item: Remark
+end
+item: Remark
+  Text=向导循环包含在安装程序中用户将看到的对话框屏幕
+end
+item: Remark
+  Text=如果您想更改对话框中的图形，您需要双击向导循环行并更改位图路径来改变它
+end
+item: Wizard Block
+  Direction Variable=DIRECTION
+  Display Variable=DISPLAY
+  Bitmap Pathname=%_WISE_%\Dialogs\TEMPLATE\TopImage.bmp
+  X Position=0
+  Y Position=0
+  Filler Color=8421376
+  Flags=00000001
+end
+item: Remark
+  Text=如果你要修改自定义对话框的大小，你只需要修改“欢迎”窗口。  
+end
+item: Remark
+  Text=它的尺寸是所有位于向导循环中的后续对话框的模板
+end
+item: Custom Dialog Set
+  Name=欢迎
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=%APPTITLE%
+    Title French=%APPTITLE%
+    Title German=%APPTITLE%
+    Title Portuguese=%APPTITLE% 
+    Title Spanish=%APPTITLE%
+    Title Italian=%APPTITLE%
+    Title Danish=%APPTITLE%
+    Title Dutch=%APPTITLE%
+    Title Norwegian=%APPTITLE%
+    Title Swedish=%APPTITLE%
+    Width=290
+    Height=238
+    Font Name=宋体
+    Font Size=9
+    Flags=0000000100000000
+    item: Push Button
+      Rectangle=186 200 228 214
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=下一步(&N) >
+      Text French=&Suivant>
+      Text German=&Weiter>
+      Text Portuguese=&Pr髕imo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&N鎠te>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&N鋝ta >
+    end
+    item: Push Button
+      Rectangle=237 200 279 214
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=取消
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Annuller
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=0 193 285 194
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=100 10 278 44
+      Destination Dialog=4
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Text=欢迎使用“%APPTITLE%”安装程序。本程序将安装“%APPTITLE%”到您的计算机中。
+      Text French=Bienvenue sur le programme d'installation %APPTITLE%. Ce programme va installer %APPTITLE% sur votre ordinateur.
+      Text German=Willkommen im Installationsprogramm f黵 %APPTITLE%. Dieses Programm installiert  %APPTITLE% auf Ihrem Computer.
+      Text Portuguese=Bem-vindo ao programa de configura玢o %APPTITLE%. Este programa instalar?%APPTITLE% no seu computador
+      Text Spanish=Bienvenido al programa de Configuraci髇 %APPTITLE%. Este programa instalar?%APPTITLE en su ordenador
+      Text Italian=Benvenuto nel programma di installazione di %APPTITLE%. Con questo programma puoi installare %APPTITLE% sul tuo computer.
+      Text Danish=Velkommen til %APPTITLE% installationsprogrammet. Dette program installerer %APPTITLE% p?computeren.
+      Text Dutch=Welkom bij het %APPTITLE% installatieprogramma. Dit programma installeert %APPTITLE% op uw computer.
+      Text Norwegian=Velkommen til %APPTITLE% Oppsett-program. Dette programmet vil installere %APPTITLE% p?datamaskinen din.
+      Text Swedish=V鋖kommen till installationsprogrammet f鰎 %APPTITLE%. Detta program installerar %APPTITLE% p?din dator.
+    end
+    item: Static
+      Rectangle=100 50 278 190
+      Destination Dialog=4
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Text=强烈建议您在运行本安装程序前退出其他所有正在运行的程序。
+      Text=
+      Text=单击“取消”按钮可以退出安装程序以关闭其他正在运行的程序，或者单击“下一步”按钮继续安装程序。
+      Text=
+      Text=警告：本计算机程序受版权法和国际条约保护。
+      Text=
+      Text=未经授权复制或散播本计算机程序或其中的一部分，将受到严厉的民事或刑事处罚，并将在法律许可的范围内受到最大可能的起诉。
+      Text French=Il vous est fortement recommand?de fermer tous les programmes Windows avant d'ex閏uter le Programme d'Installation.
+      Text French=
+      Text French=Cliquez sur Annuler pour quitter l'Installation et fermez tous les programmes actuellement utilis閟. Cliquez sur Suivant pour continuer l'installation.
+      Text French=
+      Text French=ATTENTION : Ce programme est prot間?par la loi sur les droits d'exploitation et par les trait閟 internationaux.
+      Text French=
+      Text French=Toute reproduction ou distribution, m阭e partielle, de ce programme qui n'aura pas re鐄 d'autorisation pr閍lable fera l'objet de poursuites et sera s関鑢ement sanctionn閑 par le droit civil et p閚al.
+      Text German=Wir empfehlen nachdr點klich, vor Ausf黨ren dieses Installationsprogramms alle Windows-Programme zu beenden. 
+      Text German=
+      Text German=Auf Abbrechen klicken, um die Installation zu beenden und alle laufenden Programme zu schlie遝n. Auf Weiter klicken, um mit dem Installationsprogramm zu beginnen.
+      Text German=
+      Text German=WARNUNG: Dieses Programm ist urheberrechtlich sowie durch internationale Vertr鋑e gesch黷zt. 
+      Text German=
+      Text German=Die unzul鋝sige Vervielf鋖tigung oder Verbreitung dieses Programms, ob ganz oder auszugsweise, kann schwere zivil- und strafrechtliche Konsequenzen nach sich ziehen und wird unter voller Aussch鰌fung der Rechtsmittel geahndet.
+      Text Portuguese=Recomenda-se insistentemente que saia de todos os programas do Windows antes de executar este Programa de Configura玢o.
+      Text Portuguese=
+      Text Portuguese=Fa鏰 um clique sobre Cancelar para sair da Configura玢o e feche todos os programas que estiver a executar. Fa鏰 um clique sobre Pr髕imo para continuar com o programa de configura玢o
+      Text Portuguese=
+      Text Portuguese=AVISO: Este programa est?protegido pela lei de direitos do autor e tratados internacionais
+      Text Portuguese=
+      Text Portuguese=A reprodu玢o e a distribui玢o sem autoriza玢o deste programa, ou qualquer parte dele, pode dar lugar ?aplica玢o de severas san珲es civis e criminais, e ser鉶 perseguidas ?extens鉶 m醲ima permitida pela lei.
+      Text Spanish=Se recomienda encarecidamente que salga de todos los programas Windows antes de ejecutar este programa de Configuraci髇.
+      Text Spanish=
+      Text Spanish=Haga un clic en Cancelar para abandonar la Configuraci髇 y cerrar cualquier programa que haya estado ejecutando. Haga un clic en Siguiente para continuar con el programa de Configuraci髇.
+      Text Spanish=
+      Text Spanish=AVISO: Este programa est?protegido por las leyes de derechos de autor y tratados internacionales.
+      Text Spanish=
+      Text Spanish=La reproducci髇 o distribuci髇 no autorizadas de este programa, o cualquier parte de 閘, podr韆 dar como resultado rigurosas multas civiles y penales, y se entablar?la m醲ima acci髇 judicial que permita la ley.
+      Text Italian=Ti consigliamo di uscire da tutti i programmi Windows prima di eseguire questo programma di installazione.
+      Text Italian=
+      Text Italian=Fai clic su Annulla per uscire dal programma di installazione e chiudi tutti i programmi aperti. Fai clic su Avanti per continuare con il programma di Installazione.
+      Text Italian=
+      Text Italian=AVVERTENZA: Questo programma ?protetto ai sensi delle norme di legge e delle convenzioni internazionali in materia di diritti di copyright.
+      Text Italian=
+      Text Italian=La riproduzione o la distribuzione totale o parziale non autorizzata di questo programma potr?essere soggetta a penalit?civili e penali, e sar?punita con la massima severit?possibile a norma di legge.
+      Text Danish=Det anbefales kraftigt at afslutte alle Windows programmer, inden man k鴕er dette installationsprogram.
+      Text Danish=
+      Text Danish=Klik p?Annuller for at forlade installationsprogrammet og lukke alle igangv鎟ende programmer. Klik p?N鎠te for at forts鎡te med installationsprogrammet.
+      Text Danish=
+      Text Danish=ADVARSEL: Dette program er beskyttet af copyright og internationale traktater. 
+      Text Danish=
+      Text Danish=Uautoriseret gengivelse eller videresalg af dette program eller dele heraf kan f鴕e til streng civil- og/eller kriminel stra. Retsforf鴏gning heraf vil finde sted i det videste omfang der hjemles muligt.
+      Text Dutch=Het wordt aangeraden om alle Windows programma's af te sluiten voordat u met de installatie van dit programma begint.
+      Text Dutch=
+      Text Dutch=Klik op Annuleren om de installatie te verlaten en eventueel nog lopende programma's af te sluiten. Klik op Volgende om verder te gaan met het Installatieprogramma.
+      Text Dutch=
+      Text Dutch=WAARSCHUWING: dit computerprogramma is auteursrechtelijk beschermd.
+      Text Dutch=
+      Text Dutch=Onrechtmatige verveelvoudiging of distributie van dit programma of een gedeelte ervan is verboden en strafbaar en zal met alle beschikbare juridische middelen worden bestreden.
+      Text Norwegian=Det anbefales p?det sterkeste at du avslutter alle Windows-programmer f鴕 du kj鴕er dette Oppsett-programmet.
+      Text Norwegian=
+      Text Norwegian=Velg Avbryt for ?avbryte Oppsett og lukk alle programmer som er i bruk. Velg Neste for ?fortsette med Oppsett-programmet.
+      Text Norwegian=
+      Text Norwegian=ADVARSEL: Dette programmet er beskyttet i henhold til lover om opphavsrett og internasjonale konvensjoner.
+      Text Norwegian=
+      Text Norwegian=Uautorisert kopiering eller distribuering av dette programmet eller deler av det, vil resultere i alvorlig sivil og kriminell straff og vil f鴕e til saksm錶 i h鴜est mulig utstrekning i henhold til loven. 
+      Text Swedish=Du tillr錮s best鋗t att g?ur alla Windows-program innan du k鰎 installationsprogrammet.
+      Text Swedish=
+      Text Swedish=Klicka p?Avbryt f鰎 att g?ur installationsprogrammet och st鋘g eventuella program som du har laddade. Klicka p?N鋝ta f鰎 att forts鋞ta med installationen.
+      Text Swedish=
+      Text Swedish=VARNING: Detta program 鋜 skyddat av upphovsr鋞ten och internationella avtal.
+      Text Swedish=
+      Text Swedish=Om du utan tillst錸d kopierar eller distribuerar detta program eller delar av det kan det bli allvarliga civilr鋞tsliga och brottsr鋞tliga straffp錰鰈jder. Vi beivrar s錮ana 鰒ertr鋎elser i den allra h鰃sta utstr鋍kning som lagen till錿er.
+    end
+    item: Static
+      Rectangle=0 0 285 193
+      Action=2
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000001011
+      Pathname=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+      Pathname French=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+      Pathname German=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+      Pathname Portuguese=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+      Pathname Spanish=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+      Pathname Italian=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+      Pathname Danish=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+      Pathname Dutch=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+      Pathname Norwegian=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+      Pathname Swedish=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+    end
+  end
+end
+remarked item: Custom Dialog Set
+  Name=许可协议
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=%APPTITLE%
+    Title French=Contrat de licence
+    Title German=Lizenzvertrag
+    Title Portuguese=Acordo de Licen鏰
+    Title Spanish=Acuerdo de Licencia
+    Title Italian=Contratto di Licenza
+    Title Danish=Licensaftale
+    Title Dutch=Vergunningscontract
+    Title Norwegian=Lisensavtale:
+    Title Swedish=Licensavtal
+    Width=290
+    Height=238
+    Font Name=宋体
+    Font Size=9
+    item: Push Button
+      Rectangle=222 200 264 214
+      Variable=ACCEPT
+      Value=N
+      Action=3
+      Create Flags=01010000000000010000000000000001
+      Text=否(&N)
+      Text French=&Non
+      Text German=&Nein
+      Text Portuguese=&N鉶
+      Text Spanish=&No
+      Text Italian=&No
+      Text Danish=&Nej
+      Text Dutch=&Nee
+      Text Norwegian=&Nei
+      Text Swedish=&Nej [If "No" stands for a negative answer. If it stands for "number", it is "nr."]
+    end
+    item: Push Button
+      Rectangle=173 200 215 214
+      Variable=ACCEPT
+      Value=B
+      Create Flags=01010000000000010000000000000000
+      Text=是(&Y)
+      Text French=&Oui
+      Text German=&Ja
+      Text Portuguese=&Sim
+      Text Spanish=&S?
+      Text Danish=&Ja
+      Text Dutch=&Ja
+      Text Norwegian=&Ja
+      Text Swedish=&Ja
+    end
+    item: Editbox
+      Rectangle=13 50 266 154
+      Value=%TEMP%\%READMEFILE%
+      Help Context=16711681
+      Create Flags=01010000101000000000100000000100
+    end
+    item: Static
+      Rectangle=10 5 235 14
+      Destination Dialog=4
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Flags=0000000000000001
+      Name=宋体
+      Font Style=-12 0 0 0 700 0 0 0 0 3 2 1 34
+      Text=许可协议
+      Text French=Veuillez lire le contrat de licence suivant. Utilisez la barre de d閒ilement pour prendre connaissance du reste du contrat
+      Text German=Bitte lesen Sie sich den folgenden Lizenzvertrag durch. Benutzen Sie die Bildlaufleiste, um den Rest des Vertrages zu lesen.
+      Text Portuguese=?favor ler o acordo de licen鏰 seguinte. Utilize a barra de deslocamento para ver o resto deste acordo.
+      Text Spanish=Se ruega leer el siguiente acuerdo de licencia. Utilice la barra de desplazamiento para visualizar el resto de este acuerdo.
+      Text Italian=Leggi il seguente contratto di licenza. Utilizza la barra di scorrimento per visualizzare il resto di questo accordo. 
+      Text Danish=L鎠 f鴏gende licensaftale. Brug rullepanelet til at l鎠e resten af aftalen.
+      Text Dutch=Lees het volgende vergunningscontract a.u.b. door. Gebruik de schuifbalk om de rest van het contract te lezen.
+      Text Norwegian=V鎟 vennlig ?lese igjennom den f鴏gende lisensavtalen. Bruk rullefeltet for ?se resten av denne denne avtalen.
+      Text Swedish=L鋝 genom f鰈jande licensavtal. Anv鋘d rullringslisten s?att du kan l鋝a hela avtalet.
+    end
+    item: Static
+      Rectangle=12 160 266 187
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Text=您接受上述协议的所有条款吗？如果接受，单击“是”按钮。如果选择“不”，安装程序将被关闭。
+      Text French=Acceptez-vous tous les termes de ce contrat de licence ? Si oui, cliquez sur Oui. Si vous cliquez sur Non, l'Installation va se terminer
+      Text German=Akzeptieren Sie alle Bedingungen des zuvor eingeblendeten Lizenzvertrages? Dann klicken Sie auf die Schaltfl鋍he Ja. Wenn Sie Nein w鋒len, wird die Installation abgebrochen.
+      Text Portuguese=Aceita todos os termos do acordo de licen鏰 anterior? Se sim, fa鏰 um clique sobre o bot鉶 Sim. Se seleccionar N鉶, a Configura玢o fechar?
+      Text Spanish=緼cepta todos los t閞minos del acuerdo de licencia anterior? Si afirmativo, haga un clic en el bot髇 de S? Si selecciona NO, se finalizar?la Configuraci髇.
+      Text Italian=Accetti tutte le condizioni di questo contratto di licenza? Dai conferma cliccando su S? Se indichi il contrario cliccando su No, il programma di installazione si chiude.
+      Text Danish=Kan De acceptere alle betingelserne i denne licensaftale? I bekr鎓tende fald trykkes p?Ja trykknappen. V鎙ger De Nej, lukker Setup.
+      Text Dutch=Aanvaardt u alle voorwaarden van bovenstaand vergunningscontract? Zo ja, klik dan op Ja. Als u Nee kiest, sluit het installatieprogramma.
+      Text Norwegian=Godtar du alle vilk錼ene i den foreg錯nde avtalen? Hvis ja, trykk p?Ja-tasten. Hvis du velger Nei vil Oppsett avsluttes.
+      Text Swedish=Accepterar du samtliga villkor i licensavtalet ovan? Klicka i s?fall p?Ja. Om du v鋖jer Nej, avslutas installationsprogrammet.
+    end
+    item: Static
+      Rectangle=58 191 273 192
+      Action=4
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000100
+    end
+    item: Static
+      Rectangle=0 187 71 195
+      Destination Dialog=4
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000001
+      Flags=0000000000000001
+      Name=宋体
+      Font Style=-12 0 0 0 400 0 0 0 134 3 2 1 2
+      Text=Wise 安装向导?
+    end
+  end
+  item: Dialog
+  end
+  item: Dialog
+    Title=%APPTITLE%
+    Title French=%APPTITLE%
+    Title German=%APPTITLE%
+    Title Portuguese=%APPTITLE%
+    Title Spanish=%APPTITLE%
+    Title Italian=%APPTITLE%
+    Title Danish=%APPTITLE%
+    Title Dutch=%APPTITLE%
+    Title Norwegian=%APPTITLE%
+    Title Swedish=%APPTITLE%
+    Width=290
+    Height=238
+    Font Name=宋体
+    Font Size=9
+    item: Push Button
+      Rectangle=186 200 228 214
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=下一步(&N) >
+      Text French=&Suivant>
+      Text German=&Weiter>
+      Text Portuguese=&Pr髕imo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&N鎠te>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&N鋝ta >
+    end
+    item: Push Button
+      Rectangle=144 200 186 214
+      Variable=DIRECTION
+      Value=B
+      Create Flags=01010000000000010000000000000000
+      Flags=0000000000000001
+      Text=<上一步(&B)
+      Text French=<&Retour
+      Text German=<&Zur點k
+      Text Portuguese=<&Retornar
+      Text Spanish=<&Retroceder
+      Text Italian=< &Indietro
+      Text Danish=<&Tilbage
+      Text Dutch=<&Terug
+      Text Norwegian=<&Tilbake
+      Text Swedish=< &Tillbaka
+    end
+    item: Push Button
+      Rectangle=237 200 279 214
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=取消
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Annuller
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=58 191 273 192
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=20 50 270 125
+      Create Flags=01010000000000000000000000000000
+      Text=安装程序将安装“%APPTITLE%”到下边的目录中。
+      Text=
+      Text=若想安装到不同的目录，请单击“浏览”按钮，并选择另外的目录。
+      Text=
+      Text=您可以选择“取消”按钮退出安装程序从而不安装“%APPTITLE%”。
+      Text French=%APPTITLE% va 阾re install?dans le r閜ertoire ci-dessous.
+      Text French=
+      Text French=Pour l'installer dans un r閜ertoire diff閞ent, cliquez sur Parcourir et s閘ectionnez un autre r閜ertoire.
+      Text French=
+      Text French=Vous pouvez choisir de ne pas installer %APPTITLE% en cliquant sur Annuler pour quitter l'Installation.
+      Text German=Installation speichert %APPTITLE% im unten angegebenen Ordner:
+      Text German=
+      Text German=Zur Installation in einem anderen Ordner auf Bl鋞tern klicken und einen anderen Ordner w鋒len.
+      Text German=
+      Text German=Wenn Sie %APPTITLE% nicht installieren m鯿hten, k鰊nen Sie durch Klicken auf Abbrechen die Installation beenden.
+      Text Portuguese=Configura玢o instalar?%APPTITLE% na seguinte pasta
+      Text Portuguese=
+      Text Portuguese=Para instalar numa pasta diferente, fa鏰 um clique sobre Procurar, e seleccione uma outra pasta.
+      Text Portuguese=
+      Text Portuguese=Pode escolher n鉶 instalar %APPTITLE% clicando no bot鉶 Cancelar para sair da Configura玢o
+      Text Spanish=El programa de Configuraci髇 instalar?%APPTITLE% en la siguiente carpeta.
+      Text Spanish=
+      Text Spanish=Para instalar en una carpeta diferente, haga un clic en Visualizar, y seleccione otra carpeta.
+      Text Spanish=
+      Text Spanish=Puede elegir no instalar %APPTITLE% haciendo un clic en Cancelar para salir de Configuraci髇.
+      Text Italian=Il programma di installazione installer?%APPTITLE% nella seguente cartella.
+      Text Italian=
+      Text Italian=Per effettuare l抜nstallazione in una cartella diversa, fai clic su Sfoglia, e scegli un抋ltra cartella.
+      Text Italian=
+      Text Italian=Puoi scegliere di non installare %APPTITLE% facendo clic su Annulla per uscire dal programma di installazione
+      Text Danish=Installationsprogrammet installerer %APPTITLE% i denne mappe.
+      Text Danish=
+      Text Danish=Man installerer i en anden mappe ved at klikke p?Browse og v鎙ge en anden mappe.
+      Text Danish=
+      Text Danish=Man kan v鎙ge ikke at installere %APPTITLE% ved at klikke p?Slet og forlade installationsprogrammet.
+      Text Dutch=Het installatieprogramma installeert %APPTITLE% in de volgende directory.
+      Text Dutch=
+      Text Dutch=Als u het in een andere directory wilt installeren, klik dan op Bladeren en kies een andere locatie.
+      Text Dutch=
+      Text Dutch=U kunt ervoor kiezen om %APPTITLE% niet te installeren: klik op Annuleren om het installatieprogramma te verlaten.
+      Text Norwegian=Oppsett vil installere %APPTITLE% i f鴏gende mappe.
+      Text Norwegian=
+      Text Norwegian=For ?installere i en annen mappe, klikk Bla igjennom og velg en annen mappe.
+      Text Norwegian=
+      Text Norwegian=Du kan velge ?ikke installere %APPTITLE% ved ?velge Avbryt for ?g?ut av Oppsett.
+      Text Swedish=Installationsprogrammet installerar %APPTITLE% i f鰈jande mapp.
+      Text Swedish=
+      Text Swedish=Om du vill att installationen ska g鰎as i en annan mapp, klickar du p?Bl鋎dra och v鋖jer en annan mapp.
+      Text Swedish=
+      Text Swedish=Du kan v鋖ja att inte installera %APPTITLE% genom att klicka p?Avbryt f鰎 att l鋗na installationsprogrammet.
+    end
+    item: Static
+      Rectangle=20 134 270 162
+      Action=1
+      Create Flags=01010000000000000000000000000111
+      Text=目标目录
+      Text French=R閜ertoire de destination
+      Text German=Zielordner
+      Text Portuguese=Pasta de Destino
+      Text Spanish=Carpeta de Destino
+      Text Italian=Cartella di destinazione
+      Text Danish=Destinationsmappe
+      Text Dutch=Doeldirectory
+      Text Norwegian=M錶mappe
+      Text Swedish=Destinationsmapp
+    end
+    item: Push Button
+      Rectangle=220 143 262 157
+      Variable=MAINDIR_SAVE
+      Value=%MAINDIR%
+      Destination Dialog=1
+      Action=2
+      Create Flags=01010000000000010000000000000000
+      Text=浏览(&R)...
+      Text French=P&arcourir
+      Text German=B&l鋞tern...
+      Text Portuguese=P&rocurar
+      Text Spanish=V&isualizar...
+      Text Italian=Sfoglia...
+      Text Danish=&Gennemse...
+      Text Dutch=B&laderen...
+      Text Norwegian=Bla igjennom
+      Text Swedish=&Bl鋎dra
+    end
+    item: Static
+      Rectangle=25 146 215 157
+      Destination Dialog=2
+      Create Flags=01010000000000000000000000000000
+      Text=%MAINDIR%
+      Text French=%MAINDIR%
+      Text German=%MAINDIR%
+      Text Portuguese=%MAINDIR%
+      Text Spanish=%MAINDIR%
+      Text Italian=%MAINDIR%
+      Text Danish=%MAINDIR%
+      Text Dutch=%MAINDIR%
+      Text Norwegian=%MAINDIR%
+      Text Swedish=%MAINDIR%
+    end
+    item: Static
+      Rectangle=10 5 235 14
+      Destination Dialog=4
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Flags=0000000000000001
+      Name=宋体
+      Font Style=-12 0 0 0 700 0 0 0 0 3 2 1 34
+      Text=请选择目标目录
+      Text French=Choisissez la localisation de destination
+      Text German=Zielpfad w鋒len
+      Text Portuguese=Escolher Local de Destino
+      Text Spanish=Elegir una localizaci髇 de destino
+      Text Italian=Scegli Posizione di Destinazione
+      Text Danish=V鎙g destinationsmappe
+      Text Dutch=Kies doellocatie
+      Text Norwegian=Velg m錶plassering
+      Text Swedish=V鋖j st鋖le f鰎 installationen    
+    end
+    item: Static
+      Rectangle=0 187 71 195
+      Destination Dialog=4
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000001
+      Flags=0000000000000001
+      Name=宋体
+      Font Style=-12 0 0 0 400 0 0 0 134 3 2 1 2
+      Text=Wise 安装向导?
+    end
+  end
+  item: Dialog
+    Title=选择目标目录
+    Title French=Choisissez le r閜ertoire de destination
+    Title German=Zielverzeichnis w鋒len
+    Title Portuguese=Seleccionar Direct髍io de Destino
+    Title Spanish=Seleccione el Directorio de Destino
+    Title Italian=Seleziona Directory di destinazione
+    Title Danish=V鎙g Destinationsbibliotek
+    Title Dutch=Kies doeldirectory
+    Title Norwegian=Velg m錶katalog
+    Title Swedish=V鋖j destinationskalatog
+    Width=221
+    Height=173
+    Font Name=宋体
+    Font Size=9
+    item: Listbox
+      Rectangle=5 5 160 150
+      Variable=MAINDIR
+      Create Flags=01010000100000010000000101000001
+      Flags=0000110000000010
+      Text=%MAINDIR%
+      Text=
+      Text French=%MAINDIR%
+      Text German=%MAINDIR%
+      Text Portuguese=%MAINDIR%
+      Text Spanish=%MAINDIR%
+      Text Italian=%MAINDIR%
+      Text Danish=%MAINDIR%
+      Text Dutch=%MAINDIR%
+      Text Norwegian=%MAINDIR%
+      Text Swedish=%MAINDIR%
+    end
+    item: Push Button
+      Rectangle=167 5 212 20
+      Create Flags=01010000000000010000000000000001
+      Text=确定
+      Text French=OK
+      Text German=OK
+      Text Portuguese=OK
+      Text Spanish=ACEPTAR
+      Text Italian=OK
+      Text Danish=OK
+      Text Dutch=OK
+      Text Norwegian=OK
+      Text Swedish=OK
+    end
+    item: Push Button
+      Rectangle=167 25 212 40
+      Variable=MAINDIR
+      Value=%MAINDIR_SAVE%
+      Create Flags=01010000000000010000000000000000
+      Flags=0000000000000001
+      Text=取消
+      Text French=Annuler
+      Text German=Abbrechen 
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Slet
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+  end
+end
+item: Custom Dialog Set
+  Name=选择图标组名称
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=%APPTITLE%
+    Title French=%APPTITLE%
+    Title German=%APPTITLE%
+    Title Portuguese=%APPTITLE%
+    Title Spanish=%APPTITLE%
+    Title Italian=%APPTITLE%
+    Title Danish=%APPTITLE%
+    Title Dutch=%APPTITLE%
+    Title Norwegian=%APPTITLE%
+    Title Swedish=%APPTITLE%
+    Width=290
+    Height=238
+    Font Name=宋体
+    Font Size=9
+    item: Push Button
+      Rectangle=186 200 228 214
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=下一步(&N) >
+      Text French=&Suivant>
+      Text German=&Weiter>
+      Text Portuguese=&Pr髕imo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&N鎠te>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&N鋝ta >
+    end
+    item: Push Button
+      Rectangle=144 200 186 214
+      Variable=DIRECTION
+      Value=B
+      Create Flags=01010000000000010000000000000000
+      Flags=0000000000000001
+      Text=< 上一步(&B)
+      Text French=<&Retour
+      Text German=<&Zur點k
+      Text Portuguese=<&Retornar
+      Text Spanish=<&Retroceder
+      Text Italian=< &Indietro
+      Text Danish=<&Back
+      Text Dutch=<&Terug
+      Text Norwegian=<&Tilbake
+      Text Swedish=< &Tillbaka
+    end
+    item: Push Button
+      Rectangle=237 200 279 214
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=取消
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Slet
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=58 191 273 192
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=20 50 270 71
+      Create Flags=01010000000000000000000000000000
+      Text=请输入要添加“%APPTITLE%”图标的程序管理器组名称：
+      Text French=Entrez le nom du groupe du Gestionnaire de Programmes o?placer les ic鬾es %APPTITLE% ?:
+      Text German=Den Namen der Programm-Managergruppe w鋒len, in der die %APPTITLE%-Symbole gespeichert werden sollen:
+      Text Portuguese=Introduzir o nome do Grupo Gestor de Programa para acrescentar os 韈ones %APPTITLE% para:
+      Text Spanish=Introduzca el nombre del grupo del Administrador del Programa para a馻dir los iconos %APPTITLE para:
+      Text Italian=Inserisci il nome del gruppo Program Manager per aggiungere le icone di %APPTITLE% a:
+      Text Danish=Indtast navnet p?Programstyringsgruppen der skal tilf鴍es %APPTITLE% elementer:
+      Text Dutch=Breng de naam van de programmabeheergroep in waaraan u %APPTITLE%-pictogrammen wilt toevoegen.
+      Text Norwegian=Tast inn navnet p?programbehandlingsgruppen for ?legge %APPTITLE%-ikoner til:
+      Text Swedish=Skriv in namnet p?den grupp i Programhanteraren d鋜 du vill ha ikonerna f鰎 %APPTITLE%:
+    end
+    item: Combobox
+      Rectangle=20 75 270 175
+      Variable=GROUP
+      Create Flags=01010000001000010000001100000001
+      Flags=0000000000000001
+      Text=%GROUP%
+      Text=
+      Text French=%GROUP%
+      Text French=
+      Text German=%GROUP%
+      Text German=
+      Text Portuguese=%GROUP%
+      Text Portuguese=
+      Text Spanish=%GROUP%
+      Text Spanish=
+      Text Italian=%GROUP%
+      Text Italian=
+      Text Danish=%GROUP%
+      Text Danish=
+      Text Dutch=%GROUP%
+      Text Dutch=
+      Text Norwegian=%GROUP%
+      Text Norwegian=
+      Text Swedish=%GROUP%
+      Text Swedish=
+    end
+    item: Static
+      Rectangle=0 187 71 195
+      Destination Dialog=4
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000001
+      Flags=0000000000000001
+      Name=宋体
+      Font Style=-12 0 0 0 400 0 0 0 134 3 2 1 2
+      Text=Wise 安装向导?
+    end
+    item: Static
+      Rectangle=10 5 235 14
+      Destination Dialog=4
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Flags=0000000000000001
+      Name=宋体
+      Font Style=-12 0 0 0 700 0 0 0 0 3 2 1 34
+      Text=选择程序管理器组
+      Text French=S閘ectionnez le Groupe du Gestionnaire de Programmes
+      Text German=Programm-Managergruppe w鋒len
+      Text Portuguese=Seleccionar o Grupo Gestor de Programas
+      Text Spanish=Seleccione el Grupo del Administrador del Programa
+      Text Italian=Seleziona il gruppo Program Manager
+      Text Danish=V鎙g Programstyringsgruppen
+      Text Dutch=Kies Programmabeheergroep.
+      Text Norwegian=Velg Programbehandlingsgruppen
+      Text Swedish=V鋖j grupp i Programhanteraren
+    end
+  end
+end
+remarked item: Custom Dialog Set
+  Name=安装选项
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=%APPTITLE%
+    Title French=%APPTITLE%
+    Title German=%APPTITLE%
+    Title Portuguese=%APPTITLE%
+    Title Spanish=%APPTITLE%
+    Title Italian=%APPTITLE%
+    Title Danish=%APPTITLE%
+    Title Dutch=%APPTITLE%
+    Title Norwegian=%APPTITLE%
+    Title Swedish=%APPTITLE%
+    Width=290
+    Height=238
+    Font Name=宋体
+    Font Size=9
+    item: Push Button
+      Rectangle=186 200 228 214
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=下一步(&N) >
+      Text French=&Suivant>
+      Text German=&Weiter>
+      Text Portuguese=&Pr髕imo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&N鎠te>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&N鋝ta >
+    end
+    item: Push Button
+      Rectangle=144 200 186 214
+      Variable=DIRECTION
+      Value=B
+      Create Flags=01010000000000010000000000000000
+      Text=< 上一步(&B)
+      Text French=<&Retour
+      Text German=<&Zur點k
+      Text Portuguese=<&Retornar
+      Text Spanish=<&Retroceder
+      Text Italian=< &Indietro
+      Text Danish=<&Tilbage
+      Text Dutch=<&Terug
+      Text Norwegian=<&Tilbake
+      Text Swedish=< &Tillbaka
+    end
+    item: Push Button
+      Rectangle=237 200 279 214
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=取消
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Annuller
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=58 191 273 192
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=0 187 71 195
+      Destination Dialog=4
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000001
+      Flags=0000000000000001
+      Name=宋体
+      Font Style=-12 0 0 0 400 0 0 0 134 3 2 1 2
+      Text=Wise 安装向导?
+    end
+    item: Static
+      Rectangle=10 5 235 14
+      Destination Dialog=4
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Flags=0000000000000001
+      Name=宋体
+      Font Style=-12 0 0 0 700 0 0 0 0 3 2 1 34
+      Text=安装选项
+      Text French=Commencer l'installation
+      Text German=Installation beginnen
+      Text Portuguese=Iniciar Instala玢o
+      Text Spanish=Comenzar la Instalaci髇
+      Text Italian=Avvia Installazione
+      Text Danish=Start installationen
+      Text Dutch=Start de installatie
+      Text Norwegian=Start installeringen
+      Text Swedish=Starta installationen
+    end
+    item: Static
+      Rectangle=19 50 269 66
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Text=请选择你要执行的操作：
+    end
+    item: Static
+      Rectangle=20 69 270 178
+      Action=4
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000101
+    end
+    item: Checkbox
+      Rectangle=35 97 260 112
+      Variable=DESKTOPICON
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000010000000000000011
+      Text=在桌面添加程序图标
+      Text=
+    end
+  end
+end
+item: Custom Dialog Set
+  Name=开始安装
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=%APPTITLE%
+    Title French=%APPTITLE%
+    Title German=%APPTITLE%
+    Title Portuguese=%APPTITLE%
+    Title Spanish=%APPTITLE%
+    Title Italian=%APPTITLE%
+    Title Danish=%APPTITLE%
+    Title Dutch=%APPTITLE%
+    Title Norwegian=%APPTITLE%
+    Title Swedish=%APPTITLE%
+    Width=290
+    Height=238
+    Font Name=宋体
+    Font Size=9
+    item: Push Button
+      Rectangle=186 200 228 214
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=下一步(&N) >
+      Text French=&Suivant>
+      Text German=&Weiter>
+      Text Portuguese=&Pr髕imo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&N鎠te>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&N鋝ta >
+    end
+    item: Push Button
+      Rectangle=144 200 186 214
+      Variable=DIRECTION
+      Value=B
+      Create Flags=01010000000000010000000000000000
+      Text=< 上一步(&B)
+      Text French=<&Retour
+      Text German=<&Zur點k
+      Text Portuguese=<&Retornar
+      Text Spanish=<&Retroceder
+      Text Italian=< &Indietro
+      Text Danish=<&Tilbage
+      Text Dutch=<&Terug
+      Text Norwegian=<&Tilbake
+      Text Swedish=< &Tillbaka
+    end
+    item: Push Button
+      Rectangle=237 200 279 214
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=取消
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Annuller
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=58 191 273 192
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=20 50 270 94
+      Create Flags=01010000000000000000000000000000
+      Text=现在准备安装“%APPTITLE%”。
+      Text=
+      Text=点击“下一步”按钮开始安装或点击“上一步”按钮重新输入安装信息。
+      Text French=Vous 阾es maintenant pr阾 ?installer %APPTITLE%.
+      Text French=
+      Text French=Cliquez sur Suivant pour commencer l'installation ou Retour pour entrer ?nouveau les informations d'installation.
+      Text German=Sie sind jetzt zur Installation von %APPTITLE% bereit.
+      Text German=
+      Text German=Auf die Schaltfl鋍he Weiter klicken, um mit dem Start der Installation zu beginnen, oder auf die Schaltfl鋍he Zur點k, um die Installationsinformationen nochmals aufzurufen.
+      Text Portuguese=Est?agora pronto para instalar %APPTITLE%
+      Text Portuguese=
+      Text Portuguese=Pressione o bot鉶 Pr髕imo para come鏰r a instala玢o ou o bot鉶 Retornar para introduzir novamente a informa玢o sobre a instala玢o
+      Text Spanish=Ahora estar?listo para instalar %APPTITLE%.
+      Text Spanish=
+      Text Spanish=Pulse el bot髇 de Siguiente para comenzar la instalaci髇 o el bot髇 Retroceder para volver a introducir la informaci髇 sobre la instalaci髇.
+      Text Italian=Sei pronto ad installare %APPTITLE%.
+      Text Italian=
+      Text Italian=Premi il tasto Avanti per iniziare l抜nstallazione o il tasto Indietro per rientrare nuovamente nei dati sull抜nstallazione
+      Text Danish=Du er nu klar til at installere %APPTITLE%.
+      Text Danish=
+      Text Danish=Klik p?N鎠te for at starte installationen eller p?Tilbage for at 鎛dre installationsoplysningerne.
+      Text Dutch=U bent nu klaar om %APPTITLE% te installeren.
+      Text Dutch=
+      Text Dutch=Druk op Volgende om met de installatie te beginnen of op Terug om de installatie-informatie opnieuw in te voeren.
+      Text Norwegian=Du er n?klar til ?installere %APPTITLE%
+      Text Norwegian=
+      Text Norwegian=Trykk p?Neste-tasten for ?starte installeringen, eller Tilbake-tasten for ?taste inn installasjonsinformasjonen p?nytt.
+      Text Swedish=Du 鋜 nu redo att installera %APPTITLE%.
+      Text Swedish=
+      Text Swedish=Tryck p?N鋝ta f鰎 att starta installationen eller p?Tillbaka f鰎 att skriva in installationsinformationen p?nytt.
+    end
+    item: Static
+      Rectangle=0 187 71 195
+      Destination Dialog=4
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000001
+      Flags=0000000000000001
+      Name=宋体
+      Font Style=-12 0 0 0 400 0 0 0 134 3 2 1 2
+      Text=Wise 安装向导?
+    end
+    item: Static
+      Rectangle=10 5 235 14
+      Destination Dialog=4
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Flags=0000000000000001
+      Name=宋体
+      Font Style=-12 0 0 0 700 0 0 0 0 3 2 1 34
+      Text=开始安装
+      Text French=Commencer l'installation
+      Text German=Installation beginnen
+      Text Portuguese=Iniciar Instala玢o
+      Text Spanish=Comenzar la Instalaci髇
+      Text Italian=Avvia Installazione
+      Text Danish=Start installationen
+      Text Dutch=Start de installatie
+      Text Norwegian=Start installeringen
+      Text Swedish=Starta installationen
+    end
+  end
+end
+item: Remark
+  Text=这将重新初始化 BACKUP 目录以便它反映用户对 MAINDIR 所作的更改
+end
+item: If/While Statement
+  Variable=DISPLAY
+  Value=选择目标目录
+end
+item: Set Variable
+  Variable=BACKUP
+  Value=%MAINDIR%\BACKUP
+end
+item: End Block
+end
+item: End Block
+end
+item: Remark
+end
+item: Remark
+  Text=当启动 BACKUP 特性时，BACKUPDIR 被初始化
+end
+item: If/While Statement
+  Variable=DOBACKUP
+  Value=A
+end
+item: Set Variable
+  Variable=BACKUPDIR
+  Value=%BACKUP%
+end
+item: End Block
+end
+item: Remark
+end
+item: Remark
+  Text=BRANDING 信息被写入到安装介质中的 INI 文件
+end
+item: If/While Statement
+  Variable=BRANDING
+  Value=1
+end
+item: If/While Statement
+  Variable=DOBRAND
+  Value=1
+end
+item: Edit INI File
+  Pathname=%INST%\CUSTDATA.INI
+  Settings=[Registration]
+  Settings=NAME=%NAME%
+  Settings=COMPANY=%COMPANY%
+  Settings=
+end
+item: End Block
+end
+item: End Block
+end
+item: Remark
+end
+item: Remark
+  Text=开始写入 INSTALL.LOG
+end
+item: Open/Close INSTALL.LOG
+end
+item: Remark
+end
+item: Remark
+  Text=检查剩余磁盘空间根据组件长度计算剩余磁盘空间
+end
+item: Remark
+  Text=它必须位于所有安装文件动作之前
+end
+item: Check Disk Space
+  Component=COMPONENTS
+end
+item: Remark
+end
+item: Remark
+  Text=这个引入脚本允许卸载支持
+end
+item: Include Script
+  Pathname=%_WISE_%\INCLUDE\uninstal.wse
+end
+item: Install File
+  Source=C:\ALL_ENV\SalesManagementSystem\CreatePackage\PackageTool\Config.ini
+  Destination=%MAINDIR%\Client\Config.ini
+  Flags=0000000010000010
+end
+item: Install File
+  Source=C:\ALL_ENV\SalesManagementSystem\CreatePackage\PackageTool\MainPortal.exe
+  Destination=%MAINDIR%\Client\销售管理系统.exe
+  Flags=0000000010000010
+end
+item: Install File
+  Source=C:\ALL_ENV\SalesManagementSystem\CreatePackage\PackageTool\Update.ini
+  Destination=%MAINDIR%\Client\Update.ini
+  Flags=0000000010000010
+end
+item: Install File
+  Source=C:\ALL_ENV\SalesManagementSystem\CreatePackage\PackageTool\installPackage\qtintf70.dll
+  Destination=%MAINDIR%\Client\qtintf70.dll
+  Flags=0000000010000011
+end
+item: Install File
+  Source=C:\ALL_ENV\SalesManagementSystem\CreatePackage\PackageTool\installPackage\qtintf.dll
+  Destination=%MAINDIR%\Client\qtintf.dll
+  Flags=0000000010000011
+end
+item: Install File
+  Source=C:\ALL_ENV\SalesManagementSystem\CreatePackage\PackageTool\installPackage\DBLinker.exe
+  Destination=%MAINDIR%\Client\DBLinker.exe
+  Flags=0000000010000010
+end
+item: Install File
+  Source=C:\ALL_ENV\SalesManagementSystem\CreatePackage\PackageTool\installPackage\BSGManagement.exe
+  Destination=%MAINDIR%\Client\BSGManagement.exe
+  Flags=0000000010000011
+end
+item: Create Directory
+  Pathname=%MAINDIR%\Client\DBBackup
+end
+item: Create Directory
+  Pathname=%MAINDIR%\Client\UpgradeLog
+end
+item: Create Directory
+  Pathname=%MAINDIR%\Client\Package
+end
+item: Remark
+end
+item: Remark
+  Text=以下两行重新设置 COMMON 和 MAINDIR 为短文件名。这是为了向前兼容。
+end
+item: Set Variable
+  Variable=COMMON
+  Value=%COMMON%
+  Flags=00010100
+end
+item: Set Variable
+  Variable=MAINDIR
+  Value=%MAINDIR%
+  Flags=00010100
+end
+item: Remark
+end
+item: Remark
+  Text=这个 IF/THEN/ELSE 为快捷方式/图标放置读取正确的注册表项目
+end
+item: Check Configuration
+  Flags=10111011
+end
+item: Get Registry Key Value
+  Variable=STARTUPDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%WIN%\Start Menu\Programs\StartUp
+  Value Name=StartUp
+  Flags=00000010
+end
+item: Get Registry Key Value
+  Variable=DESKTOPDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%WIN%\Desktop
+  Value Name=Desktop
+  Flags=00000010
+end
+item: Get Registry Key Value
+  Variable=STARTMENUDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%WIN%\Start Menu
+  Value Name=Start Menu
+  Flags=00000010
+end
+item: Get Registry Key Value
+  Variable=GROUPDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%WIN%\Start Menu\Programs
+  Value Name=Programs
+  Flags=00000010
+end
+item: Get Registry Key Value
+  Variable=CSTARTUPDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%STARTUPDIR%
+  Value Name=Common Startup
+  Flags=00000100
+end
+item: Get Registry Key Value
+  Variable=CDESKTOPDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%DESKTOPDIR%
+  Value Name=Common Desktop
+  Flags=00000100
+end
+item: Get Registry Key Value
+  Variable=CSTARTMENUDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%STARTMENUDIR%
+  Value Name=Common Start Menu
+  Flags=00000100
+end
+item: Get Registry Key Value
+  Variable=CGROUPDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%GROUPDIR%
+  Value Name=Common Programs
+  Flags=00000100
+end
+item: Set Variable
+  Variable=CGROUP_SAVE
+  Value=%GROUP%
+end
+item: Set Variable
+  Variable=GROUP
+  Value=%GROUPDIR%\%GROUP%
+end
+item: Create Shortcut
+  Source=%MAINDIR%\Client\销售管理系统.exe
+  Destination=%DESKTOPDIR%\销售管理系统.lnk
+  Working Directory=%MAINDIR%\Client
+  Icon Number=0
+  Icon Pathname=%MAINDIR%\Client\销售管理系统.exe
+  Key Type=1536
+  Flags=00000001
+end
+item: Else Statement
+end
+item: Add ProgMan Icon
+  Group=%GROUP%
+  Icon Name=销售管理系统
+  Command Line=%MAINDIR%\Client\面料销售管理系统.exe
+  Icon Pathname=%MAINDIR%\Client\销售管理系统.exe
+  Default Directory=%MAINDIR%\Client
+  Flags=01000000
+end
+item: End Block
+end
+item: Remark
+end
+item: Create Shortcut
+  Source=%MAINDIR%\Client\入职管理系统.exe
+  Destination=%DESKTOPDIR%
+  Working Directory=%MAINDIR%\Client\
+  Icon Number=0
+  Icon Pathname=%MAINDIR%\Client\入职管理系统.exe
+  Key Type=1536
+  Flags=00000001
+end
+item: Remark
+end
+item: Remark
+  Text=所有可自注册的 OCX/DLL/EXE 文件
+end
+item: Self-Register OCXs/DLLs
+end
+item: Remark
+end
+item: Remark
+  Text=这个向导循环结束安装
+end
+item: Wizard Block
+  Direction Variable=DIRECTION
+  Display Variable=DISPLAY
+  Bitmap Pathname=%_WISE_%\Dialogs\Template\SideImage.bmp
+  X Position=0
+  Y Position=0
+  Filler Color=8421440
+  Flags=00000011
+end
+item: Custom Dialog Set
+  Name=完成
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=%APPTITLE%
+    Title French=%APPTITLE%
+    Title German=%APPTITLE%
+    Title Portuguese=%APPTITLE%
+    Title Spanish=%APPTITLE%
+    Title Italian=%APPTITLE%
+    Title Danish=%APPTITLE%
+    Title Dutch=%APPTITLE%
+    Title Norwegian=%APPTITLE%
+    Title Swedish=%APPTITLE%
+    Width=290
+    Height=238
+    Font Name=宋体
+    Font Size=9
+    Flags=0000000100000000
+    item: Push Button
+      Rectangle=186 200 228 214
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=完成(&F) >
+      Text French=&Terminer>
+      Text German=&Fertigstellen>
+      Text Portuguese=&Terminar >
+      Text Spanish=&Finalizar>
+      Text Italian=&Fine >
+      Text Danish=&Afslut >
+      Text Dutch=&Klaar>
+      Text Norwegian=&Avslutt>
+      Text Swedish=&Sluta>
+    end
+    item: Push Button
+      Control Name=CANCEL
+      Rectangle=237 200 279 214
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=取消
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Annuller
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=0 193 285 194
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=100 10 275 66
+      Destination Dialog=4
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Text=“%APPTITLE%”已经成功地安装。
+      Text=
+      Text=
+      Text=点击“完成”按钮退出安装程序。
+      Text=
+      Text French=L'installation de %APPTITLE% est r閡ssie.
+      Text French=
+      Text French=
+      Text French=Cliquez sur Terminer pour quitter cette installation.
+      Text French=
+      Text German=%APPTITLE% wurde erfolgreich installiert.
+      Text German=
+      Text German=
+      Text German=Zum Beenden dieser Installation Fertigstellen anklicken.
+      Text German=
+      Text Portuguese=%APPTITLE% foi instalado com 陎ito
+      Text Portuguese=
+      Text Portuguese=
+      Text Portuguese=Pressionar o bot鉶 Terminar para sair desta instala玢o
+      Text Portuguese=
+      Text Spanish=%APPTITLE% se ha instalado con 閤ito.
+      Text Spanish=
+      Text Spanish=
+      Text Spanish=Pulse el bot髇 de Finalizar para salir de esta instalaci髇.
+      Text Spanish=
+      Text Italian=%APPTITLE% ?stato installato.
+      Text Italian=
+      Text Italian=
+      Text Italian=Premi il pulsante Fine per uscire dal programma di installazione
+      Text Italian=
+      Text Danish=%APPTITLE% er nu installeret korrekt.
+      Text Danish=
+      Text Danish=
+      Text Danish=Klik p?Afslut for at afslutte installationen.
+      Text Danish=
+      Text Dutch=%APPTITLE% is met succes ge飊stalleerd.
+      Text Dutch=
+      Text Dutch=
+      Text Dutch=Druk op Klaar om deze installatie af te ronden.
+      Text Dutch=
+      Text Norwegian=Installasjonen av %APPTITLE% er vellykket.
+      Text Norwegian=
+      Text Norwegian=
+      Text Norwegian=Trykk p?Avslutt-tasten for ?avslutte denne installasjonen.
+      Text Norwegian=
+      Text Swedish=Installationen av %APPTITLE% har lyckats.
+      Text Swedish=
+      Text Swedish=
+      Text Swedish=Tryck p?Sluta f鰎 att g?ur installationsprogrammet.
+      Text Swedish=
+    end
+    item: Push Button
+      Control Name=BACK
+      Rectangle=144 200 186 214
+      Variable=DIRECTION
+      Value=B
+      Create Flags=01010000000000010000000000000000
+      Text=< 上一步(&B)
+      Text French=<&Retour
+      Text German=<&Zur點k
+      Text Portuguese=<&Retornar
+      Text Spanish=<&Retroceder
+      Text Italian=< &Indietro
+      Text Danish=<&Tilbage
+      Text Dutch=<&Terug
+      Text Norwegian=<&Tilbake
+      Text Swedish=< &Tillbaka
+    end
+    item: Static
+      Rectangle=0 0 285 193
+      Action=2
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000001011
+      Pathname=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+      Pathname French=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+      Pathname German=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+      Pathname Portuguese=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+      Pathname Spanish=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+      Pathname Italian=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+      Pathname Danish=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+      Pathname Dutch=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+      Pathname Norwegian=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+      Pathname Swedish=%_WISE_%\DIALOGS\TEMPLATE\SideImage.bmp
+    end
+    item: Set Control Attribute
+      Control Name=BACK
+      Operation=1
+    end
+    item: Set Control Attribute
+      Control Name=CANCEL
+      Operation=1
+    end
+  end
+end
+item: End Block
+end
+item: Edit Registry
+  Total Keys=1
+  Key=Software\Microsoft\Windows\CurrentVersion\Uninstall\%APPTITLE%
+  New Value=%MAINDIR%\Client\销售管理系统.exe,-0
+  Value Name=DisplayIcon
+  Root=2
+end
+item: New Event
+  Name=Exit
+end
+item: If/While Statement
+  Variable=RUN
+  Value=A
+end
+item: Execute Program
+  Pathname=%MAINDIR%\？？.exe
+  Default Directory=%MAINDIR%\
+end
+item: End Block
+end
+item: New Event
+  Name=Cancel
+end
+item: Remark
+  Text=这个引入脚本支持一个恢复操作以便在安装完成之前用户选择取消时回到安装前状态
+end
+item: Include Script
+  Pathname=%_WISE_%\INCLUDE\rollback.wse
+end

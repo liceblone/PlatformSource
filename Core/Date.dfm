@@ -1,0 +1,85 @@
+object DateFrm: TDateFrm
+  Left = 202
+  Top = 171
+  BorderStyle = bsToolWindow
+  Caption = #26085#26399#36873#25321
+  ClientHeight = 185
+  ClientWidth = 465
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = #23435#20307
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Button1: TButton
+    Left = 376
+    Top = 8
+    Width = 81
+    Height = 22
+    Caption = #30830#23450
+    Default = True
+    ModalResult = 1
+    TabOrder = 0
+  end
+  object Button2: TButton
+    Left = 376
+    Top = 40
+    Width = 81
+    Height = 22
+    Cancel = True
+    Caption = #21462#28040
+    ModalResult = 2
+    TabOrder = 1
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 361
+    Height = 185
+    Align = alLeft
+    Caption = 'Panel1'
+    TabOrder = 2
+    object MonthCalendar1: TMonthCalendar
+      Left = 1
+      Top = 1
+      Width = 359
+      Height = 183
+      Align = alClient
+      BiDiMode = bdRightToLeft
+      CalColors.BackColor = clWhite
+      CalColors.TextColor = 16711808
+      CalColors.TitleBackColor = 16750848
+      Date = 37337.960144155090000000
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = #23435#20307
+      Font.Style = []
+      ParentBiDiMode = False
+      ParentFont = False
+      TabOrder = 0
+    end
+  end
+  object ChkNull: TCheckBox
+    Left = 376
+    Top = 152
+    Width = 97
+    Height = 17
+    Caption = #20540#20026#31354
+    TabOrder = 3
+  end
+  object TimeTPicker: TDateTimePicker
+    Left = 376
+    Top = 80
+    Width = 81
+    Height = 21
+    Date = 40258.703762476850000000
+    Time = 40258.703762476850000000
+    Kind = dtkTime
+    TabOrder = 4
+  end
+end
