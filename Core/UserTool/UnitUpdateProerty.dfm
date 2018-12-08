@@ -133,7 +133,9 @@ object FrmUpdateProperty: TFrmUpdateProperty
         'TDBListBox =11'
         'TDBComboBox  =12*       '
         'TDBImage =13'
-        'TDBFile=14')
+        'TDBFile=14'
+        'TdbBarCode=15'
+        'TdbQrCode=16')
       TabOrder = 0
       OnClick = rg1Click
     end

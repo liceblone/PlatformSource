@@ -5018,35 +5018,7 @@ begin
 
   l:=0;
   t:=4;
-                       {
-  if DLGrid<>nil then
-  if TModelDbGrid(DLGrid).NeedSumRow then
-  begin
-     for i:=0 to DLGrid.Columns.Count -1 do
-     begin
-        if  DLGrid.Columns[i].Visible then
-        begin
-          lbl:=TQRLabel.Create(fParent) ;
-          //Txt:=TQRDBtext.Create(fParent) ;
-          with lbl do
-          begin
-           Parent:=fParent; Left:=l; top:=t; 
-           Caption :=TChyColumn(DLGrid.Columns[i]).GroupValue  ;
-            Font.Assign(Fnt);
-            Frame.DrawLeft:=True;
-            AutoSize :=False;
-            AutoStretch :=false;
-            Alignment:= DLGrid.Columns[i].Alignment  ;//Vl_GetAlignment(fDictDataSet.FieldByName('F03').asInteger);
-            width:=DLGrid.Columns[i].Width ;
-            Frame.Width :=1;
-
-            l :=left +DLGrid.Columns[i].Width +ConstGap ;
-          end;
-
-        end;
-     end;
-  end;
-      }
+                        
   fParent.Height:=t+40;
   fDictDataSet.Close;
   Fnt.Free;

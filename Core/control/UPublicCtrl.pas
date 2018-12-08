@@ -25,7 +25,7 @@ type Tedit_Mtn= class(TEdit)
     FCollector:Tstrings;
     BoxId:string;        //记录boxid，删除控键时用到  2006-5-8
     FieldID        :integer;
-    DataSourceType :Integer;    // 0 as maindataset  , 1 as dlgrid  dl
+    DLDataSourceType :Integer;    // 0 as maindataset  , 1 as dlgrid  dl
     constructor Create(AOwner: TComponent); override;
     property isUserMode:Boolean read FisUserMode write SetisUserMode default False;
 end;
@@ -649,6 +649,7 @@ begin
   end;      
 end;
 
+ 
 
 procedure Tedit_Mtn.SetisUserMode(const Value: Boolean);
 begin

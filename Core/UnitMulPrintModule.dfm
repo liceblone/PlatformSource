@@ -2,7 +2,7 @@ object FrmMulModulePrint: TFrmMulModulePrint
   Left = 396
   Top = 181
   Width = 464
-  Height = 432
+  Height = 440
   Caption = #36873#25321#25171#21360#27169#26495
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -15,14 +15,14 @@ object FrmMulModulePrint: TFrmMulModulePrint
   OnDblClick = FormDblClick
   DesignSize = (
     456
-    405)
+    413)
   PixelsPerInch = 96
   TextHeight = 13
   object StrGridPrintModule: TStringGrid
     Left = 18
     Top = 8
     Width = 319
-    Height = 273
+    Height = 265
     Hint = #21452#20987#21487#25913#21464#24403#21069#20540
     Anchors = [akLeft, akTop, akRight, akBottom]
     ColCount = 2
@@ -41,9 +41,9 @@ object FrmMulModulePrint: TFrmMulModulePrint
   end
   object BtnPreview: TButton
     Left = 351
-    Top = 9
+    Top = 8
     Width = 96
-    Height = 25
+    Height = 26
     Anchors = [akTop, akRight]
     Caption = #25171#21360#39044#35272'(&P)'
     Default = True
@@ -105,9 +105,9 @@ object FrmMulModulePrint: TFrmMulModulePrint
   end
   object GroupBox1: TGroupBox
     Left = 16
-    Top = 288
+    Top = 280
     Width = 321
-    Height = 113
+    Height = 129
     Anchors = [akLeft, akRight, akBottom]
     Caption = #25171#21360#35774#32622
     TabOrder = 7
@@ -115,50 +115,50 @@ object FrmMulModulePrint: TFrmMulModulePrint
       Left = 2
       Top = 16
       Width = 317
-      Height = 95
+      Height = 111
       Align = alBottom
       TabOrder = 0
       object lblheight: TLabel
-        Left = 276
+        Left = 272
         Top = 29
         Width = 12
         Height = 13
-        Caption = #38271
+        Caption = #39640
       end
       object lblwidth: TLabel
-        Left = 276
+        Left = 272
         Top = 7
         Width = 12
         Height = 13
         Caption = #23485
       end
       object Label3: TLabel
-        Left = 106
+        Left = 98
         Top = 5
-        Width = 39
+        Width = 42
         Height = 13
-        Caption = #24038#36793#36317' '
+        Caption = #24038#36793#36317'  '
       end
       object Label4: TLabel
-        Left = 193
+        Left = 185
         Top = 5
-        Width = 39
+        Width = 42
         Height = 13
-        Caption = #21491#36793#36317' '
+        Caption = #21491#36793#36317'  '
       end
       object Label5: TLabel
-        Left = 106
+        Left = 98
         Top = 31
-        Width = 39
+        Width = 42
         Height = 13
-        Caption = #19978#36793#36317' '
+        Caption = #19978#36793#36317'  '
       end
       object Label6: TLabel
-        Left = 193
+        Left = 185
         Top = 31
-        Width = 39
+        Width = 42
         Height = 13
-        Caption = #19979#36793#36317' '
+        Caption = #19979#36793#36317'  '
       end
       object lblTitle: TLabel
         Left = 8
@@ -183,7 +183,7 @@ object FrmMulModulePrint: TFrmMulModulePrint
         OnClick = btnFontClick
       end
       object edtLeftMargin: TDBEdit
-        Left = 146
+        Left = 142
         Top = 0
         Width = 41
         Height = 21
@@ -193,7 +193,7 @@ object FrmMulModulePrint: TFrmMulModulePrint
         TabOrder = 1
       end
       object edtRightMargin: TDBEdit
-        Left = 234
+        Left = 228
         Top = 0
         Width = 41
         Height = 21
@@ -203,7 +203,7 @@ object FrmMulModulePrint: TFrmMulModulePrint
         TabOrder = 2
       end
       object edtTopMargin: TDBEdit
-        Left = 146
+        Left = 142
         Top = 24
         Width = 41
         Height = 21
@@ -213,7 +213,7 @@ object FrmMulModulePrint: TFrmMulModulePrint
         TabOrder = 3
       end
       object edtBtmMargin: TDBEdit
-        Left = 234
+        Left = 228
         Top = 24
         Width = 41
         Height = 21
@@ -223,7 +223,7 @@ object FrmMulModulePrint: TFrmMulModulePrint
         TabOrder = 4
       end
       object edtWidth: TDBEdit
-        Left = 290
+        Left = 285
         Top = 0
         Width = 34
         Height = 21
@@ -233,18 +233,18 @@ object FrmMulModulePrint: TFrmMulModulePrint
         TabOrder = 5
       end
       object edtHeight: TDBEdit
-        Left = 290
+        Left = 285
         Top = 24
         Width = 33
         Height = 21
-        DataField = 'FRptWidth'
+        DataField = 'FRptHeight'
         DataSource = DataSource1
         ImeName = #19975#33021#20116#31508'EXE'#22806#25346#29256
         TabOrder = 6
       end
       object RdgpOrientation: TDBCheckBox
         Left = 235
-        Top = 64
+        Top = 56
         Width = 73
         Height = 17
         Caption = #32437#21521#25171#21360
@@ -256,13 +256,26 @@ object FrmMulModulePrint: TFrmMulModulePrint
       end
       object ChkDrawGrid: TDBCheckBox
         Left = 147
-        Top = 64
+        Top = 56
         Width = 49
         Height = 17
         Caption = #36793#26694
         DataField = 'FHasVline'
         DataSource = DataSource1
         TabOrder = 8
+        ValueChecked = 'True'
+        ValueUnchecked = 'False'
+      end
+      object dbChkLabelTemplate: TDBCheckBox
+        Left = 147
+        Top = 80
+        Width = 78
+        Height = 17
+        Caption = #26631#31614#27169#26495
+        DataField = 'FLabelTemplate'
+        DataSource = DataSource1
+        ReadOnly = True
+        TabOrder = 9
         ValueChecked = 'True'
         ValueUnchecked = 'False'
       end
@@ -302,7 +315,17 @@ object FrmMulModulePrint: TFrmMulModulePrint
     Visible = False
     OnClick = BtnNextClick
   end
-  object ADODataSet1: TADODataSet
+  object btnExit: TButton
+    Left = 351
+    Top = 336
+    Width = 97
+    Height = 26
+    Anchors = [akTop, akRight]
+    Caption = #36864#20986
+    TabOrder = 11
+    OnClick = btnExitClick
+  end
+  object DatasetReport: TADODataSet
     Parameters = <>
     Left = 384
     Top = 368
@@ -317,8 +340,16 @@ object FrmMulModulePrint: TFrmMulModulePrint
     Top = 368
   end
   object DataSource1: TDataSource
-    DataSet = ADODataSet1
+    DataSet = DatasetReport
     Left = 416
     Top = 368
+  end
+  object frReport1: TfrReport
+    InitialZoom = pzDefault
+    PreviewButtons = [pbZoom, pbLoad, pbSave, pbPrint, pbFind, pbHelp, pbExit]
+    RebuildPrinter = False
+    Left = 328
+    Top = 368
+    ReportForm = {19000000}
   end
 end

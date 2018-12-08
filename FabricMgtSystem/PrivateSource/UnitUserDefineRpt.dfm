@@ -1,6 +1,6 @@
 object FrmUserDefineReport: TFrmUserDefineReport
-  Left = 267
-  Top = 209
+  Left = 285
+  Top = 88
   Width = 910
   Height = 606
   Caption = 'FrmUserDefineReport'
@@ -121,7 +121,7 @@ object FrmUserDefineReport: TFrmUserDefineReport
     Top = 57
     Width = 201
     Height = 484
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alLeft
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -134,7 +134,7 @@ object FrmUserDefineReport: TFrmUserDefineReport
         Cursor = crVSplit
         Align = alTop
       end
-      object LstUserFields: TListBox
+      object LstMDatasetFields: TListBox
         Left = 0
         Top = 0
         Width = 193
@@ -142,7 +142,7 @@ object FrmUserDefineReport: TFrmUserDefineReport
         Align = alTop
         ItemHeight = 13
         TabOrder = 0
-        OnMouseMove = LstUserFieldsMouseMove
+        OnMouseMove = LstMDatasetFieldsMouseMove
       end
       object LstGridFields: TListBox
         Left = 0
@@ -184,8 +184,8 @@ object FrmUserDefineReport: TFrmUserDefineReport
       object Label2: TLabel
         Left = 8
         Top = 88
-        Width = 41
-        Height = 25
+        Width = 36
+        Height = 13
         Caption = #26631#31614#21517
         WordWrap = True
       end

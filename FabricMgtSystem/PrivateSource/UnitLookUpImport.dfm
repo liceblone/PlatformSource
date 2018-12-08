@@ -20,9 +20,9 @@ object FrmLoopUpImPortEx: TFrmLoopUpImPortEx
   TextHeight = 13
   object ScrollTop: TScrollBox
     Left = 0
-    Top = 0
+    Top = 25
     Width = 621
-    Height = 64
+    Height = 16
     Align = alTop
     BorderStyle = bsNone
     Color = clBtnHighlight
@@ -31,24 +31,10 @@ object FrmLoopUpImPortEx: TFrmLoopUpImPortEx
     OnDblClick = ScrollTopDblClick
     DesignSize = (
       621
-      64)
-    object Label3: TLabel
-      Left = 0
-      Top = 41
-      Width = 621
-      Height = 4
-      Align = alTop
-      Alignment = taRightJustify
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -4
-      Font.Name = #23435#20307
-      Font.Style = []
-      ParentFont = False
-    end
+      16)
     object OpnDlDsBtn1: TSpeedButton
       Left = 487
-      Top = 36
+      Top = 2
       Width = 52
       Height = 21
       Anchors = [akRight]
@@ -77,9 +63,9 @@ object FrmLoopUpImPortEx: TFrmLoopUpImPortEx
       Top = 0
       Width = 621
       Height = 16
-      Align = alTop
+      Align = alClient
       Alignment = taCenter
-      Caption = #20154
+      Caption = #20154#20154#20154#20154
       Font.Charset = GB2312_CHARSET
       Font.Color = clWindowText
       Font.Height = -16
@@ -87,48 +73,12 @@ object FrmLoopUpImPortEx: TFrmLoopUpImPortEx
       Font.Style = [fsBold]
       ParentFont = False
     end
-    object CoolBar1: TCoolBar
-      Left = 0
-      Top = 16
-      Width = 621
-      Height = 25
-      Bands = <
-        item
-          Control = ToolBar1
-          ImageIndex = -1
-          Width = 617
-        end>
-      Images = dmFrm.ImageList1
-      object ToolBar1: TToolBar
-        Left = 9
-        Top = 0
-        Width = 51
-        Height = 25
-        Align = alLeft
-        AutoSize = True
-        ButtonWidth = 51
-        Caption = 'ToolBar1'
-        EdgeBorders = []
-        Flat = True
-        Images = dmFrm.ImageList1
-        List = True
-        ShowCaptions = True
-        TabOrder = 0
-        object ToolButton1: TToolButton
-          Left = 0
-          Top = 0
-          Caption = #23548#20837
-          ImageIndex = 0
-          Visible = False
-        end
-      end
-    end
   end
   object TreeView1: TTreeView
     Left = 0
-    Top = 64
+    Top = 41
     Width = 145
-    Height = 117
+    Height = 140
     Align = alLeft
     BevelEdges = [beLeft, beTop]
     BevelInner = bvNone
@@ -143,12 +93,48 @@ object FrmLoopUpImPortEx: TFrmLoopUpImPortEx
   end
   object pnlGd: TPanel
     Left = 145
-    Top = 64
+    Top = 41
     Width = 476
-    Height = 117
+    Height = 140
     Align = alClient
     Caption = 'pnlGd'
     TabOrder = 2
+  end
+  object CoolBar1: TCoolBar
+    Left = 0
+    Top = 0
+    Width = 621
+    Height = 25
+    Bands = <
+      item
+        Control = ToolBar1
+        ImageIndex = -1
+        Width = 617
+      end>
+    Images = dmFrm.ImageList1
+    object ToolBar1: TToolBar
+      Left = 9
+      Top = 0
+      Width = 51
+      Height = 25
+      Align = alLeft
+      AutoSize = True
+      ButtonWidth = 51
+      Caption = 'ToolBar1'
+      EdgeBorders = []
+      Flat = True
+      Images = dmFrm.ImageList1
+      List = True
+      ShowCaptions = True
+      TabOrder = 0
+      object ToolButton1: TToolButton
+        Left = 0
+        Top = 0
+        Caption = #23548#20837
+        ImageIndex = 0
+        Visible = False
+      end
+    end
   end
   object ActionList1: TActionList
     Images = dmFrm.ImageList1

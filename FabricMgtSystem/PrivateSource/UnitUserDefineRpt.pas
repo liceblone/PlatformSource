@@ -22,7 +22,7 @@ type
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
     TabSheet2: TTabSheet;
-    LstUserFields: TListBox;
+    LstMDatasetFields: TListBox;
     lstSysFields: TListBox;
     TabSheet3: TTabSheet;
     GrpCtrlType: TRadioGroup;
@@ -64,12 +64,9 @@ type
 
     procedure CreateCtrl(grp:TGroupbox; Source: TObject; X,  Y: Integer);
 
-    procedure LstUserFieldsMouseMove(Sender: TObject; Shift: TShiftState;
-      X, Y: Integer);
-    procedure lstSysFieldsMouseMove(Sender: TObject; Shift: TShiftState; X,
-      Y: Integer);
-    procedure grpBtmDragOver(Sender, Source: TObject; X, Y: Integer;
-      State: TDragState; var Accept: Boolean);
+    procedure LstMDatasetFieldsMouseMove(Sender: TObject; Shift: TShiftState;  X, Y: Integer);
+    procedure lstSysFieldsMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+    procedure grpBtmDragOver(Sender, Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean);
     procedure grpBtmDragDrop(Sender, Source: TObject; X, Y: Integer);
 
     procedure SavePorpertyToDataBase( source: Tcomponent;BOXID:string;ModelID:String);
@@ -79,8 +76,7 @@ type
     procedure ToolButton1Click(Sender: TObject);
     procedure SaveCtrl(Grp:TgroupBox;BoxID:string;ModelID:String);
     procedure SaveQrGridCols(pGrid: TDBGrid; ModelID: String);
-    procedure ToolButton2Click(Sender: TObject);
-
+    procedure ToolButton2Click(Sender: TObject); 
 
     procedure MouseDown(Sender: TObject;    Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure MouseUp(Sender: TObject;    Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -99,16 +95,12 @@ type
     procedure ToolButton10Click(Sender: TObject);
     procedure ToolButton12Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure imgtopMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
-    procedure imgtopMouseMove(Sender: TObject; Shift: TShiftState; X,
-      Y: Integer);
-    procedure imgtopMouseUp(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
+    procedure imgtopMouseDown(Sender: TObject; Button: TMouseButton;  Shift: TShiftState; X, Y: Integer);
+    procedure imgtopMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+    procedure imgtopMouseUp(Sender: TObject; Button: TMouseButton;   Shift: TShiftState; X, Y: Integer);
     procedure FormResize(Sender: TObject);
     procedure imgtopDragDrop(Sender, Source: TObject; X, Y: Integer);
-    procedure imgtopDragOver(Sender, Source: TObject; X, Y: Integer;
-      State: TDragState; var Accept: Boolean);
+    procedure imgtopDragOver(Sender, Source: TObject; X, Y: Integer;  State: TDragState; var Accept: Boolean);
     procedure TlbtnExpandClick(Sender: TObject);
     procedure TlbtnsuoxiaoClick(Sender: TObject);
     procedure tblSpantoSmallClick(Sender: TObject);
@@ -150,6 +142,7 @@ type
   public
     { Public declarations }
      PPrintId:string;
+     IsLabelTemplate:boolean;
      Procedure IniDefinePrt(fMasterDataSet:TDataSet;DatasetID, topboxid,   pBtmboxid,pmodelID: string;Midgird:Tdbgrid=nil );
 
      function GetMaxPrintModuleID:integer;
@@ -175,54 +168,45 @@ procedure TFrmUserDefineReport.IniDefinePrt(fMasterDataSet:TDataSet;DatasetID, t
   asql:string ;
 begin
     if pBtmboxid='' then
-    grpBtm.Visible :=False ;
+        grpBtm.Visible :=False ;
 
     FContentDataSet:=fMasterDataSet;
     FDataSetID :=DatasetID;
     FTopBoxID:=topboxid;
     FBtmBoxID:=pBtmboxid;
     FGird:=Midgird;
-
     modelID:=  pmodelID ;
     FMtdatasetID:=DatasetID;
-
     iniUserFields(DatasetID);
     IniSysFileds();
 
-    if Midgird<>nil then
-    begin
+    if IsLabelTemplate then
+      GrpTop.Align :=alclient;
 
+    grpBtm.visible :=  not self.IsLabelTemplate ;
+    GridPrt.visible :=  not self.IsLabelTemplate ;
+    
+    if ( Midgird<>nil ) and ( not self.IsLabelTemplate )   then
+    begin 
       asql:='insert into '+dmFrm.ADOConnection1.DefaultDatabase +'.dbo.T516 ';
       asql:=asql+'(F02,F03,F04,F05,F06,F07,F08,F09,F10,F11,F12,F13,F14,F15,F16,F17,F18,F19,F20,F21,F22,F23,F24,F200,F27,F28,F29) ';
-
-
       asql:=asql+'select '+quotedstr(ModelID)+', col.F03,col.F04,col.F05,col.F06,col.F07,col.F08,col.F09,col.F10, ';
       asql:=asql+'col.F11,col.F12,col.F13,col.F14,col.F15,col.F16,col.F17,col.F18,col.F19,col.F20,col.F21,col.F22,col.F23,col.F24,col.F200,col.F27,col.F28,col.F29 ';
       asql:=asql+' from t505 col join T102 fld on col.f03=fld.f01 ';
       asql:=asql+' where col.f02='+IntToStr(Midgird.Tag )    ;
       asql:=asql+' and fld.f02  not in (select ufld.f02 from '+dmFrm.ADOConnection1.DefaultDatabase +'.dbo.T516 uCol join T102 ufld on col.f03=ufld.f01  where uCol.f02= '+quotedstr(ModelID )+') ';
 
-
-      //asql:=asql+' select '+quotedstr(ModelID)+',F03,F04,F05,F06,F07,F08,F09,F10,F11,F12,F13,F14,F15,F16,F17,F18,F19,F20,F21,F22,F23,F24,F200,F27,F28,F29 from t505 where f02='+IntToStr(Midgird.Tag ) ;
-      //asql:=asql+' and f03 not in (select f03 from '+dmFrm.ADOConnection1.DefaultDatabase +'.dbo.T516 where f02= '+quotedstr(ModelID )+')' ;
-      FhlKnl1.Kl_GetQuery2(asql,False);   {   }
+     FhlKnl1.Kl_GetQuery2(asql,False);   {   }
      FhlKnl1.Cf_SetDbGrid_PRT (modelID,GridPrt );
-
-     for i:=0 to GridPrt.Columns.Count -1 do
-     begin
-        LstGridFields.Items.Add(gridprt.Columns[i].FieldName+'='+ gridprt.Columns[i].Title.Caption ) ;
-     end;
-
-
-      {
-    fGridId:=inttostr(Midgird.tag);
-    for i:=0 to  Midgird.Columns.Count -1 do
-    begin
-      col:=self.dbgrd1.Columns.Add;
-      col.Title :=  Midgird.Columns[i].Title ;  //self.dbgrd1.Columns.Assign( Midgird.Columns[i]) ;
-       col.Visible :=  Midgird.Columns[i].Visible  ;
-    end; }
     end;
+
+    if Midgird<>nil then
+      for i:=0 to Midgird.Columns.Count -1 do
+      begin 
+        LstGridFields.Items.Add(Midgird.Columns[i].FieldName+'='+ Midgird.Columns[i].Title.Caption ) ;
+      end;
+
+
 end;
 procedure  TFrmUserDefineReport.IniSysFileds();
 begin
@@ -247,7 +231,7 @@ begin
       qry.SQL.Add(sql);
       qry.open ;
 
-      LstUserFields.Clear;
+      LstMDatasetFields.Clear;
 
              
       if not qry.IsEmpty then
@@ -255,7 +239,7 @@ begin
             while not qry.Eof do
             begin
                   values:= qry.FieldByName('name').AsString +'=' + qry.FieldByName('label').AsString ;
-                  LstUserFields.items.Add(values) ;
+                  LstMDatasetFields.items.Add(values) ;
                   qry.Next;
             end;
       end;  {
@@ -277,11 +261,11 @@ begin
   end;
 
 end;
-procedure TFrmUserDefineReport.LstUserFieldsMouseMove(Sender: TObject;
+procedure TFrmUserDefineReport.LstMDatasetFieldsMouseMove(Sender: TObject;
   Shift: TShiftState; X, Y: Integer);
 begin
     if shift= [ssLeft] then
-      LstUserFields.BeginDrag(true);
+      LstMDatasetFields.BeginDrag(true);
 end;
 
 procedure TFrmUserDefineReport.CreateCtrl(grp:TGroupbox; Source: TObject; X,  Y: Integer);
@@ -327,19 +311,16 @@ begin
           CTRL.ReadOnly :=true;
           CTRL.OnMouseDown:=MouseDown;
           CTRL.OnDblClick :=DblClick_Ex;
-          CTRL.OnMouseUp  :=MouseUp;
-          CTRL.FCollector := FCollector;
-          CTRL.OnMouseDown:=MouseDown;
-          CTRL.OnDblClick :=DblClick_Ex;
-          CTRL.OnMouseUp  :=       MouseUp;
+          CTRL.OnMouseUp  :=MouseUp; 
           CTRL.fCollector:= FCollector;
-                
-          if   (Source as tlistbox ).Name = 'LstUserFields' then
-            CTRL.Tag :=0
+           Tedit_Mtn(CTRL).Tag :=1;
+          if   (Source as tlistbox ).Name = 'LstMDatasetFields' then
+            CTRL.DLDataSourceType := 0   // mt data set
           else
-            CTRL.Tag :=1;
+            CTRL.DLDataSourceType :=1;  //dl dataset
       end;
 end;
+
 procedure TFrmUserDefineReport.lstSysFieldsMouseMove(Sender: TObject;
   Shift: TShiftState; X, Y: Integer);
 begin
@@ -389,7 +370,6 @@ begin
       else
       begin
           qry.Append;
-
       end;
 
 
@@ -406,6 +386,9 @@ Height	ftInteger	F15
       qry.FieldByName('f20').Value:=  ModelID ;
       qry.FieldByName('f21').Value:=edttitle.Text;
       qry.FieldByName('f02').Value:=  BOXID ;
+      qry.FieldByName('FLabelTemplate').Value:=  self.IsLabelTemplate  ;
+
+
      {Caption	ftString	F04
 Color	ftString	F05
 FntClr	ftString	F06
@@ -436,11 +419,11 @@ FntNam	ftString	F08
 
      if (sender is Tedit_Mtn)then
      begin    
-       qry.FieldByName('f04').Value:=  TEDIT( sender).Text ;
-       qry.FieldByName('f05').Value:=  TEDIT( sender).Color ;
+       qry.FieldByName('f04').Value:= TEDIT( sender).Text ;
+       qry.FieldByName('f05').Value:= TEDIT( sender).Color ;
        qry.FieldByName('f06').Value:= TEDIT( sender).Font.Color  ;
        qry.FieldByName('f07').Value:= TEDIT( sender).Font.Size;
-       qry.FieldByName('f08').Value:=TEDIT( sender).Font.Name ;
+       qry.FieldByName('f08').Value:= TEDIT( sender).Font.Name ;
 
        IF  fsBold  IN        Tedit( sender).Font.Style THEN
            qry.FieldByName('f09').Value:=1
@@ -450,8 +433,8 @@ FntNam	ftString	F08
        IF  fsItalic    IN        TLabel( sender).Font.Style THEN         qry.FieldByName('f10').Value:=1 ;
        IF  fsUnderline IN        TLabel( sender).Font.Style THEN         qry.FieldByName('f11').Value:=1;
 
-       qry.FieldByName('f17').Value:= 1;
-       qry.FieldByName('f23').Value:=Tedit_Mtn(sender).DataSourceType;
+       qry.FieldByName('f17').Value:= Tedit_Mtn(sender).Tag ;
+       qry.FieldByName('f23').Value:=Tedit_Mtn(sender).DLDataSourceType;
      end  ;
 
 
@@ -524,7 +507,7 @@ begin
           Tlabel_Mtn(loadCtrl).SetCollector ( FCollector);
 
       end;
-      if    (qry.FieldByName('f17').Value='1') then
+      if    (qry.FieldByName('f17').Value>=1) then
       begin
           loadCtrl:=Tedit_Mtn.Create (parent);
           loadCtrl.Parent := Twincontrol(   parent);
@@ -538,6 +521,7 @@ begin
           Tedit_Mtn(loadCtrl).OnMouseUp  :=       MouseUp;
           Tedit_Mtn(loadCtrl).FCollector := FCollector;
           Tedit_Mtn(loadCtrl).ReadOnly :=true;
+          Tedit_Mtn(loadCtrl).DLDataSourceType :=qry.FieldByName('f23').Value;
       end  ;
         loadCtrl.Left :=qry.FieldByName('f12').Value;
         loadCtrl.Top := qry.FieldByName('f13').Value ;
@@ -585,10 +569,11 @@ try
     modelID:=getguid;
 
     if ( ( FtopBoxID<>'')and (FtopBoxID<>'-1'))  then
-    SaveCtrl(GrpTop, FtopBoxID,modelID);
+      SaveCtrl(GrpTop, FtopBoxID,modelID);
     if ( ( FBtmBoxID<>'')and (FBtmBoxID<>'-1'))  then
-    SaveCtrl(grpBtm, self.FBtmBoxID ,modelID);
-    SaveQrGridCols(Self.GridPrt ,modelID);
+      SaveCtrl(grpBtm, self.FBtmBoxID ,modelID);
+    if not IsLabelTemplate then
+      SaveQrGridCols(Self.GridPrt ,modelID);
  
     showmessage('±£´æ³É¹¦' );
 except on E:Exception do
@@ -628,6 +613,7 @@ begin
       FrmUpdateProperty:=TFrmUpdateProperty.Create (self);
       FrmUpdateProperty.Acontrol:=Tcontrol(sender);
       FrmUpdateProperty.GrpLabel.Visible:=true;
+      FrmUpdateProperty.rg1.ItemIndex := Tcontrol(sender).Tag ;
       FrmUpdateProperty.Show ;
    end;                        
 end;
@@ -1073,8 +1059,8 @@ begin
  imgtop.Canvas.FillRect(imgtop.BoundsRect);
 end;
 
-procedure TFrmUserDefineReport.imgtopDragDrop(Sender, Source: TObject; X,
-  Y: Integer);
+procedure TFrmUserDefineReport.imgtopDragDrop(Sender, Source: TObject; X,  Y: Integer);
+var dataSetName:string;
 begin
       if    (Source is   tlistbox )  then
       begin

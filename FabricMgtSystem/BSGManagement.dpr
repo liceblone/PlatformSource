@@ -72,6 +72,9 @@ uses
   UnitCtrlConfig in '..\Core\UserTool\UnitCtrlConfig.pas' {FrmCtrlConfig},
   UnitMDLookupImport in '..\Core\UnitMDLookupImport.pas' {FrmMDLookupImport},
   TabEditor in 'PrivateSource\TabEditor.pas' {TabEditorFrm},
+  UnitChyFrReportView in 'PrivateSource\UnitChyFrReportView.pas',
+  DelphiZXingQRCode in 'PrivateSource\DelphiZXingQRCode.pas',
+  BarCode in 'PrivateSource\BarCode\BarCode.pas',
   UnitUpdateQLabel in '..\Core\UnitUpdateQLabel.pas' {FrmUpdateQLabel},
   UnitBillVoucher in '..\Core\model\UnitBillVoucher.pas' {FrmBillVoucher},
   UnitIBillEx in '..\Core\Interface\UnitIBillEx.pas';

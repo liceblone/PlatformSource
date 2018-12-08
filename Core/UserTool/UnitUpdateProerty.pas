@@ -251,7 +251,7 @@ end;
 
 procedure TFrmUpdateProperty.chkDLGridDatasourceClick(Sender: TObject);
 begin
-    Tedit_Mtn( Acontrol).DataSourceType:=1;
+    Tedit_Mtn( Acontrol).DLDataSourceType:=1;
 end;
 
 end.

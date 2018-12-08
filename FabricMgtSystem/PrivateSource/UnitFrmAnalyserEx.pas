@@ -379,11 +379,12 @@ begin
         fBillType:=fhlknl1.FreeQuery.FieldByName('F19').AsString  ;
         frmid:=fhlknl1.FreeQuery.FieldByName('F17').AsString      ;
         tmpWindowsFID:=fhlknl1.FreeQuery.FieldByName('F_ID').AsString      ;
-        if uppercase(fBillType)=uppercase('Analyser') then
-        begin
-            if DBGdCurrent.DataSource.DataSet .FindField('sDefaultVals')<>nil then
+        
+        if DBGdCurrent.DataSource.DataSet .FindField('sDefaultVals')<>nil then
             sDefaultVals:=self.DBGdCurrent.DataSource.DataSet .fieldbyname('sDefaultVals').AsString;
 
+        if uppercase(fBillType)=uppercase('Analyser') then
+        begin
             LstParameterFLDs.CommaText :=fhlknl1.FreeQuery.FieldByName('F20').AsString      ;//  fDict.QryParamsFLDs ;
             for i:=0 to  LstParameterFLDs.Count -1 do
             begin
@@ -414,21 +415,16 @@ begin
 
         if uppercase(fBillType)=uppercase('Editor') then
         begin
-            if DBGdCurrent.DataSource.DataSet.FindField('sDefaultVals')<>nil then
-              sDefaultVals:=DBGdCurrent.DataSource.DataSet.fieldbyname('sDefaultVals').AsString;
             EditorFrm:=TEditorFrm.Create(self);
             EditorFrm.InitFrm(FrmId,DBGdCurrent.DataSource.DataSet.fieldbyname(fhlknl1.FreeQuery.FieldByName('F20').AsString).AsString,DBGdCurrent.DataSource.DataSet ,DBGdCurrent ,fhlknl1.FreeQuery.FieldByName('F20').AsString  ) ;
             EditorFrm.ShowModal ;
             EditorFrm.Free ;
         end;
         if uppercase(fBillType)=uppercase('CRM') then
-        begin
-
-            if DBGdCurrent.DataSource.DataSet.FindField('sDefaultVals')<>nil then
-            sDefaultVals:=self.DBGdCurrent.DataSource.DataSet .fieldbyname('sDefaultVals').AsString;
+        begin 
             FhlUser.ShowCRMFrm(frmid);
         end;
-        if  ( uppercase(fBillType)=uppercase('BillEx') ) or ( uppercase(fBillType)=uppercase('voucher') )  then
+        if  ( uppercase(fBillType)=uppercase('BillEx') )    then
         begin
           if not self.DBGdCurrent.DataSource.DataSet.IsEmpty then
           begin
@@ -460,27 +456,13 @@ begin
               (FrmBillEx as TFrmBillEx).Hide;
               (FrmBillEx as TFrmBillEx).Position :=poDesktopCenter;
               (FrmBillEx as TFrmBillEx).ScrollBtm.Visible :=true;
-          end
-          else
-          begin
-               FrmBillEx:=TFrmBillVoucher.Create(nil);
-              (FrmBillEx as TFrmBillVoucher).SetParamDataset(self.DBGdCurrent.DataSource.DataSet  );
-              (FrmBillEx as TFrmModel).FWindowsFID :=  tmpWindowsFID ;
-              (FrmBillEx as TFrmBillVoucher).InitFrm(FrmId);
-              if Code<>'' then
-              begin
-                 (FrmBillEx as TFrmBillVoucher).OpenBill( code  );
-              end;
-              (FrmBillEx as TFrmBillVoucher).FormStyle :=fsnormal;
-              (FrmBillEx as TFrmBillVoucher).Hide;
-              (FrmBillEx as TFrmBillVoucher).Position :=poDesktopCenter;
-              (FrmBillEx as TFrmBillVoucher).ScrollBtm.Visible :=true;
           end;
 
           (FrmBillEx as TFrmModel).ShowModal ;
         end;
       finally
         LstParameterFLDs.Free;
+        sDefaultVals:='';
       end;
   except
     on err:exception do

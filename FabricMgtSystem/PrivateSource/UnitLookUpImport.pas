@@ -10,7 +10,6 @@ uses
 type
   TFrmLoopUpImPortEx = class(TForm)
     ScrollTop: TScrollBox;
-    Label3: TLabel;
     TreeView1: TTreeView;
     ActionList1: TActionList;
     mtDataSource1: TDataSource;
@@ -147,7 +146,13 @@ begin
 
       end;
       DbGridPopupMenu  :=TPopupMenu.create(self);
-      fhluser.MergeGridUserMenuAndSysCongfigMenu(DbGridPopupMenu , dmfrm.DbGridPopupMenu1 ,-1,self.ActionList1 )
+      fhluser.MergeGridUserMenuAndSysCongfigMenu(DbGridPopupMenu , dmfrm.DbGridPopupMenu1 ,-1,self.ActionList1 ) ;
+
+      if fDict.IsOpen then
+      begin
+         OpnDlDsBtn1Click(nil);
+      end;
+
 end;
  
 procedure TFrmLoopUpImPortEx.IniQuickQuery(Pdbgird: Tdbgrid);

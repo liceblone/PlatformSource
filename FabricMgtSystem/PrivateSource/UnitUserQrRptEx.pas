@@ -57,6 +57,7 @@ procedure TFrmUserQrRptEx.SetBillRep(fTopBoxId, fprintid, fBtmBoxId,
   modelID: String; fMasterDataSet: TDataSet; fdbGrid: TModelDbGrid);
 var I:integer;
 var sql:string;
+var maxControlTop :integer;
 begin
   detailband1.ForceNewPage:=FALSE;
 
@@ -66,10 +67,14 @@ begin
   FhlKnl1.Kl_GetQuery2(sql);
   FhlKnl1.Rp_SetRepCtrl(FhlKnl1.FreeQuery,fMasterDataSet,    TQRBand(TopBand1),0,fdbGrid);
 
+  maxControlTop:=0;
   for i:=0 to TopBand1.ControlCount -1 do             // move coltrols downward in  top pnl      
   begin
       TopBand1.Controls[i].Top :=    TopBand1.Controls[i].Top+10;
-  end;                  
+      if TopBand1.Controls[i].Top  > maxControlTop then
+        maxControlTop:= TopBand1.Controls[i].Top+TopBand1.Controls[i].Height  ;
+  end;
+  TopBand1.Height := maxControlTop+3;
 
   sql:=  '';
   if TModelDbGrid( fdbGrid).NeedSumRow  then           // move coltrols downward in  btm pnl     4/30/2011
