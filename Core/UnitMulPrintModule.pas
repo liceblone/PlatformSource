@@ -346,7 +346,10 @@ begin
     begin
       DatasetReport.close;
       sql:='select f01,FLabelTemplate,FLeftMargin,FRightMargin,FTopMargin,FBtmMargin,FRptWidth,FRptHeight,FHasVline,FIsPortrait,FTitleFontName,FTitleFontSize,FHasPageNumber,FHasPrintTime,FFreezeBtmPnlPosition  ';
-      sql:=sql+'from '+dmfrm.ADOConnection1.DefaultDatabase +'.dbo.T506 where F22='+quotedstr(fPrintID) +' and F20='+quotedstr(StrGridPrintModule.Cols[0][i]);
+      sql:=sql+'from '+dmfrm.ADOConnection1.DefaultDatabase +'.dbo.T506 where F22='+quotedstr(fPrintID)
+      +' and F20='+quotedstr(StrGridPrintModule.Cols[0][i])
+      +' order by FCreateTime  ' ;
+
       self.DatasetReport.CommandText :=sql;
       DatasetReport.Connection :=fhlknl1.Connection ;
 
@@ -428,7 +431,7 @@ end;
 procedure TFrmMulModulePrint.PreviewLabelTemplate;
 var newpage : TfrPage;
 fieldView  : TfrView;
-i:integer;
+i,j:integer;
 sql,modelID, FieldValue,FieldName:string;
 var l,t,w ,h,ABeginTop :Integer;Fnt:TFont;
 fDictDataSet:TDataSet ;
@@ -443,87 +446,95 @@ begin
     t:=0;
     Fnt:=TFont.Create;
     Fnt.Assign(self.Font);
+    FGrid.DataSource.DataSet.First;
 
-    for i:=0 to FGrid.DataSource.DataSet.RecordCount -1 do
+    for j:=0 to 199 do
     begin
-      newpage:=CreatePage(frReport1 ,  strtoint( self.edtWidth.Text ) ,  strtoint( self.edtHeight.Text ));
-      newpage.Left  := strtoint( edtLeftMargin.text );    // newpage. := strtoint( self.edtRightMargin.Text );  //newpage.Bottom := strtoint( self.edtBtmMargin.Text );
-      newpage.Top  := strtoint( self.edtTopMargin.Text );
+        if self.FGrid.DataSource.DataSet.Eof then   break; 
+        for i:=0+j to 199+j do
+        begin
+              if self.FGrid.DataSource.DataSet.Eof then   break;
+              newpage:=CreatePage(frReport1 ,  strtoint( self.edtWidth.Text ) *10,  strtoint( self.edtHeight.Text )*10);
+              newpage.Left  := strtoint( edtLeftMargin.text );    // newpage. := strtoint( self.edtRightMargin.Text );  //newpage.Bottom := strtoint( self.edtBtmMargin.Text );
+              newpage.Top  := strtoint( self.edtTopMargin.Text );
 
-      sql:=  'select r.*,f.F02 as F99 from '+dmfrm.ADOConnection1.DefaultDatabase
-           +'.dbo.T506 r left outer join T102 f on r.F16=f.F01 where r.F02='+ quotedstr(  fTopBoxId ) +' AND r.f20='
-           +quotedstr( modelID )+' and r.F22='+quotedstr( fprintid )+' and r.F18=1 order by r.f13' ;
-      FhlKnl1.Kl_GetQuery2(sql);
+              sql:=  'select r.*,f.F02 as F99 from '+dmfrm.ADOConnection1.DefaultDatabase
+                   +'.dbo.T506 r left outer join T102 f on r.F16=f.F01 where r.F02='+ quotedstr(  fTopBoxId ) +' AND r.f20='
+                   +quotedstr( modelID )+' and r.F22='+quotedstr( fprintid )+' and r.F18=1 order by r.f13' ;
+              FhlKnl1.Kl_GetQuery2(sql);
 
-      fDictDataSet := FhlKnl1.FreeQuery  ;
-      fDictDataSet.First;
-      While not fDictDataSet.Eof do
-      begin
-          l:=fDictDataSet.FieldByName('F12').asInteger;
-          t:=fDictDataSet.FieldByName('F13').asInteger+ABeginTop;
-          Fnt.Size:=fDictDataSet.FieldByName('F07').asInteger;
-          Fnt.Name:=fDictDataSet.FieldByName('F08').asString;
-          w:=fDictDataSet.FieldByName('F14').asInteger;
-          h:= fDictDataSet.FieldByName('f15').asInteger;
-          fieldName := fDictDataSet.FieldByName('F04').AsString ;
-          DLDataSourceType := fDictDataSet.FieldByName('F23').AsBoolean   ;
-          if fDictDataSet.FieldByName('F10').asBoolean then
-              Fnt.Style:=Fnt.Style+[fsUnderLine]
-          else
-              Fnt.Style:=Fnt.Style-[fsUnderLine];
-          if fDictDataSet.FieldByName('F09').asBoolean then
-              Fnt.Style:=Fnt.Style+[fsBold]
-          else
-              Fnt.Style:=Fnt.Style-[fsBold];
-
-          if fDictDataSet.FieldByName('F17').asInteger =0 then
-          begin
-              w := w+13;
-              h:= h+3;
-              FieldValue := fieldName    ;
-          end
-          else
-              if  ( DLDataSourceType ) then
-                  FieldValue :=   self.FGrid.DataSource.DataSet.fieldbyname( fieldName ).AsString
-              else
-                  FieldValue :=   self.FContentDataSet.fieldbyname( fieldName ).AsString  ;
- 
-          if fDictDataSet.FieldByName('F17').asInteger <=14 then
-          begin
-              fieldView := TfrMemoView.Create;
-          end;
-           if fDictDataSet.FieldByName('F17').asInteger =15  then
-          begin
-              fieldView :=  TChyFrBarCodeView.Create;
-              with  (fieldView as TChyFrBarCodeView) do
+              fDictDataSet := FhlKnl1.FreeQuery  ;
+              fDictDataSet.First;
+              While not fDictDataSet.Eof do
               begin
-                  ResetWidthHeight(w,  h)  ;
-                  LineWidth :=1;
-                  Ratio :=2;
-                  BarCodeType :=6;
-                  CacheBarcodeImage :=true;
+                  l:=fDictDataSet.FieldByName('F12').asInteger;
+                  t:=fDictDataSet.FieldByName('F13').asInteger+ABeginTop;
+                  Fnt.Size:=fDictDataSet.FieldByName('F07').asInteger;
+                  Fnt.Name:=fDictDataSet.FieldByName('F08').asString;
+                  w:=fDictDataSet.FieldByName('F14').asInteger;
+                  h:= fDictDataSet.FieldByName('f15').asInteger;
+                  fieldName := fDictDataSet.FieldByName('F04').AsString ;
+                  DLDataSourceType := fDictDataSet.FieldByName('F23').AsBoolean   ;
+                  if fDictDataSet.FieldByName('F10').asBoolean then
+                      Fnt.Style:=Fnt.Style+[fsUnderLine]
+                  else
+                      Fnt.Style:=Fnt.Style-[fsUnderLine];
+                  if fDictDataSet.FieldByName('F09').asBoolean then
+                      Fnt.Style:=Fnt.Style+[fsBold]
+                  else
+                      Fnt.Style:=Fnt.Style-[fsBold];
 
-              end;
-          end;
-          if fDictDataSet.FieldByName('F17').asInteger  =16   then
-          begin
-              fieldView := TChyFrQRCodeView.Create; 
-          end;
-          fieldView.Memo.Text := fieldValue ;
-          fieldView.ParentPage :=newpage;
-          fieldView.x :=l;
-          fieldView.y :=t;
-          fieldView.dx:=w;
-          fieldView.dy:=h;
-          if (fieldView is TFrDigitalImageView) then
-              (fieldView as TFrDigitalImageView).LoadPicture();
-
-
-
-          newpage.Objects.Add( fieldView ); 
-          fDictDataSet.next;
-       end;
-       
+                  if fDictDataSet.FieldByName('F17').asInteger =0 then
+                  begin
+                      w := w+13;
+                      h:= h+3;
+                      FieldValue := fieldName    ;
+                  end
+                  else
+                      if  ( DLDataSourceType ) then
+                          FieldValue :=   self.FGrid.DataSource.DataSet.fieldbyname( fieldName ).AsString
+                      else
+                          FieldValue :=   self.FContentDataSet.fieldbyname( fieldName ).AsString  ;
+ 
+                  if fDictDataSet.FieldByName('F17').asInteger <=14 then
+                  begin
+                      fieldView := TfrMemoView.Create;
+                      (fieldView as TfrMemoView).Font.Assign ( Fnt );
+                  end;
+                   if fDictDataSet.FieldByName('F17').asInteger =15  then
+                  begin
+                      fieldView :=  TChyFrBarCodeView.Create;
+                      with  (fieldView as TChyFrBarCodeView) do
+                      begin
+                          BarCodeShowText:=false;
+                          ResetWidthHeight(w,  h)  ;
+                          LineWidth :=1;
+                          Ratio :=2;
+                          BarCodeType :=6;
+                          CacheBarcodeImage :=true;
+                      end;
+                  end;
+                  if fDictDataSet.FieldByName('F17').asInteger  =16   then
+                  begin
+                      fieldView := TChyFrQRCodeView.Create; 
+                  end;
+                  fieldView.Memo.Text := fieldValue ;
+                  fieldView.ParentPage :=newpage;
+                  fieldView.x :=l;
+                  fieldView.y :=t;
+                  fieldView.dx:=w;
+                  fieldView.dy:=h;
+                  if (fieldView is TFrDigitalImageView) then
+                      (fieldView as TFrDigitalImageView).LoadPicture(); 
+                  newpage.Objects.Add( fieldView ); 
+                  fDictDataSet.next;
+               end;
+        self.FGrid.DataSource.DataSet.Next;
+        end;
+         
+      frReport1.PrepareReport;
+      frReport1.ShowReport;
+     end;
       {FhlKnl1.Rp_SetRepCtrl(FhlKnl1.FreeQuery, FGrid.DataSource.DataSet,    TQRBand(TopBand1),0,fdbGrid);
 
       chyBar:= TChyFrBarCodeView.Create;
@@ -571,9 +582,7 @@ begin
       newpage.Objects.Add( qrCode );
       newpage.Objects.Add( chyBar );
                                  }
-    end;
-    frReport1.PrepareReport;
-    frReport1.ShowReport;
+
 end;
 function TFrmMulModulePrint.CreatePage(report: TfrReport ;width,height:integer): TfrPage;
 var newPage:TfrPage ;

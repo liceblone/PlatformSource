@@ -26,6 +26,13 @@ object FrmUpdateQLabel: TFrmUpdateQLabel
     Anchors = [akLeft, akBottom]
     Caption = 'lblPreView'
   end
+  object Label1: TLabel
+    Left = 144
+    Top = 96
+    Width = 48
+    Height = 13
+    Caption = #23383#20307#22823#23567
+  end
   object mmCaption: TMemo
     Left = 0
     Top = 0
@@ -45,5 +52,34 @@ object FrmUpdateQLabel: TFrmUpdateQLabel
     Caption = 'OK'
     ModalResult = 1
     TabOrder = 1
+  end
+  object edtFontSize: TEdit
+    Left = 200
+    Top = 96
+    Width = 121
+    Height = 21
+    TabOrder = 2
+    Text = '0'
+    OnChange = edtFontSizeChange
+  end
+  object UpDown1: TUpDown
+    Left = 321
+    Top = 96
+    Width = 15
+    Height = 21
+    Associate = edtFontSize
+    TabOrder = 3
+  end
+  object FontCombox: TfrFontComboBox
+    Left = 352
+    Top = 96
+    Width = 150
+    Height = 19
+    MRURegKey = '\Software\FastReport\MRUFont'
+    Text = 'FontCombox'
+    DropDownCount = 12
+    ItemHeight = 13
+    TabOrder = 4
+    OnChange = FontComboxChange
   end
 end

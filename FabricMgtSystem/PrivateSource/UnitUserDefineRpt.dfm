@@ -121,7 +121,7 @@ object FrmUserDefineReport: TFrmUserDefineReport
     Top = 57
     Width = 201
     Height = 484
-    ActivePage = TabSheet1
+    ActivePage = TabSheet3
     Align = alLeft
     TabOrder = 1
     object TabSheet1: TTabSheet

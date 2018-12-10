@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls,datamodule, ComCtrls,StrUtils, Menus, ExtCtrls , UPublicCtrl;
+  Dialogs, StdCtrls,datamodule, ComCtrls,StrUtils, Menus, ExtCtrls , UPublicCtrl,
+  FR_Combo;
 type TcontrolEx=class(Tcontrol)  ;
 type
   TFrmUpdateProperty = class(TForm)
@@ -39,6 +40,7 @@ type
     lbl2: TLabel;
     edtECaption: TEdit;
     chkDLGridDatasource: TCheckBox;
+    FontCombox: TfrFontComboBox;
     procedure btnUpdateClick(Sender: TObject);
     procedure edtCaptionChange(Sender: TObject);
     procedure edtUpdateActionClick(Sender: TObject);
@@ -59,6 +61,7 @@ type
     procedure ChkReadOnlyClick(Sender: TObject);
     procedure ColorBox1Change(Sender: TObject);
     procedure chkDLGridDatasourceClick(Sender: TObject);
+    procedure FontComboxChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -197,9 +200,6 @@ procedure TFrmUpdateProperty.FormCreate(Sender: TObject);
 var i:integer;
 begin
 
- 
-
-
   if    DesktopFrm.dsMainMenu.FieldByName('F15').AsBoolean   then
   begin
      for i:= 0 to    dmfrm.dbCtrlActionList1.ActionCount-1 do
@@ -252,6 +252,14 @@ end;
 procedure TFrmUpdateProperty.chkDLGridDatasourceClick(Sender: TObject);
 begin
     Tedit_Mtn( Acontrol).DLDataSourceType:=1;
+end;
+
+procedure TFrmUpdateProperty.FontComboxChange(Sender: TObject);
+begin
+  if  Acontrol is Tlabel then
+  begin 
+        Tlabel( Acontrol ).Font.Name := FontCombox.Font.Name;
+  end;
 end;
 
 end.

@@ -4,17 +4,23 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls;
+  Dialogs, StdCtrls, ComCtrls, FR_Combo;
 
 type
   TFrmUpdateQLabel = class(TForm)
     mmCaption: TMemo;
     btnOK: TButton;
     lblPreView: TLabel;
+    edtFontSize: TEdit;
+    Label1: TLabel;
+    UpDown1: TUpDown;
+    FontCombox: TfrFontComboBox;
     procedure mmCaptionKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
+    procedure edtFontSizeChange(Sender: TObject);
+    procedure FontComboxChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -51,6 +57,17 @@ begin
    lblPreView.Caption:= QLabel.Caption ;
    lblPreView.Font.Assign(QLabel.Font );
 
+end;
+
+procedure TFrmUpdateQLabel.edtFontSizeChange(Sender: TObject);
+begin
+self.lblPreView.Font.Size:= strtoint(self.edtFontSize.Text );
+
+end;
+
+procedure TFrmUpdateQLabel.FontComboxChange(Sender: TObject);
+begin
+  Tlabel( lblPreView ).Font.Name := FontCombox.Font.Name;
 end;
 
 end.

@@ -1,8 +1,8 @@
 object FrmUpdateProperty: TFrmUpdateProperty
   Left = 295
   Top = 138
-  Width = 668
-  Height = 437
+  Width = 881
+  Height = 536
   Caption = #23646#24615#20462#25913
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,7 +18,7 @@ object FrmUpdateProperty: TFrmUpdateProperty
   object GrpLabel: TGroupBox
     Left = 0
     Top = 0
-    Width = 209
+    Width = 225
     Height = 257
     Caption = 'GrpLabel'
     TabOrder = 0
@@ -80,10 +80,22 @@ object FrmUpdateProperty: TFrmUpdateProperty
       TabOrder = 3
       Text = 'edtECaption'
     end
+    object FontCombox: TfrFontComboBox
+      Left = 27
+      Top = 48
+      Width = 150
+      Height = 19
+      MRURegKey = '\Software\FastReport\MRUFont'
+      Text = 'FontCombox'
+      DropDownCount = 12
+      ItemHeight = 13
+      TabOrder = 4
+      OnChange = FontComboxChange
+    end
   end
   object GrpCTRL: TGroupBox
-    Left = 168
-    Top = 8
+    Left = 240
+    Top = 0
     Width = 489
     Height = 401
     Caption = 'GrpCTRL'
@@ -258,11 +270,11 @@ object FrmUpdateProperty: TFrmUpdateProperty
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     Left = 44
-    Top = 32
+    Top = 8
   end
   object pm1: TPopupMenu
-    Left = 20
-    Top = 32
+    Left = 12
+    Top = 8
     object F1: TMenuItem
       Caption = 'Font'
       OnClick = F1Click
@@ -282,6 +294,6 @@ object FrmUpdateProperty: TFrmUpdateProperty
   end
   object dlgColor1: TColorDialog
     Left = 68
-    Top = 32
+    Top = 8
   end
 end

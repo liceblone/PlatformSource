@@ -292,10 +292,10 @@ begin
           lbl.OnMouseDown:=MouseDown;
           lbl.OnDblClick :=DblClick_Ex;
           lbl.OnMouseUp  :=       MouseUp;
-          Tlabel_Mtn(lbl).OnMouseDown:=MouseDown;
-          Tlabel_Mtn(lbl).OnDblClick :=DblClick_LblEx  ;
-          Tlabel_Mtn(lbl).OnMouseUp  :=       MouseUp;
+          Tlabel_Mtn(lbl).OnMouseDown:=MouseDown; 
           Tlabel_Mtn(lbl).SetCollector ( FCollector);
+          lbl.Hint := GetGUID ;
+
          // lbl.seSetCollector ( FCollector);
 
 
@@ -304,7 +304,7 @@ begin
           CTRL.Left :=x+lbl.Width +6;
           CTRL.Top :=lbl.Top-3;
           CTRL.ShowHint :=true;
-          CTRL.Hint := name;
+          CTRL.Hint := GetGUID;
 
           CTRL.Text := name ;
           CTRL.Visible :=true;
@@ -349,15 +349,19 @@ var qry:Tadoquery;
 var sql,fontname:string;
 var sender:  Tcontrol;
 var fontsize :integer;
+var list:TStringList;
 begin
+  try
       sender:=Tcontrol(   source);
+      list:= Tstringlist.Create;
+      list.CommaText := sender.Hint;
 
       qry:=Tadoquery.Create (nil);
       qry.Connection :=FhlKnl1.Connection  ;
       qry.Close ;
 
       if BOXID<>''   then
-         sql:='select * from '+dmFrm.ADOConnection1.DefaultDatabase +'.dbo.T506  where f20='+quotedstr(ModelID)+' and f02='+quotedstr(BOXID)+' and f22='+quotedstr(self.PPrintId )+' and f04='+quotedstr(sender.Hint )
+         sql:='select * from '+dmFrm.ADOConnection1.DefaultDatabase +'.dbo.T506  where f20='+quotedstr(ModelID)+' and f02='+quotedstr(BOXID)+' and f22='+quotedstr(self.PPrintId )+' and f01='+quotedstr( Tcontrol(source).Hint )
       else
         sql:='select top 0 * from '+dmFrm.ADOConnection1.DefaultDatabase +'.dbo.T506  ';
 
@@ -373,16 +377,15 @@ begin
       end;
 
 
-{
-Id	ftAutoInc	F01
-BoxId	ftInteger	F02
-Align	ftString	F03
-Left	ftInteger	F12
-Top	ftInteger	F13
-Width	ftInteger	F14
-Height	ftInteger	F15
-
-}
+      {
+      Id	ftAutoInc	F01
+      BoxId	ftInteger	F02
+      Align	ftString	F03
+      Left	ftInteger	F12
+      Top	ftInteger	F13
+      Width	ftInteger	F14
+      Height	ftInteger	F15
+      }
       qry.FieldByName('f20').Value:=  ModelID ;
       qry.FieldByName('f21').Value:=edttitle.Text;
       qry.FieldByName('f02').Value:=  BOXID ;
@@ -390,12 +393,12 @@ Height	ftInteger	F15
 
 
      {Caption	ftString	F04
-Color	ftString	F05
-FntClr	ftString	F06
-FntSiz	ftInteger	F07
-FntNam	ftString	F08
+      Color	ftString	F05
+      FntClr	ftString	F06
+      FntSiz	ftInteger	F07
+      FntNam	ftString	F08
       }
-     qry.FieldByName('f01').Value:= GetGUID;
+     qry.FieldByName('f01').Value:=sender.Hint;// ;
      if (sender is TLabel)then
      begin
        qry.FieldByName('f04').Value:= TLabel( sender).Caption  ;
@@ -445,29 +448,31 @@ FntNam	ftString	F08
      qry.FieldByName('f16').Value:= sender.Tag ;
 
      qry.FieldByName('f18').Value:= 1 ;
-      qry.FieldByName('f22').Value:= self.PPrintID  ;
-   //  qry.FieldByName('f19').Value:= sender.Tag ;
+     qry.FieldByName('f22').Value:= self.PPrintID  ;
+      //  qry.FieldByName('f19').Value:= sender.Tag ;
 
 
- {    IsRep	ftBoolean	F18
-FldId	ftInteger	F16
-TypeId	ftInteger	F17
-IsRep	ftBoolean	F18
-Shape	ftInteger	F19
-  }
+     {    IsRep	ftBoolean	F18
+    FldId	ftInteger	F16
+    TypeId	ftInteger	F17
+    IsRep	ftBoolean	F18
+    Shape	ftInteger	F19
+      }
 
 
-try
-    qry.Post;
-    qry.Free ;
-except
-    on err:exception do
-    begin
-    showmessage(err.Message );
-    qry.Free ;
+    try
+        qry.Post;
+        qry.Free ;
+    except
+        on err:exception do
+        begin
+        showmessage(err.Message );
+        qry.Free ;
+        end;
     end;
-end;
-
+  finally
+    freeandnil(list);
+  end;
 end;
 procedure TFrmUserDefineReport.LoadConfig( parent: TComponent;BOXID:string);
 var qry:Tadoquery;
@@ -528,7 +533,7 @@ begin
          loadCtrl.Width :=qry.FieldByName('f14').Value;
         loadCtrl.Height :=qry.FieldByName('f15').Value;
 
-        loadCtrl.Hint :=qry.FieldByName('f04').Value ;
+        loadCtrl.Hint :=qry.FieldByName('f01').Value ;
         loadCtrl.tag:=  qry.FieldByName('f17').Value ;
         qry.Next ;
      end;
@@ -669,7 +674,7 @@ begin
 
          if boxid<>''  then
          begin
-           sql:='delete '+dmFrm.ADOConnection1.DefaultDatabase +'.dbo.t506 where f02='+quotedstr(boxid)+' and f04='+quotedstr(txt);
+           sql:='delete '+dmFrm.ADOConnection1.DefaultDatabase +'.dbo.t506 where f02='+quotedstr(boxid)+' and f01='+quotedstr(Tcontrol(sender).hint);
              if (Sender is tlabel) then
              (Sender as tlabel).Color :=stringtocolor('0');
              if (Sender is tedit) then
@@ -1215,6 +1220,7 @@ begin
             loadCtrl.Parent  :=TWincontrol(self.grpBtm);
             Tlabel_Mtn(loadCtrl).BoxId:=self.FBtmBoxID ;
         end;
+        loadCtrl.Hint := GetGUID;
         loadCtrl.Caption :=  MmlblCaption.Lines[i] ;
         loadCtrl.Left :=i*35;
         loadCtrl.top:=20;

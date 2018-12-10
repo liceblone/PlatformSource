@@ -47,7 +47,7 @@ type Tlabel_Mtn= class(Tlabel)
   public
     FCollector:Tstrings;
     BoxId:string;        //记录boxid，删除控键时用到  2006-5-8
-
+    
     constructor Create(AOwner: TComponent); override;
     Procedure SetCollector(value:Tstrings);
     property  isUserMode:Boolean read FisUserMode write SetisUserMode default False;

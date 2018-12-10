@@ -123,8 +123,7 @@ begin
         Barcode1.Modul := self.LineWidth;
         Barcode1.Ratio := self.Ratio;
         Barcode1.Height := self.dx-Barcode1.Top;
-        Barcode1.Text:= self.Memo.Text ;
-        Barcode1.ShowText :=   bcoCode ;
+        Barcode1.Text:= self.Memo.Text ; 
 
         Barcode1.DrawBarcode(self.FImage.Canvas );
 
