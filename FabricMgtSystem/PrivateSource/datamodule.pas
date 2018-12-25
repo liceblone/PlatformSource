@@ -1206,73 +1206,75 @@ begin
   vScript := CreateOleObject('ScriptControl');
   vScript.Language := 'JavaScript';
 
+  if Tadodataset(sender).FindField('MyIndex')<>nil then
+  begin
+        with Tadodataset(sender) do begin
+               FieldByName('MyIndex').asInteger:=Abs(RecNo);//Is fkCalculated
+        end;
+  end;
+  // fhlknl1.Kl_GetQuery2('select* from T202 where  f02='+ inttostr(Tadodataset(sender).Tag )+'   and f08<>'+ quotedstr('') +'  and f09<>'+quotedstr('')   );
 
- // fhlknl1.Kl_GetQuery2('select* from T202 where  f02='+ inttostr(Tadodataset(sender).Tag )+'   and f08<>'+ quotedstr('') +'  and f09<>'+quotedstr('')   );
-
- // if    not fhlknl1.FreeQuery.IsEmpty then
+  // if    not fhlknl1.FreeQuery.IsEmpty then
   for i:=0 to Tadodataset(sender).FieldCount -1 do
   begin
-
         if (Tadodataset(sender).Fields[i] is Tfloatfield ) or (Tadodataset(sender).Fields[i] is Tintegerfield)or (Tadodataset(sender).Fields[i] is Tstringfield ) then
         begin
-                  Fields.Clear ;
-                  formula.Clear;
-                  formula.NameValueSeparator :='=';
-                  if  Tadodataset(sender).Fields[i] is Tfloatfield then
-                  begin
-                    Fields.CommaText :=TFloatFieldEx(Tadodataset(sender).Fields[i]).CalField;// fhlknl1.FreeQuery.FieldByName('F09').asString;
-                    formula.CommaText :=TFloatFieldEx(Tadodataset(sender).Fields[i]).formula ;// string(fhlknl1.FreeQuery.FieldByName('F08').asString);
-                  end;
-                  if Tadodataset(sender).Fields[i] is TIntegerField    then
-                  begin
-                    Fields.CommaText :=TIntegerFieldEx(Tadodataset(sender).Fields[i]).CalField;// fhlknl1.FreeQuery.FieldByName('F09').asString;
-                    formula.CommaText :=TIntegerFieldEx(Tadodataset(sender).Fields[i]).formula ;// string(fhlknl1.FreeQuery.FieldByName('F08').asString);
-                  end;
-                  if Tadodataset(sender).Fields[i] is TstringFieldEx    then
-                  begin
-                    Fields.CommaText :=TstringFieldEx(Tadodataset(sender).Fields[i]).CalField;// fhlknl1.FreeQuery.FieldByName('F09').asString;
-                    formula.CommaText :=TstringFieldEx(Tadodataset(sender).Fields[i]).formula ;// string(fhlknl1.FreeQuery.FieldByName('F08').asString);
-                  end;
+              Fields.Clear ;
+              formula.Clear;
+              formula.NameValueSeparator :='=';
+              if  Tadodataset(sender).Fields[i] is Tfloatfield then
+              begin
+                Fields.CommaText :=TFloatFieldEx(Tadodataset(sender).Fields[i]).CalField;// fhlknl1.FreeQuery.FieldByName('F09').asString;
+                formula.CommaText :=TFloatFieldEx(Tadodataset(sender).Fields[i]).formula ;// string(fhlknl1.FreeQuery.FieldByName('F08').asString);
+              end;
+              if Tadodataset(sender).Fields[i] is TIntegerField    then
+              begin
+                Fields.CommaText :=TIntegerFieldEx(Tadodataset(sender).Fields[i]).CalField;// fhlknl1.FreeQuery.FieldByName('F09').asString;
+                formula.CommaText :=TIntegerFieldEx(Tadodataset(sender).Fields[i]).formula ;// string(fhlknl1.FreeQuery.FieldByName('F08').asString);
+              end;
+              if Tadodataset(sender).Fields[i] is TstringFieldEx    then
+              begin
+                Fields.CommaText :=TstringFieldEx(Tadodataset(sender).Fields[i]).CalField;// fhlknl1.FreeQuery.FieldByName('F09').asString;
+                formula.CommaText :=TstringFieldEx(Tadodataset(sender).Fields[i]).formula ;// string(fhlknl1.FreeQuery.FieldByName('F08').asString);
+              end;
 
-                  if (Fields.CommaText='' ) or (formula.CommaText='' ) then continue;
-                  ResultField:=   formula.Names [0] ;
-                  Calc:=formula.values[ResultField] ;
+              if (Fields.CommaText='' ) or (formula.CommaText='' ) then continue;
+              ResultField:=   formula.Names [0] ;
+              Calc:=formula.values[ResultField] ;
 
-                  if (Tadodataset(sender).Fieldbyname(ResultField) is Tfloatfield ) or (Tadodataset(sender).Fieldbyname(ResultField) is Tintegerfield) then
+              if (Tadodataset(sender).Fieldbyname(ResultField) is Tfloatfield ) or (Tadodataset(sender).Fieldbyname(ResultField) is Tintegerfield) then
+              begin
+                  for J:=0 to   Fields.Count -1 do
                   begin
-                      for J:=0 to   Fields.Count -1 do
-                      begin
-                             if Tadodataset(sender).Fieldbyname(Fields[j]).AsString <>'' then
+                         if Tadodataset(sender).Fieldbyname(Fields[j]).AsString <>'' then
+                         begin
+                             if (Tadodataset(sender).Fieldbyname(Fields[j])  is Tfloatfield) or (Tadodataset(sender).Fieldbyname(Fields[j])  is Tintegerfield) then
                              begin
-                                 if (Tadodataset(sender).Fieldbyname(Fields[j])  is Tfloatfield) or (Tadodataset(sender).Fieldbyname(Fields[j])  is Tintegerfield) then
-                                 begin
-                                     if Tadodataset(sender).Fieldbyname(Fields[j]).AsFloat <0 then        //2010-3-27 去掉负数加括号
-                                       if pos('?', Calc)<>-1 then                                         //不能加负号 FPAmt=(("FAmt".match("-"))?0:Math.abs(FAmt))
-                                         FieldValue:='('+ Tadodataset(sender).Fieldbyname(Fields[j]).AsString +')'
-                                       else
-                                         FieldValue:=Tadodataset(sender).Fieldbyname(Fields[j]).AsString
-                                     else
-                                        FieldValue:= Tadodataset(sender).Fieldbyname(Fields[j]).AsString ;
-                                 end
+                                 if Tadodataset(sender).Fieldbyname(Fields[j]).AsFloat <0 then        //2010-3-27 去掉负数加括号
+                                   if pos('?', Calc)<>-1 then                                         //不能加负号 FPAmt=(("FAmt".match("-"))?0:Math.abs(FAmt))
+                                     FieldValue:='('+ Tadodataset(sender).Fieldbyname(Fields[j]).AsString +')'
+                                   else
+                                     FieldValue:=Tadodataset(sender).Fieldbyname(Fields[j]).AsString
                                  else
                                     FieldValue:= Tadodataset(sender).Fieldbyname(Fields[j]).AsString ;
                              end
                              else
-                                FieldValue:='' ;
+                                FieldValue:= Tadodataset(sender).Fieldbyname(Fields[j]).AsString ;
+                         end
+                         else
+                            FieldValue:='' ;
 
-                           if   FieldValue='' then FieldValue:='0';
-                          Calc:= stringreplace(trim(Calc),trim(Fields[j]),trim(FieldValue ),[rfIgnoreCase ]);
-                      end;
-                      Presult   := vScript.Eval(Calc); 
-                      Tadodataset(sender).FieldByName(ResultField).AsCurrency := Presult;
-                 end ;
-                 if (Tadodataset(sender).Fieldbyname(ResultField) is Tstringfield ) then
-                 begin
-                    Calc:= stringreplace(trim(Calc),trim(Fields[j]),trim(Tadodataset(sender).FieldByName(Fields[j]).AsString    ),[rfIgnoreCase ]);
-                    Tadodataset(sender).FieldByName(ResultField).AsString  := Calc;
-                 end;
-
-                 
+                       if   FieldValue='' then FieldValue:='0';
+                      Calc:= stringreplace(trim(Calc),trim(Fields[j]),trim(FieldValue ),[rfIgnoreCase ]);
+                  end;
+                  Presult   := vScript.Eval(Calc); 
+                  Tadodataset(sender).FieldByName(ResultField).AsCurrency := Presult;
+             end ;
+             if (Tadodataset(sender).Fieldbyname(ResultField) is Tstringfield ) then
+             begin
+                Calc:= stringreplace(trim(Calc),trim(Fields[j]),trim(Tadodataset(sender).FieldByName(Fields[j]).AsString    ),[rfIgnoreCase ]);
+                Tadodataset(sender).FieldByName(ResultField).AsString  := Calc;
+             end; 
         end;
   end;
 

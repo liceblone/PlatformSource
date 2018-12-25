@@ -49,7 +49,7 @@ type
     PnlLeft: TPanel;
     ToolButton1: TToolButton;
     ToolButton3: TToolButton;
-    ToolButton4: TToolButton;
+    tlbtnimport: TToolButton;
     ActInfo: TAction;
     PnlFunction: TPanel;
     ControlBar1: TControlBar;
@@ -88,6 +88,8 @@ type
     actMDLookup: TAction;
     ActSaveHaveTextFomulaZeroQty: TAction;
     ActApportion: TAction;
+    PnlContent: TPanel;
+    PnlBtmControls: TPanel;
     procedure OpenCloseAfter(IsOpened:Boolean);
     procedure SetCtrlStyle(fEnabled:Boolean);
     procedure SetRitBtn;
@@ -152,7 +154,7 @@ type
     procedure actMDLookupExecute(Sender: TObject);
     procedure ActSaveHaveTextFomulaZeroQtyExecute(Sender: TObject);
     procedure ActApportionExecute(Sender: TObject);
-
+    procedure ResetPnlContentSize( importMode: boolean );
   private
     { Private declarations }
     F_ParamData:TDataset;
@@ -166,7 +168,7 @@ type
 
     DBGridDL:TModelDbGrid;
   public
-    PAuthoriseTmpTable:string;
+
     Procedure InitFrm(frmid :string );
     Procedure OpenBill(BillCode :string );
     procedure SetParamDataset(PDataset:Tdataset);
@@ -206,7 +208,7 @@ begin
       FhlKnl1.Cf_SetBox( (fBillex.TopBoxId),MtDataSource1,selF.ScrollTop ,dmFrm.UserDbCtrlActLst);
 
       if (fBillex.BtmBoxID<>'-1')and (fBillex.BtmBoxID<>'')   then
-      FhlKnl1.Cf_SetBox( (fBillex.BtmBoxId),MtDataSource1,SELF.PnlBtm  ,dmFrm.UserDbCtrlActLst);
+      FhlKnl1.Cf_SetBox( (fBillex.BtmBoxId),MtDataSource1,SELF.PnlBtmControls  ,dmFrm.UserDbCtrlActLst);
 
       FhlUser.SetDbGridAndDataSet(self.DBGridDL ,fBillex.dlGridId,Null,true,true);
       fhlknl1.Cf_DeleteDbGridUnAuthorizeCol(fBillex.dlGridId,DBGridDL,logininfo.EmpId ,self.FWindowsFID,logininfo.SysDBPubName) ;
@@ -222,7 +224,7 @@ begin
         CheckAction1.Visible :=false ;
      if (self.fBillex.ChkFieldName ='' )  then
          LblState.Visible :=false;
-
+     ResetPnlContentSize(false);
 end;
 
 procedure TFrmBillEx.OpenBill(BillCode: string);
@@ -250,9 +252,7 @@ end;
 
 procedure TFrmBillEx.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  if PAuthoriseTmpTable<>'' then
-  fhlknl1.Kl_GetQuery2('drop table '+ PAuthoriseTmpTable  ,false );
-     Action:=caFree;
+    CommonFormClose(sender, action);
 end;
 
 procedure TFrmBillEx.OpenAction1Execute(Sender: TObject);
@@ -756,7 +756,8 @@ begin
         if FrmImPort.mtDataSet1.Active then
         FrmImPort.RefreshAction1.Execute;
    end;
-   PnlBtm.Visible :=not TToolbutton(Taction(Sender).ActionComponent ).Down ;
+   self.PnlBtmControls.Visible :=not TToolbutton(Taction(Sender).ActionComponent ).Down ;
+   self.ResetPnlContentSize ( TToolbutton(Taction(Sender).ActionComponent ).Down);
 end;
 procedure TFrmBillEx.dlDataSet1AfterPost(DataSet: TDataSet);
 begin
@@ -1634,7 +1635,7 @@ begin
   try
     FrmCtrlConfig:=TFrmCtrlConfig.Create(nil) ;
 
-    if  ( self.pnlbtm.ControlCount =0 )
+    if  ( self.PnlBtmControls.ControlCount =0 )
      or ( messagedlg('ÉèÖÃ±íÍ·¿Ø¼ü?',  mtWarning,[mbyes,mbno],0)=mryes ) then
       FrmCtrlConfig.boxid :=self.fBillex.TopBoxID
 
@@ -1815,6 +1816,26 @@ begin
       end;
       dlDataSet1.Next;
   end;
+end;
+
+procedure TFrmBillEx.ResetPnlContentSize( importMode: boolean );
+var i,MaxHeight:integer;
+begin
+    if importMode then
+    begin 
+        self.PnlBtm.Height:=150;
+    end
+    else
+    begin
+        MaxHeight:=0;
+        for i:= 0 to PnlBtmControls.ControlCount -1 do
+        begin
+            if PnlBtmControls.Controls[i].Height> maxHeight then
+               maxHeight := PnlBtmControls.Controls[i].Height +PnlBtmControls.Controls[i].Top;
+
+        end;
+        self.PnlBtm.Height:=maxHeight+20;
+    end;
 end;
 
 end.

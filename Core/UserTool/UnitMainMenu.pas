@@ -426,6 +426,9 @@ begin
       sysDb:= self.ADODataSet1.FieldByName('SysDataBaseLKP').AsString      ;
       FrmID:=self.ADODataSet1.FieldByName('F06').AsString      ;
 
+      if logininfo.SysDBToolName='' then
+        logininfo.SysDBToolName :=  LoginInfo.ServerName;
+
 
       SysToolCnn:= 'Provider=SQLOLEDB.1;Password='+fDBPassword+';Persist Security Info=true;User ID=sa;Initial Catalog='+logininfo.SysDBToolName+';Data Source='+logininfo.ToolDBIP+';';
       SysToolCnn:= SysToolCnn+'Use Procedure for Prepare=1;Auto Translate=True;Packet Size=4096;Workstation ID='+LoginInfo.ServerName+';Use Encryption for Data=False;Tag with column collation when possible=False';
@@ -444,6 +447,7 @@ begin
        fhlknl1.Connection.Close;
        fhlknl1.Connection.ConnectionString :=SysToolCnn ;
        fhlknl1.Connection.DefaultDatabase :=logininfo.SysDBToolName ;
+       fhlknl1.Connection.Open;
 
        self.Caption :=  fhlknl1.Connection.DefaultDatabase ;
 

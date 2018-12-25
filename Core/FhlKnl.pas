@@ -810,7 +810,8 @@ type
     constructor Create(AOwner:TComponent); override;
     destructor  Destroy; override;
     procedure   CloseSysDataSet;
-    procedure  SetUserDataBase( UserDataBase:string);
+    procedure   SetUserDataBase( UserDataBase:string);
+    procedure   RefreshCfgData;
     //--------------Knl--------------
     procedure Kl_SetReg4Mssql(AConnStr:WideString);
     function  get_ComputerName:string;
@@ -2871,29 +2872,30 @@ begin
   Kl_GetQuery2('select T601.*,T401.F02 as Y,T401.F03 as Z from T601 left outer join T401 on T601.F05=T401.F01 where T601.F01='+ADict.Id);
   if FFre_Query.RecordCount=1 then
   begin
-    with  FFre_Query do
-    begin
-        ADict.Caption:=FieldByName('F02').asString;
-        ADict.DbGridId:=FieldByName('F03').asString;
-        ADict.mtDataSetId:=FieldByName('Y').asString;
-        ADict.mtOpenParamFlds:=FieldByName('Z').asString;
-        ADict.LinkT401Pk  :=FieldByName('F05').asString;
-        ADict.TopBoxId    :=FieldByName('F06').asString;
-        ADict.BtmBoxId    :=FieldByName('F07').asString;
+      with  FFre_Query do
+      begin
+          ADict.Caption:=FieldByName('F02').asString;
+          ADict.DbGridId:=FieldByName('F03').asString;
+          ADict.mtDataSetId:=FieldByName('Y').asString;
+          ADict.mtOpenParamFlds:=FieldByName('Z').asString;
+          ADict.LinkT401Pk  :=FieldByName('F05').asString;
+          ADict.TopBoxId    :=FieldByName('F06').asString;
+          ADict.BtmBoxId    :=FieldByName('F07').asString;
 
-        ADict.IsOpen      :=FieldByName('F08').asBoolean;
-        ADict.Actions:=            FieldByName('F12').asString;
-        ADict.DblActIdx:=          FieldByName('F13').asInteger;
-        ADict.Tag:=                FieldByName('F14').asString;
+          ADict.IsOpen      :=FieldByName('F08').asBoolean;
+          ADict.Actions:=            FieldByName('F12').asString;
+          ADict.DblActIdx:=          FieldByName('F13').asInteger;
+          ADict.Tag:=                FieldByName('F14').asString;
 
-        ADict.QryParamsFLDs    :=FieldByName('F16').asString;
-      //  ADict.Modeltype      :=FieldByName('F17').asString;
-      //  ADict.FrmID          :=FieldByName('F18').asString;     //移到button 上
+          ADict.QryParamsFLDs    :=FieldByName('F16').asString;
+        //  ADict.Modeltype      :=FieldByName('F17').asString;
+        //  ADict.FrmID          :=FieldByName('F18').asString;     //移到button 上
 
-        ADict.printID :=     FieldByName('F25').AsString ;
-    end;
-    Result:=True;
+          ADict.printID :=     FieldByName('F25').AsString ;
+      end;
+      Result:=True;
   end;
+  result:=False;
   FFre_Query.Close;
 end;
 
@@ -7042,6 +7044,27 @@ begin
      end;
   end;
 
+end;
+
+procedure TFhlKnl.RefreshCfgData;
+begin
+  Fcfg_dataset.Close;
+  Fcfg_dataset.Open;
+
+  Fcfg_datasetfld.Close;
+  Fcfg_datasetfld.Open;
+
+  Fcfg_label.Close;
+  Fcfg_label.Open;
+
+  Fcfg_dbctrl.Close;
+  Fcfg_dbctrl.Open;
+
+  Fcfg_dbgridcol.Close;
+  Fcfg_dbgridcol.Open;
+
+  Fcfg_dbgrid.Close;
+  Fcfg_dbgrid.Open;
 end;
 
 end.

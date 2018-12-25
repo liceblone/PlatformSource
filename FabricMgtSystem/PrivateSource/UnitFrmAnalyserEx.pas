@@ -80,7 +80,7 @@ type
     { Private declarations }
   public
     DBGdCurrent: TModelDbGrid;
-    PAuthoriseTmpTable:string ;
+     
     { Public declarations }
     procedure InitFrm(AFrmId:String;AmtParams:Variant);
     procedure DBGrid1DrawColumnCellFntClr(Sender: TObject;const Rect: TRect; DataCol: Integer;
@@ -167,6 +167,7 @@ try
   if fDict.DblActIdx>-1 then
   begin
     if ActionList1.ActionCount > fDict.DblActIdx then
+     if ActionList1.Actions[fDict.DblActIdx]<>nil then
        DBGdCurrent.OnDblClick:=ActionList1.Actions[fDict.DblActIdx].OnExecute  ;
   end
   else
@@ -311,9 +312,7 @@ end;
 
 procedure TAnalyseEx.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  if PAuthoriseTmpTable<>'' then
-  fhlknl1.Kl_GetQuery2('drop table '+ PAuthoriseTmpTable  ,false );
-  Action:=caFree;
+    self.CommonFormClose(sender, action);
 end;
 
 procedure TAnalyseEx.Action1Execute(Sender: TObject);

@@ -72,6 +72,7 @@ object FrmLoopUpImPortEx: TFrmLoopUpImPortEx
       Font.Name = #26999#20307'_GB2312'
       Font.Style = [fsBold]
       ParentFont = False
+      OnClick = lblTitleClick
     end
   end
   object TreeView1: TTreeView

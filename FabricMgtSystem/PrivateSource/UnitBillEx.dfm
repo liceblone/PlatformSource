@@ -1,8 +1,8 @@
 object FrmBillEx: TFrmBillEx
-  Left = 429
-  Top = 155
+  Left = 284
+  Top = -3
   Width = 1136
-  Height = 560
+  Height = 668
   Caption = 'FrmBillEx'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -26,7 +26,7 @@ object FrmBillEx: TFrmBillEx
     Left = 0
     Top = 43
     Width = 1128
-    Height = 474
+    Height = 582
     Align = alClient
     BevelOuter = bvLowered
     Caption = 'Panel1'
@@ -35,7 +35,7 @@ object FrmBillEx: TFrmBillEx
       Left = 1
       Top = 427
       Width = 1126
-      Height = 3
+      Height = 4
       Cursor = crVSplit
       Align = alBottom
     end
@@ -115,46 +115,13 @@ object FrmBillEx: TFrmBillEx
         Caption = '0/0'
       end
     end
-    object ScrollBtm: TScrollBox
-      Left = 1
-      Top = 457
-      Width = 1126
-      Height = 16
-      Align = alBottom
-      AutoSize = True
-      BorderStyle = bsNone
-      Color = clWhite
-      ParentColor = False
-      TabOrder = 1
-      OnDblClick = ScrollBtmDblClick
-    end
-    object PnlRight: TPanel
-      Left = 980
-      Top = 101
-      Width = 147
-      Height = 326
-      Align = alRight
-      AutoSize = True
-      Caption = 'PnlRight'
-      TabOrder = 2
-    end
-    object PnlLeft: TPanel
-      Left = 1
-      Top = 101
-      Width = 176
-      Height = 326
-      Align = alLeft
-      AutoSize = True
-      Caption = 'PnlLeft'
-      TabOrder = 3
-    end
     object PnlFunction: TPanel
       Left = 1
       Top = 51
       Width = 1126
       Height = 50
       Align = alTop
-      TabOrder = 4
+      TabOrder = 1
       Visible = False
       object GroupBox1: TGroupBox
         Left = 1
@@ -202,23 +169,79 @@ object FrmBillEx: TFrmBillEx
         end
       end
     end
-    object PnlGrid: TPanel
-      Left = 177
-      Top = 101
-      Width = 803
-      Height = 326
-      Align = alClient
-      Caption = 'PnlGrid'
-      TabOrder = 5
-    end
     object PnlBtm: TPanel
       Left = 1
-      Top = 430
+      Top = 431
       Width = 1126
-      Height = 27
+      Height = 150
       Align = alBottom
-      TabOrder = 6
-      OnDblClick = PnlBtmDblClick
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 2
+      object ScrollBtm: TScrollBox
+        Left = 1
+        Top = 1
+        Width = 1124
+        Height = 148
+        Align = alClient
+        AutoSize = True
+        BorderStyle = bsNone
+        Color = clWhite
+        ParentColor = False
+        TabOrder = 0
+        OnDblClick = ScrollBtmDblClick
+      end
+      object PnlBtmControls: TPanel
+        Left = 1
+        Top = 1
+        Width = 1124
+        Height = 148
+        Align = alClient
+        Ctl3D = True
+        ParentCtl3D = False
+        TabOrder = 1
+        OnDblClick = PnlBtmDblClick
+      end
+    end
+    object PnlContent: TPanel
+      Left = 1
+      Top = 101
+      Width = 1126
+      Height = 326
+      Align = alClient
+      Caption = 'PnlContent'
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 3
+      object PnlGrid: TPanel
+        Left = 188
+        Top = 1
+        Width = 790
+        Height = 324
+        Align = alClient
+        Caption = 'PnlGrid'
+        TabOrder = 0
+      end
+      object PnlRight: TPanel
+        Left = 978
+        Top = 1
+        Width = 147
+        Height = 324
+        Align = alRight
+        AutoSize = True
+        Caption = 'PnlRight'
+        TabOrder = 1
+      end
+      object PnlLeft: TPanel
+        Left = 1
+        Top = 1
+        Width = 187
+        Height = 324
+        Align = alLeft
+        AutoSize = True
+        Caption = 'PnlLeft'
+        TabOrder = 2
+      end
     end
   end
   object ControlBar1: TControlBar
@@ -264,7 +287,7 @@ object FrmBillEx: TFrmBillEx
         Top = 0
         Action = CancelAction1
       end
-      object ToolButton4: TToolButton
+      object tlbtnimport: TToolButton
         Left = 120
         Top = 0
         Action = ImportAction1
@@ -340,7 +363,7 @@ object FrmBillEx: TFrmBillEx
   end
   object PgBarSave: TProgressBar
     Left = 0
-    Top = 517
+    Top = 625
     Width = 1128
     Height = 16
     Align = alBottom

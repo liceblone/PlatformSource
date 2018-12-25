@@ -2827,12 +2827,9 @@ object frmCreateComponent: TfrmCreateComponent
         OnClick = LoadControlClick
       end
     end
-    object clare: TMenuItem
-      Caption = '    clear   '
-      object c1: TMenuItem
-        Caption = '  clear  '
-        OnClick = c1Click
-      end
+    object Refresh: TMenuItem
+      Caption = 'Refresh'
+      OnClick = RefreshClick
     end
     object N1: TMenuItem
       Caption = #26041#26694

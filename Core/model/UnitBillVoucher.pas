@@ -161,7 +161,7 @@ type
 
     DBGridDL:TModelDbGrid;
   public
-    PAuthoriseTmpTable:string;
+     
     Procedure InitFrm(frmid :string );
     Procedure OpenBill(BillCode :string );
     procedure SetParamDataset(PDataset:Tdataset);
@@ -246,9 +246,7 @@ end;
 
 procedure TFrmBillVoucher.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  if PAuthoriseTmpTable<>'' then
-  fhlknl1.Kl_GetQuery2('drop table '+ PAuthoriseTmpTable  ,false );
-     Action:=caFree;
+    CommonFormClose(sender, action);
 end;
 
 procedure TFrmBillVoucher.OpenAction1Execute(Sender: TObject);

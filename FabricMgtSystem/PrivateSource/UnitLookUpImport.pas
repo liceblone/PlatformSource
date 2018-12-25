@@ -45,6 +45,7 @@ type
     procedure actPickALLExecute(Sender: TObject);
     procedure tmrQryTimer(Sender: TObject);
     procedure RefreshAction1Execute(Sender: TObject);
+    procedure lblTitleClick(Sender: TObject);
   private
     { Private declarations }
     fDict: TLkpImportDict    ;
@@ -417,6 +418,11 @@ begin
  dlDataSet1.Close;
 
  OpnDlDsBtn1Click(sender);
+end;
+
+procedure TFrmLoopUpImPortEx.lblTitleClick(Sender: TObject);
+begin
+ScrollTopDblClick(sender);
 end;
 
 end.

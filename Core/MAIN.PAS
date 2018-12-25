@@ -43,6 +43,7 @@ type
     NMetaData: TMenuItem;
     NClearBUserData: TMenuItem;
     N9: TMenuItem;
+    menuRefreshCfgData: TMenuItem;
     procedure ShowHint(Sender: TObject);
     //---À©Õ¹²Ëµ¥
     procedure InitExMenu;
@@ -67,6 +68,7 @@ type
     procedure NMetaDataClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure NClearBUserDataClick(Sender: TObject);
+    procedure menuRefreshCfgDataClick(Sender: TObject);
   private
 
   public
@@ -252,6 +254,7 @@ begin
            TreeViewMenu.Items[i].Free ;
   end;      
 
+  menuRefreshCfgData.Visible := logininfo.isAdmin;
 end;
 
 procedure TmainFrm.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -377,6 +380,11 @@ begin
     qtyTruncate.Free ;
   end;
 
+end;
+
+procedure TmainFrm.menuRefreshCfgDataClick(Sender: TObject);
+begin
+  fhlknl1.RefreshCfgData;
 end;
 
 end.

@@ -160,6 +160,11 @@ object mainFrm: TmainFrm
       object N9: TMenuItem
         Caption = '-'
       end
+      object menuRefreshCfgData: TMenuItem
+        Caption = #21047#26032#37197#32622#20449#24687
+        GroupIndex = 10
+        OnClick = menuRefreshCfgDataClick
+      end
     end
     object H1: TMenuItem
       Caption = #24110#21161'(&H)'

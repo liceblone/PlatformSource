@@ -110,7 +110,7 @@ type
     { Private declarations }
   public
     { Public declarations }
-    PAuthoriseTmpTable:string;
+     
     CurrentMainGridID:string;
 
     Mtdataset   :TAdoDataset;
@@ -167,9 +167,7 @@ end;
 
 procedure TFrmCrm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  if (PAuthoriseTmpTable<>'') and (PAuthoriseTmpTable<>'-1') then
-  fhlknl1.Kl_GetQuery2('drop table '+ PAuthoriseTmpTable  ,false );
-  Action:=caFree;
+    CommonFormClose(sender, action);
 end;
 
 procedure TFrmCrm.FormCreate(Sender: TObject);

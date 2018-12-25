@@ -11,18 +11,17 @@ type
   private
     { Private declarations }
     FSubSysName:string;
-
-     FwinID:string;
+    FwinID:string;
     procedure SetFwinID(const Value: string);
 
   public
-
+    PAuthoriseTmpTable:string;
     { Public declarations }
     procedure Active(sender:Tobject);
     procedure SetSubSysName(PSubSysName:string);
-
-    property FWindowsFID:string read FwinID write SetFwinID;
+    property  FWindowsFID:string read FwinID write SetFwinID;
     constructor Create(owner:Tcomponent);override;
+    procedure   CommonFormClose(Sender: TObject; var Action: TCloseAction);virtual;
   end;
 
 var
@@ -40,6 +39,18 @@ procedure TFrmModel.Active(sender: Tobject);
 begin
 if self.FSubSysName <>'' then
     desktopfrm.ChangSubSysName (self.FSubSysName );
+end;
+
+procedure TFrmModel.CommonFormClose(Sender: TObject; var Action: TCloseAction);
+var sql:string;
+begin
+  if PAuthoriseTmpTable<>'' then
+  begin
+    sql := Format('if exists( select * from tempdb.dbo.sysobjects where name =''%s'') drop table %s',[PAuthoriseTmpTable, PAuthoriseTmpTable]);
+    fhlknl1.Kl_GetQuery2(sql  ,false );
+    Action:=caFree;
+
+  end;
 end;
 
 constructor TFrmModel.Create(owner: Tcomponent);

@@ -285,8 +285,7 @@ type
     lbledtPosX: TLabeledEdit;
     lbledtPosy: TLabeledEdit;
     lbledtgap: TLabeledEdit;
-    clare: TMenuItem;
-    c1: TMenuItem;
+    Refresh: TMenuItem;
     lbledtCtrlGap: TLabeledEdit;
     lbledtGapY: TLabeledEdit;
     btnCreateFields: TButton;
@@ -455,7 +454,6 @@ type
     procedure edtTableExit(Sender: TObject);
     procedure btnQAddFieldClick(Sender: TObject);
     procedure btnCreateCtrlClick(Sender: TObject);
-    procedure c1Click(Sender: TObject);
     procedure edtMtDataSetIDDblClick(Sender: TObject);
     procedure btnCreateFieldsClick(Sender: TObject);
     procedure btnShowGirdColsClick(Sender: TObject);
@@ -506,6 +504,7 @@ type
     procedure dbedtFieldNameDblClick(Sender: TObject);
     procedure MClearDbClickClick(Sender: TObject);
     procedure chkUserModeClick(Sender: TObject);
+    procedure RefreshClick(Sender: TObject);
   private
     function  GetCtrlTypeIndex(sender:Tobject):string;
     procedure CreateControlObj(contralClass:TcontrolClass;parent:Twincontrol);
@@ -2298,7 +2297,7 @@ begin
   //btnCreatedFields.Click;
 
 
-  self.c1Click(sender) ;          //clear
+  self.RefreshClick(sender) ;          //clear
 
   cntpL:=strtoint(lbledtLintCnt.Text );
   y:=strtoint(lbledtPosy.Text );
@@ -2383,23 +2382,6 @@ begin
 end;
 
 
-
-procedure TfrmCreateComponent.c1Click(Sender: TObject);
-var i:integer;
-begin
-   self.FCollector.Clear ;
-       for i:=0 to grpGrpParent.ComponentCount-1 do
-  begin
-  {
-  if  grpGrpParent.Components [i] is  Tedit_Mtn then
-        grpGrpParent.Components [i].Free ;
-  if  grpGrpParent.Components [i] is  Tlabel_Mtn then
-        grpGrpParent.Components [i].Free ;
-   }
-     grpGrpParent.Components [0].Free ;
-  end;
-
-end;
 
 procedure TfrmCreateComponent.edtMtDataSetIDDblClick(Sender: TObject);
 var   frmGetGridID: TfrmGetGridID;
@@ -3636,6 +3618,23 @@ begin
 
         end;
     end;
+end;
+
+procedure TfrmCreateComponent.RefreshClick(Sender: TObject);
+var i:integer;
+begin
+   self.FCollector.Clear ;
+       for i:=0 to grpGrpParent.ComponentCount-1 do
+  begin
+  {
+  if  grpGrpParent.Components [i] is  Tedit_Mtn then
+        grpGrpParent.Components [i].Free ;
+  if  grpGrpParent.Components [i] is  Tlabel_Mtn then
+        grpGrpParent.Components [i].Free ;
+   }
+     grpGrpParent.Components [0].Free ;
+  end;
+  LoadControlClick(sender);
 end;
 
 end.
