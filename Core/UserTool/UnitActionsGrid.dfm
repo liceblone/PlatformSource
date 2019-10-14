@@ -1,6 +1,6 @@
 object FrmActions: TFrmActions
-  Left = 319
-  Top = 127
+  Left = 321
+  Top = 129
   Width = 666
   Height = 576
   AutoSize = True

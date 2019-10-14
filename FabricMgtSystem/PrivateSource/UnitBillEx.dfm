@@ -1,7 +1,7 @@
 object FrmBillEx: TFrmBillEx
-  Left = 284
-  Top = -3
-  Width = 1136
+  Left = 488
+  Top = 135
+  Width = 1094
   Height = 668
   Caption = 'FrmBillEx'
   Color = clBtnFace
@@ -25,7 +25,7 @@ object FrmBillEx: TFrmBillEx
   object Panel1: TPanel
     Left = 0
     Top = 43
-    Width = 1128
+    Width = 1086
     Height = 582
     Align = alClient
     BevelOuter = bvLowered
@@ -34,7 +34,7 @@ object FrmBillEx: TFrmBillEx
     object Splitter1: TSplitter
       Left = 1
       Top = 427
-      Width = 1126
+      Width = 1084
       Height = 4
       Cursor = crVSplit
       Align = alBottom
@@ -42,7 +42,7 @@ object FrmBillEx: TFrmBillEx
     object Splitter2: TSplitter
       Left = 1
       Top = 49
-      Width = 1126
+      Width = 1084
       Height = 2
       Cursor = crVSplit
       Align = alTop
@@ -50,7 +50,7 @@ object FrmBillEx: TFrmBillEx
     object ScrollTop: TScrollBox
       Left = 1
       Top = 1
-      Width = 1126
+      Width = 1084
       Height = 48
       Align = alTop
       BorderStyle = bsNone
@@ -59,12 +59,12 @@ object FrmBillEx: TFrmBillEx
       TabOrder = 0
       OnDblClick = ScrollTopDblClick
       DesignSize = (
-        1126
+        1084
         48)
       object Label3: TLabel
         Left = 0
         Top = 21
-        Width = 1126
+        Width = 1084
         Height = 4
         Align = alTop
         Alignment = taRightJustify
@@ -76,7 +76,7 @@ object FrmBillEx: TFrmBillEx
         ParentFont = False
       end
       object LblState: TLabel
-        Left = 1021
+        Left = 979
         Top = 24
         Width = 24
         Height = 13
@@ -93,7 +93,7 @@ object FrmBillEx: TFrmBillEx
       object LblTitle: TLabel
         Left = 0
         Top = 0
-        Width = 1126
+        Width = 1084
         Height = 21
         Align = alTop
         Alignment = taCenter
@@ -118,7 +118,7 @@ object FrmBillEx: TFrmBillEx
     object PnlFunction: TPanel
       Left = 1
       Top = 51
-      Width = 1126
+      Width = 1084
       Height = 50
       Align = alTop
       TabOrder = 1
@@ -126,7 +126,7 @@ object FrmBillEx: TFrmBillEx
       object GroupBox1: TGroupBox
         Left = 1
         Top = 1
-        Width = 1124
+        Width = 1082
         Height = 48
         Align = alClient
         Caption = #35760#24405#23450#20301
@@ -172,7 +172,7 @@ object FrmBillEx: TFrmBillEx
     object PnlBtm: TPanel
       Left = 1
       Top = 431
-      Width = 1126
+      Width = 1084
       Height = 150
       Align = alBottom
       Ctl3D = False
@@ -181,7 +181,7 @@ object FrmBillEx: TFrmBillEx
       object ScrollBtm: TScrollBox
         Left = 1
         Top = 1
-        Width = 1124
+        Width = 1082
         Height = 148
         Align = alClient
         AutoSize = True
@@ -194,7 +194,7 @@ object FrmBillEx: TFrmBillEx
       object PnlBtmControls: TPanel
         Left = 1
         Top = 1
-        Width = 1124
+        Width = 1082
         Height = 148
         Align = alClient
         Ctl3D = True
@@ -206,7 +206,7 @@ object FrmBillEx: TFrmBillEx
     object PnlContent: TPanel
       Left = 1
       Top = 101
-      Width = 1126
+      Width = 1084
       Height = 326
       Align = alClient
       Caption = 'PnlContent'
@@ -216,14 +216,14 @@ object FrmBillEx: TFrmBillEx
       object PnlGrid: TPanel
         Left = 188
         Top = 1
-        Width = 790
+        Width = 748
         Height = 324
         Align = alClient
         Caption = 'PnlGrid'
         TabOrder = 0
       end
       object PnlRight: TPanel
-        Left = 978
+        Left = 936
         Top = 1
         Width = 147
         Height = 324
@@ -247,7 +247,7 @@ object FrmBillEx: TFrmBillEx
   object ControlBar1: TControlBar
     Left = 0
     Top = 0
-    Width = 1128
+    Width = 1086
     Height = 43
     Align = alTop
     AutoSize = True
@@ -364,7 +364,7 @@ object FrmBillEx: TFrmBillEx
   object PgBarSave: TProgressBar
     Left = 0
     Top = 625
-    Width = 1128
+    Width = 1086
     Height = 16
     Align = alBottom
     TabOrder = 2
@@ -624,6 +624,11 @@ object FrmBillEx: TFrmBillEx
       Caption = #20998#25674
       ImageIndex = 34
       OnExecute = ActApportionExecute
+    end
+    object ActOri: TAction
+      Caption = #30456#20851#21333#25454
+      ImageIndex = 32
+      OnExecute = ActOriExecute
     end
   end
   object MainMenu1: TMainMenu

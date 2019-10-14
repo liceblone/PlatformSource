@@ -90,6 +90,7 @@ type
     ActApportion: TAction;
     PnlContent: TPanel;
     PnlBtmControls: TPanel;
+    ActOri: TAction;
     procedure OpenCloseAfter(IsOpened:Boolean);
     procedure SetCtrlStyle(fEnabled:Boolean);
     procedure SetRitBtn;
@@ -155,6 +156,7 @@ type
     procedure ActSaveHaveTextFomulaZeroQtyExecute(Sender: TObject);
     procedure ActApportionExecute(Sender: TObject);
     procedure ResetPnlContentSize( importMode: boolean );
+    procedure ActOriExecute(Sender: TObject);
   private
     { Private declarations }
     F_ParamData:TDataset;
@@ -714,6 +716,7 @@ begin
      CheckAction1.Enabled:=IsEnabled and (not mtDataSet1.IsEmpty );
     end;
     OpenAction1.Enabled:=IsEnabled;
+    ActOri.Enabled:=IsEnabled;
     RefreshAction1.Enabled:=IsEnabled;
     FirstAction1.Enabled:=((F_ParamData<>nil) and ( F_ParamData.Active ));
     PriorAction1.Enabled:=FirstAction1.Enabled;
@@ -1836,6 +1839,97 @@ begin
         end;
         self.PnlBtm.Height:=maxHeight+20;
     end;
+end;
+
+procedure TFrmBillEx.ActOriExecute(Sender: TObject);
+var sql:string;
+var
+  frmid,keyValue:string;
+  fBillType:string;
+  BillFrm:TFrmBillEx;
+  EditorFrm:TEditorFrm ;
+  Code ,tmpWindowsFID:string;
+  FrmBillEx:TFrmBillEx ;
+  LstParameterFLDs:Tstrings;
+  i:integer;
+  form:TAnalyseEx;
+begin
+  try
+      //FhlUser.CheckToolButtonRight( inttostr( fBillex.actid)  , (sender as Taction).Name );
+
+      try
+        LstParameterFLDs:=Tstringlist.Create ;
+
+        sql:='select  A.F19,A.F17,A.F20 ,B.F_ID From T525 A  join '+ logininfo.SysDBPubName +'.dbo.T511 B  on A.F17=B.F06 where A.F02='+ inttostr( fBillex.actid) +' and A.f16=' +inttostr(Taction(Sender).Index )
+            +' and A.f17=' +inttostr(Taction(Sender).ActionComponent.Tag  )+' and A.f04='+quotedstr( Ttoolbutton( Taction(Sender).ActionComponent).Caption   );
+        fhlknl1.Kl_GetQuery2 (sql  );
+        fBillType:=fhlknl1.FreeQuery.FieldByName('F19').AsString  ;
+        frmid:=fhlknl1.FreeQuery.FieldByName('F17').AsString      ;
+        tmpWindowsFID:=fhlknl1.FreeQuery.FieldByName('F_ID').AsString      ;
+
+        if uppercase(fBillType)=uppercase('Analyser') then
+        begin
+            if dlDataSet1.FindField('sDefaultVals')<>nil then
+            sDefaultVals:= dlDataSet1.fieldbyname('sDefaultVals').AsString;
+
+            LstParameterFLDs.CommaText :=fhlknl1.FreeQuery.FieldByName('F20').AsString      ;//  fDict.QryParamsFLDs ;
+            for i:=0 to  LstParameterFLDs.Count -1 do
+            begin
+                if ( dlDataSet1.FindField (LstParameterFLDs[i])<>nil ) then
+                LstParameterFLDs[i]:=LstParameterFLDs[i]+'='+ dlDataSet1.fieldbyname(LstParameterFLDs[i]).AsString;
+            end;
+            if LstParameterFLDs.Count>0 then
+            sDefaultVals:=LstParameterFLDs.CommaText ;
+
+            form:=TAnalyseEx.Create(Application)  ;
+            form.FormStyle :=fsnormal;
+            form.hide;
+            form.FWindowsFID :=tmpWindowsFID;
+            form.InitFrm(frmid,null);
+            form.ShowModal;
+        end;
+
+        if uppercase(fBillType)=uppercase('BillEx') then
+        begin
+          if not self.dlDataSet1.IsEmpty then
+          begin
+            LstParameterFLDs.CommaText :=fhlknl1.FreeQuery.FieldByName('F20').AsString      ;//  fDict.QryParamsFLDs ;
+            for i:=0 to  LstParameterFLDs.Count -1 do
+            begin
+              if   dlDataSet1.FindField (LstParameterFLDs[i])<>nil then
+              begin
+                 if dlDataSet1.FieldByName (LstParameterFLDs[i]).AsString <>'' then
+                 begin
+                     Code:=dlDataSet1.FieldByName (LstParameterFLDs[i]).AsString  ;
+                     break;
+                 end;
+              end;
+            end;
+          end;
+
+          FrmBillEx:=TFrmBillEx.Create(nil);
+          FrmBillEx.SetParamDataset(dlDataSet1  );
+          FrmBillEx.FWindowsFID :=  tmpWindowsFID ;
+          FrmBillEx.InitFrm(FrmId);
+          if Code<>'' then
+          begin
+             FrmBillEx.OpenBill( code  );
+          end;
+          FrmBillEx.FormStyle :=fsnormal;
+          FrmBillEx.Hide;
+          FrmBillEx.Position :=poDesktopCenter;
+          FrmBillEx.ScrollBtm.Visible :=true;
+
+          FrmBillEx.ShowModal ;
+        end;
+      finally
+        sDefaultVals:='';
+        LstParameterFLDs.Free;
+      end;
+  except
+    on err:exception do
+    showmessage(err.Message );
+  end;
 end;
 
 end.

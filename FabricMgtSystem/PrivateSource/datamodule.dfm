@@ -2,8 +2,8 @@ object dmFrm: TdmFrm
   OldCreateOrder = False
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
-  Left = 434
-  Top = 179
+  Left = 435
+  Top = 181
   Height = 414
   Width = 545
   object ADOConnection1: TADOConnection

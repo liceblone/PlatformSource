@@ -29,6 +29,7 @@ type
     actPickALL: TAction;
     tmrQry: TTimer;
     RefreshAction1: TAction;
+    ActImportMulSel: TAction;
     procedure ScrollTopDblClick(Sender: TObject);
     procedure ActCloseExecute(Sender: TObject);
     procedure DBGridDLDblClick(Sender: TObject);
@@ -46,6 +47,7 @@ type
     procedure tmrQryTimer(Sender: TObject);
     procedure RefreshAction1Execute(Sender: TObject);
     procedure lblTitleClick(Sender: TObject);
+    procedure ActImportMulSelExecute(Sender: TObject);
   private
     { Private declarations }
     fDict: TLkpImportDict    ;
@@ -423,6 +425,54 @@ end;
 procedure TFrmLoopUpImPortEx.lblTitleClick(Sender: TObject);
 begin
 ScrollTopDblClick(sender);
+end;
+
+procedure TFrmLoopUpImPortEx.ActImportMulSelExecute(Sender: TObject);
+var fParams:Variant;
+        Values,unionpk:string;
+        i,x,j:integer;
+        BackOnCalcFields: TDataSetNotifyEvent ;
+        RecordExists:Boolean;
+         var bk:Pointer;
+begin
+  if not dlDataSet1.Active then exit;
+  if   dlDataSet1.IsEmpty  then exit;
+
+ With dlDataSet1 do
+   begin
+     if dgMultiSelect in self.DBGridDL.Options then
+     begin
+       bk:=GetBookmark;
+       DisableControls;
+
+
+       for j:=0 to DBGridDL.SelectedRows.Count-1 do
+       begin
+            DBGridDL.DataSource.DataSet.GotoBookMark(Pointer(DBGridDL.SelectedRows.Items[j]));
+
+            BackOnCalcFields:=FImportToDataSet.OnCalcFields;
+            fParams:=FhlKnl1.Ds_GetFieldsValue(dlDataSet1,fDict.ImportPK );
+
+            unionpk:=  fDict.ImportPK ;
+            IF  POS(',',fDict.ImportPK)>0   THEN
+            begin
+                for i:=0 to 10 do
+                    unionpk:=StringReplace(  unionpk ,',',';',[])     ;
+                RecordExists:=  FImportToDataSet.Locate( unionpk,  fParams,[]);
+            end
+            else
+                RecordExists:=  FImportToDataSet.Locate( unionpk,  dlDataSet1.fieldbyname(unionpk).asstring,[]);
+
+            if not RecordExists then
+                FhlKnl1.Ds_CopyValues(dlDataSet1,FImportToDataSet ,fDict.ImportSourceFlds,fDict.ImportDectFlds)
+            else if MessageDlg(#13#10+'警告!  在被引用的表格里已经存在该产品.是否覆盖该记录?',mtWarning,[mbYes,mbNo],0)=mrYes then
+                FhlKnl1.Ds_CopyValues(dlDataSet1,FImportToDataSet ,fDict.ImportSourceFlds,fDict.ImportDectFlds,false);
+        end;
+
+       EnableControls;
+       GotoBookmark(bk);
+     end;
+   end;
 end;
 
 end.

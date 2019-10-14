@@ -1,6 +1,6 @@
 object FrmLoopUpImPortEx: TFrmLoopUpImPortEx
-  Left = 433
-  Top = 219
+  Left = 434
+  Top = 220
   Width = 629
   Height = 208
   ActiveControl = ScrollTop
@@ -163,6 +163,11 @@ object FrmLoopUpImPortEx: TFrmLoopUpImPortEx
       Caption = 'RefreshAction1'
       ImageIndex = 16
       OnExecute = RefreshAction1Execute
+    end
+    object ActImportMulSel: TAction
+      Caption = 'ActImportMulSel'
+      ImageIndex = 17
+      OnExecute = ActImportMulSelExecute
     end
   end
   object mtDataSource1: TDataSource
