@@ -318,6 +318,37 @@ object FrmUserQrRptEx: TFrmUserQrRptEx
         WordWrap = True
         FontSize = 8
       end
+      object lblCompany: TQRLabel
+        Left = 176
+        Top = 3
+        Width = 236
+        Height = 17
+        Frame.Color = clBlack
+        Frame.DrawTop = False
+        Frame.DrawBottom = False
+        Frame.DrawLeft = False
+        Frame.DrawRight = False
+        Size.Values = (
+          44.979166666666670000
+          465.666666666666700000
+          7.937500000000000000
+          624.416666666666700000)
+        Alignment = taCenter
+        AlignToBand = False
+        AutoSize = True
+        AutoStretch = True
+        Caption = #19978#28023#24658#26376#20449#24687#25216#26415#26377#38480#20844#21496'   http://www.lunainfor.com '
+        Color = clWhite
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+        Transparent = False
+        WordWrap = True
+        FontSize = 7
+      end
     end
     object PageFooterBand1: TQRBand
       Left = 38
@@ -340,37 +371,6 @@ object FrmUserQrRptEx: TFrmUserQrRptEx
       PreCaluculateBandHeight = False
       KeepOnOnePage = False
       BandType = rbPageFooter
-      object lblCompany: TQRLabel
-        Left = 472
-        Top = 8
-        Width = 236
-        Height = 17
-        Frame.Color = clBlack
-        Frame.DrawTop = False
-        Frame.DrawBottom = False
-        Frame.DrawLeft = False
-        Frame.DrawRight = False
-        Size.Values = (
-          44.979166666666670000
-          1248.833333333333000000
-          21.166666666666670000
-          624.416666666666700000)
-        Alignment = taCenter
-        AlignToBand = False
-        AutoSize = True
-        AutoStretch = True
-        Caption = #19978#28023#24658#26376#20449#24687#25216#26415#26377#38480#20844#21496'   http://www.lunainfor.com '
-        Color = clWhite
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -9
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-        Transparent = False
-        WordWrap = True
-        FontSize = 7
-      end
     end
     object DetailBand1: TQRBand
       Left = 38
